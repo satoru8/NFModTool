@@ -1,9 +1,9 @@
 <template>
-  <div class="midPanelInner" ref="editorContainer">
-  </div>
+  <div class="midPanelInner" ref="editorContainer"></div>
 </template>
 
 <style>
+.monaco-editor,
 .cm-editor,
 .midPanelInner {
   height: 100%;
@@ -25,8 +25,8 @@ export default {
   
   mounted() {
     this.editor = monaco.editor.create(this.$refs.editorContainer, {
-      value: 'function spicyKatsu() {\n\tconsole.log("Hello octdat");\n}',
-      language: 'javascript',
+      value: `function spicyKatsu() {\n\tconsole.log("Hello octdat");\n}`,
+      language: 'octdat',
       theme: 'vs-dark',
     });
   },
@@ -37,38 +37,3 @@ export default {
   }
 }
 </script>
-
-
-
-<!-- <script>
-import { EditorState } from "@codemirror/state";
-import { basicSetup } from "codemirror";
-import { keymap, EditorView } from "@codemirror/view";
-import { defaultKeymap } from "@codemirror/commands";
-import { ref, onMounted } from "vue";
-
-export default {
-  setup() {
-    const editorContainer = ref(null);
-
-    onMounted(() => {
-      const startState = EditorState.create({
-        doc: "Hello World",
-        extensions: [
-          basicSetup, 
-          keymap.of(defaultKeymap)
-        ]
-      });
-
-      const view = new EditorView({
-        state: startState,
-        parent: editorContainer.value
-      });
-    });
-
-    return {
-      editorContainer
-    };
-  }
-};
-</script> -->
