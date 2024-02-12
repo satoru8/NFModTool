@@ -22,13 +22,14 @@
  *    }
  *  });
  */
-
+import './css/index.css';
+// import './js/monacoSetup.js';
 import { createApp } from 'vue';
 import TopPanel from './topPanel.vue';
 import LeftPanel from './leftPanel.vue';
 import MidPanel from './midPanel.vue';
 import RightPanel from './rightPanel.vue';
-import './css/index.css';
+
 
 createApp(TopPanel).mount('#topPanel');
 createApp(LeftPanel).mount('#leftPanel');
