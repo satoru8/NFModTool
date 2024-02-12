@@ -1,5 +1,3 @@
-
-// Monaco Editor setup and instance creation
 import * as monaco from 'monaco-editor';
 
 // Register the octdat language
@@ -18,22 +16,25 @@ monaco.languages.setMonarchTokensProvider('octdat', {
   },
 });
 
-// Define snippets for 'octdat' language
-monaco.languages.registerSnippetProvider('octdat', {
-  provideSnippets: () => {
-    return {
-      'definition': {
-        label: 'Define function',
-        snippet: 'define ${1:name}($2:parameters) {\n\t$0\n}'
-      }
-    };
-  }
+monaco.editor.defineTheme('octdatTheme', {
+  base: 'vs-dark',
+  inherit: true,
+  rules: [
+    // Add theme rules here
+  ],
 });
 
-// Optionally, define additional language features
+monaco.languages.setLanguageConfiguration('octdat', {
+  brackets: [
+    ['[', ']'],
+    ['{', '}'],
+  ]
+})
+
+// Define additional language features
 monaco.languages.registerCompletionItemProvider('octdat', {
   provideCompletionItems: (model, position) => {
-    // Your autocompletion logic here
+    // Autocompletion logic here
     return {
       suggestions: [
         { label: 'keyword1', kind: monaco.languages.CompletionItemKind.Keyword, insertText: 'keyword1' },
@@ -56,16 +57,6 @@ self.MonacoEnvironment = {
     return new editorWorker()
   }
 };
-
-// Register theme for octdat
-monaco.editor.defineTheme('octdatTheme', {
-  base: 'vs-dark',
-  inherit: true,
-  rules: [
-    // Add theme rules here
-  ],
-});
-
 
 // Create the editor instance
 // const editor = monaco.editor.create(document.getElementById('editorContainer'), {
