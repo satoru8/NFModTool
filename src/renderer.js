@@ -24,9 +24,15 @@
  */
 
 import { createApp } from 'vue';
-import App from './App.vue';
-import './index.css';
+import TopPanel from './topPanel.vue';
+import LeftPanel from './leftPanel.vue';
+import MidPanel from './midPanel.vue';
+import RightPanel from './rightPanel.vue';
+import './css/index.css';
 
-createApp(App).mount('#app');
+createApp(TopPanel).mount('#topPanel');
+createApp(LeftPanel).mount('#leftPanel');
+createApp(MidPanel).mount('#midPanel');
+createApp(RightPanel).mount('#rightPanel');
 
 console.log('👋 This message is being logged by "renderer.js", included via Vite');

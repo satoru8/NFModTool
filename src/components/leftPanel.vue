@@ -1,0 +1,13 @@
+<template>
+
+    <div class="leftPanelInner">
+        <h1>Left Component</h1>
+    </div>
+    
+</template>
+
+<style>
+    .leftPanelInner {
+        background-color: purple
+    }
+</style>
