@@ -8,6 +8,8 @@
 
 <style>
     .midPanelInner {
-        background-color: purple
+        background-color: purple;
+        height: 100%;
+        width: 100%;
     }
 </style>

@@ -8,6 +8,8 @@
 
 <style>
     .rightPanelInner {
-        background-color: purple
+        background-color: blue;
+        height: 100%;
+        width: 100%;
     }
 </style>

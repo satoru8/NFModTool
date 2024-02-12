@@ -35,4 +35,4 @@ createApp(LeftPanel).mount('#leftPanel');
 createApp(MidPanel).mount('#midPanel');
 createApp(RightPanel).mount('#rightPanel');
 
-console.log('👋 This message is being logged by "renderer.js", included via Vite');
+console.log('%cNF Mod Tool', 'color: #ae00ff; font-size: 20px; font-weight: bold');
