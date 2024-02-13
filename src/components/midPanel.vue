@@ -25,16 +25,16 @@ export default {
   
   mounted() {
     this.editor = monaco.editor.create(this.$refs.editorContainer, {
-      value: `
-{
+      value: 
+`{
   abstract
   id ModTest.Items.Armor.Steel
   type InstancedItemType
-    inherit Oct.Items.Buffable
-    alias Oct.Items.Armor.Steel
+  inherit Oct.Items.Buffable
+  alias Oct.Items.Armor.Steel
   
-    outdoorDecayAfter = 24y
-    autonomousPerMember = 1
+  outdoorDecayAfter = 24y
+  autonomousPerMember = 1
   
   stats =
   [
@@ -42,19 +42,18 @@ export default {
       type InstancedItemStat
       name = Warmth
       formula = QualityHalfDurability
-            modifier = true
-            round = .25
+      modifier = true
+      round = .25
       min = .5
       max = 1.25
     }
   ]
     
-    substances = 
-    [
-        <Oct.Items.Substances.Steel>
-    ]
-}
-      `,
+  substances = 
+  [
+    <Oct.Items.Substances.Steel>
+  ]
+}`,
       language: 'octdat',
       theme: 'octdatTheme',
       staticEmbedding: true,

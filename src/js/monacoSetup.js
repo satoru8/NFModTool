@@ -28,7 +28,6 @@ monaco.editor.defineTheme('octdatTheme', {
 
   ],
   colors: {
-    // Directly specify the color value for 'idColor'
     'idColor': '#f700ff',
   },
 });
@@ -39,14 +38,14 @@ monaco.languages.setLanguageConfiguration('octdat', {
     ['{', '}'],
     ['(', ')']
   ],
-  autoClosingPairs: [
-    // ['[', ']'],
-    // ['{', '}'],
-    // ['(', ')'],
-    // ['"', '"'],
-    // ["'", "'"],
-    // ['<', '>']
-  ],
+  // autoClosingPairs: [
+  //   ['[', ']'],
+  //   ['{', '}'],
+  //   ['(', ')'],
+  //   ['"', '"'],
+  //   ["'", "'"],
+  //   ['<', '>']
+  // ],
   surroundingPairs: [
     ['[', ']'],
     ['{', '}'],
@@ -77,20 +76,6 @@ monaco.languages.setLanguageConfiguration('octdat', {
       action: { indentAction: monaco.languages.IndentAction.Indent }
     }
   ]
-});
-
-// Define additional language features
-monaco.languages.registerCompletionItemProvider('octdat', {
-  provideCompletionItems: (model, position) => {
-    // Autocompletion logic here
-    return {
-      suggestions: [
-        { label: 'keyword1', kind: monaco.languages.CompletionItemKind.Keyword, insertText: 'keyword1' },
-        { label: 'keyword2', kind: monaco.languages.CompletionItemKind.Keyword, insertText: 'keyword2' },
-        // Add more suggestions as needed
-      ]
-    };
-  }
 });
 
 // Configure Monaco environment for worker
