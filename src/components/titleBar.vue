@@ -10,33 +10,6 @@
   </div>
 </template>
 
-<style>
-.title {
-  height: 30px;
-  width: 100%;
-  user-select: none;
-  -webkit-app-region: drag;
-}
-
-#titleText {
-  display: inline;
-  vertical-align: middle;
-  margin-left: 10px;
-  font-weight: bold;
-}
-
-#titleBarBtns {
-  display: flex;
-}
-
-#logo {
-  height: 30px;
-  width: 30px;
-  margin-left: 10px;
-  vertical-align: middle;
-}
-</style>
-
 <script>
 export default {
   name: 'TitleBar',

@@ -5,11 +5,3 @@
     </div>
   </div>
 </template>
-
-<style>
-.rightPanelInner {
-  background-color: blue;
-  height: 100%;
-  width: 100%;
-}
-</style>

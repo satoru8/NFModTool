@@ -11,7 +11,8 @@ monaco.languages.setMonarchTokensProvider('octdat', {
       [/inherit\s(([a-zA-Z0-9]+(\.[a-zA-Z0-9]+)+))/, 'octdat.inherit'],
       [/alias\s(([a-zA-Z0-9]+(\.[a-zA-Z0-9]+)+))/, 'octdat.alias'],
       [/type\s+[a-zA-Z0-9]+/, 'octdat.type'],
-      [/\$clear|appendonly|abstract/, 'octdat.keyword']
+      [/\$clear|appendonly|abstract/, 'octdat.keyword'],
+
     ]
   }
 })
@@ -20,11 +21,11 @@ monaco.editor.defineTheme('octdatTheme', {
   base: 'vs-dark',
   inherit: true,
   rules: [
-    { token: 'octdat.id', foreground: '#b700ff' },
-    { token: 'octdat.inherit', foreground: '#f700ff' },
-    { token: 'octdat.alias', foreground: '#d0ff00' },
-    { token: 'octdat.type', foreground: '#00c3ff' },
-    { token: 'octdat.keyword', foreground: '#15ff00' }
+    { token: 'octdat.id', foreground: '#C586C0' },
+    { token: 'octdat.inherit', foreground: '#4EC9B0' },
+    { token: 'octdat.alias', foreground: '#CE9178' },
+    { token: 'octdat.type', foreground: '#9CDCFE' },
+    { token: 'octdat.keyword', foreground: '#DCDCAA' }
   ],
   colors: {
     idColor: '#f700ff'

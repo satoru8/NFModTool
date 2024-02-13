@@ -38,6 +38,31 @@
   color: #52c073;
 }
 
+.title {
+  height: 30px;
+  width: 100%;
+  user-select: none;
+  -webkit-app-region: drag;
+}
+
+#titleText {
+  display: inline;
+  vertical-align: middle;
+  margin-left: 10px;
+  font-weight: bold;
+}
+
+#titleBarBtns {
+  display: flex;
+}
+
+#logo {
+  height: 30px;
+  width: 30px;
+  margin-left: 10px;
+  vertical-align: middle;
+}
+
 #appMain {
   display: grid;
   grid-template-columns: 0.5fr 1fr 0.5fr;
@@ -46,35 +71,53 @@
   height: 100vh;
 }
 
-#topPanel {
-  grid-column: 1 / 4;
-  grid-row: 1 / 2;
+#topPanel,
+#leftPanel,
+#midPanel,
+#bottomPanel {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.topPanelInner,
+.leftPanelInner,
+.midPanelInner,
+.bottomPanelInner {
+  height: 100%;
+  width: 100%;
+}
+
+#topPanel {
+  grid-column: 1 / 4;
+  grid-row: 1 / 5;
   flex-direction: column;
+}
+
+.topPanelInner {
+  background-color: orange;
+  text-align: center;
 }
 
 #leftPanel {
   grid-column: 1 / 2;
   grid-row: 2 / 5;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+}
+
+.leftPanelInner {
+  background-color: green;
 }
 
 #midPanel {
   grid-column: 2 / 3;
   grid-row: 2 / 5;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 #rightPanel {
   grid-column: 3 / 4;
   grid-row: 2 / 5;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+}
+
+.rightPanelInner {
+  background-color: blue;
 }

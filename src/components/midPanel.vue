@@ -4,16 +4,6 @@
   </div>
 </template>
 
-<style>
-.monaco-editor,
-.cm-editor,
-.midPanelInner {
-  display: flex;
-  height: 100%;
-  width: 100%;
-}
-</style>
-
 <script>
 import * as monaco from 'monaco-editor'
 import '../js/monacoSetup.js'

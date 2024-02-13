@@ -8,14 +8,12 @@ if (require('electron-squirrel-startup')) {
 
 const createWindow = () => {
   const mainWindow = new BrowserWindow({
-    width: 1280,
-    height: 920,
+    width: 1000,
+    height: 800,
+    minWidth: 800,
+    minHeight: 600,
+    frame: false,
     titleBarStyle: 'hidden',
-    // transparent: true,
-    // webPreferences: {
-    //   nodeIntegration: true,
-    //   contextIsolation: false,
-    // },
     // titleBarOverlay: {
     //   color: '#2f3241',
     //   symbolColor: '#52c073',
