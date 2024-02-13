@@ -5,12 +5,12 @@
   "description": "Modding Tool for Noble Fates",
   "main": ".vite/build/main.js",
   "scripts": {
-    "Start Dev": "electron-forge start",
-    "Live Package": "electron-forge package",
-    "Live Build": "electron-forge make",
-    "Publish": "electron-forge publish",
-    "Run Lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --ignore-path .gitignore",
-    "Run Prettier": "prettier --write src/"
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "build": "electron-forge make",
+    "publish": "electron-forge publish",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --ignore-path .gitignore",
+    "prettier": "prettier --write src/"
   },
   "keywords": [],
   "author": {
@@ -39,6 +39,6 @@
   },
   "dependencies": {
     "electron-squirrel-startup": "^1.0.0",
-    "vue": "^3.4.18"
+    "vue": "^3.4.19"
   }
 }

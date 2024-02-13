@@ -18,18 +18,7 @@ import TitleBar from './components/titleBar.vue'
 import MainView from './views/mainView.vue'
 import './css/main.css'
 
-// Vuetify
-import 'vuetify/styles'
-import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
-
-const vuetify = createVuetify({
-  components,
-  directives
-})
-
-createApp(TitleBar).use(vuetify).mount('#titleBar')
-createApp(MainView).use(vuetify).mount('#appMain')
+createApp(TitleBar).mount('#titleBar')
+createApp(MainView).mount('#appMain')
 
 console.log('%cNF Mod Tool', 'color: #ae00ff; font-size: 20px; font-weight: bold')
