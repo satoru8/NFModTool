@@ -1,17 +1,17 @@
 import * as monaco from 'monaco-editor';
 
-// Register the octdat language
 monaco.languages.register({ id: 'octdat' });
 
 // Define syntax highlighting rules for 'octdat' language
 monaco.languages.setMonarchTokensProvider('octdat', {
   tokenizer: {
     root: [
-      // Comments
       [/\/\/.*$/, 'comment'],
-      [/\[info\]/, 'custom-info'],
-      [/\[script\]/, 'custom-script'],
-      // Other token rules...
+      [/id\s(([a-zA-Z0-9]+(\.[a-zA-Z0-9]+)+))/, 'octdat.id'],
+      [/inherit\s(([a-zA-Z0-9]+(\.[a-zA-Z0-9]+)+))/, 'octdat.inherit'],
+      [/alias\s(([a-zA-Z0-9]+(\.[a-zA-Z0-9]+)+))/, 'octdat.alias'],
+      [/type\s+[a-zA-Z0-9]+/, 'octdat.type'],
+      [/\$clear|appendonly|abstract/, 'octdat.keyword'],
     ],
   },
 });
@@ -20,16 +20,64 @@ monaco.editor.defineTheme('octdatTheme', {
   base: 'vs-dark',
   inherit: true,
   rules: [
-    // Add theme rules here
+    { token: 'octdat.id', foreground: '#b700ff' },
+    { token: 'octdat.inherit', foreground: '#f700ff' },
+    { token: 'octdat.alias', foreground: '#d0ff00' },
+    { token: 'octdat.type', foreground: '#00c3ff' },
+    { token: 'octdat.keyword', foreground: '#15ff00' },
+
   ],
+  colors: {
+    // Directly specify the color value for 'idColor'
+    'idColor': '#f700ff',
+  },
 });
 
 monaco.languages.setLanguageConfiguration('octdat', {
   brackets: [
     ['[', ']'],
     ['{', '}'],
+    ['(', ')']
+  ],
+  autoClosingPairs: [
+    // ['[', ']'],
+    // ['{', '}'],
+    // ['(', ')'],
+    // ['"', '"'],
+    // ["'", "'"],
+    // ['<', '>']
+  ],
+  surroundingPairs: [
+    ['[', ']'],
+    ['{', '}'],
+    ['(', ')'],
+    ['"', '"'],
+    ["'", "'"],
+    ['<', '>']
+  ],
+  comments: {
+    lineComment: '//',
+    blockComment: ['/*', '*/']
+  },
+  folding: {
+    markers: {
+      start: /\[\$/,
+      end: /\$\]/
+    }
+  },
+  onEnterRules: [
+    {
+      beforeText: /\[/,
+      afterText: /\$/,
+      action: { indentAction: monaco.languages.IndentAction.Indent }
+    },
+    {
+      beforeText: /\$/,
+      afterText: /\[/,
+      action: { indentAction: monaco.languages.IndentAction.Indent }
+    }
   ]
-})
+});
 
 // Define additional language features
 monaco.languages.registerCompletionItemProvider('octdat', {
@@ -57,10 +105,3 @@ self.MonacoEnvironment = {
     return new editorWorker()
   }
 };
-
-// Create the editor instance
-// const editor = monaco.editor.create(document.getElementById('editorContainer'), {
-//   value: '...test',
-//   language: 'octdat',
-//   theme: 'octdatTheme',
-// });

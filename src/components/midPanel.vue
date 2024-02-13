@@ -25,9 +25,38 @@ export default {
   
   mounted() {
     this.editor = monaco.editor.create(this.$refs.editorContainer, {
-      value: `function spicyKatsu() {\n\tconsole.log("Hello octdat");\n}`,
+      value: `
+      {
+        abstract
+        id ModTest.Items.Armor.Steel
+        type InstancedItemType
+          inherit Oct.Items.Buffable
+          alias Oct.Items.Armor.Steel
+        
+          outdoorDecayAfter = 24y
+          autonomousPerMember = 1
+        
+        stats =
+        [
+          {
+            type InstancedItemStat
+            name = Warmth
+            formula = QualityHalfDurability
+                  modifier = true
+                  round = .25
+            min = .5
+            max = 1.25
+          }
+        ]
+          
+          substances = 
+          [
+              <Oct.Items.Substances.Steel>
+          ]
+      }
+      `,
       language: 'octdat',
-      theme: 'vs-dark',
+      theme: 'octdatTheme',
     });
   },
   beforeUnmount() {
