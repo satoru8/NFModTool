@@ -1,6 +1,6 @@
-import * as monaco from 'monaco-editor';
+import * as monaco from 'monaco-editor'
 
-monaco.languages.register({ id: 'octdat' });
+monaco.languages.register({ id: 'octdat' })
 
 // Define syntax highlighting rules for 'octdat' language
 monaco.languages.setMonarchTokensProvider('octdat', {
@@ -11,10 +11,10 @@ monaco.languages.setMonarchTokensProvider('octdat', {
       [/inherit\s(([a-zA-Z0-9]+(\.[a-zA-Z0-9]+)+))/, 'octdat.inherit'],
       [/alias\s(([a-zA-Z0-9]+(\.[a-zA-Z0-9]+)+))/, 'octdat.alias'],
       [/type\s+[a-zA-Z0-9]+/, 'octdat.type'],
-      [/\$clear|appendonly|abstract/, 'octdat.keyword'],
-    ],
-  },
-});
+      [/\$clear|appendonly|abstract/, 'octdat.keyword']
+    ]
+  }
+})
 
 monaco.editor.defineTheme('octdatTheme', {
   base: 'vs-dark',
@@ -24,13 +24,12 @@ monaco.editor.defineTheme('octdatTheme', {
     { token: 'octdat.inherit', foreground: '#f700ff' },
     { token: 'octdat.alias', foreground: '#d0ff00' },
     { token: 'octdat.type', foreground: '#00c3ff' },
-    { token: 'octdat.keyword', foreground: '#15ff00' },
-
+    { token: 'octdat.keyword', foreground: '#15ff00' }
   ],
   colors: {
-    'idColor': '#f700ff',
-  },
-});
+    idColor: '#f700ff'
+  }
+})
 
 monaco.languages.setLanguageConfiguration('octdat', {
   brackets: [
@@ -76,18 +75,17 @@ monaco.languages.setLanguageConfiguration('octdat', {
       action: { indentAction: monaco.languages.IndentAction.Indent }
     }
   ]
-});
+})
 
 // Configure Monaco environment for worker
-import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
-// import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker';
+import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker'
+import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker'
 
 self.MonacoEnvironment = {
   getWorker(_, label) {
     if (label === 'octdat') {
-      // return new tsWorker()
-      return new editorWorker()
+      return new tsWorker()
     }
-    // return new editorWorker()
+    return new editorWorker()
   }
-};
+}

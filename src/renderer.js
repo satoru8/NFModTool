@@ -11,29 +11,25 @@
  *
  * https://electronjs.org/docs/tutorial/security
  *
- * To enable Node.js integration in this file, open up `main.js` and enable the `nodeIntegration`
- * flag:
- *
- *  mainWindow = new BrowserWindow({
- *    width: 800,
- *    height: 600,
- *    webPreferences: {
- *      nodeIntegration: true
- *    }
- *  });
  */
-import './css/index.css';
-// import './js/monacoSetup.js';
-import { createApp } from 'vue';
-import TopPanel from './topPanel.vue';
-import LeftPanel from './leftPanel.vue';
-import MidPanel from './midPanel.vue';
-import RightPanel from './rightPanel.vue';
 
+import { createApp } from 'vue'
+import TitleBar from './components/titleBar.vue'
+import MainView from './views/mainView.vue'
+import './css/main.css'
 
-createApp(TopPanel).mount('#topPanel');
-createApp(LeftPanel).mount('#leftPanel');
-createApp(MidPanel).mount('#midPanel');
-createApp(RightPanel).mount('#rightPanel');
+// Vuetify
+import 'vuetify/styles'
+import { createVuetify } from 'vuetify'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
 
-console.log('%cNF Mod Tool', 'color: #ae00ff; font-size: 20px; font-weight: bold');
+const vuetify = createVuetify({
+  components,
+  directives
+})
+
+createApp(TitleBar).use(vuetify).mount('#titleBar')
+createApp(MainView).use(vuetify).mount('#appMain')
+
+console.log('%cNF Mod Tool', 'color: #ae00ff; font-size: 20px; font-weight: bold')
