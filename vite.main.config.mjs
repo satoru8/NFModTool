@@ -7,5 +7,5 @@ export default defineConfig({
     browserField: false,
     conditions: ['node'],
     mainFields: ['module', 'jsnext:main', 'jsnext'],
-  },
+  }
 });

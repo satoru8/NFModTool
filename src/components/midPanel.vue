@@ -5,30 +5,26 @@
 </template>
 
 <script>
-import * as monaco from 'monaco-editor'
-import '../js/monacoSetup.js'
+import { createEditor } from '../js/monacoSetup.js'
 
 export default {
   name: 'OctdatEditor',
-  data() {
-    return {
-      editor: null
-    }
-  },
-
   mounted() {
-    // const midPanel = document.getElementById('midPanel');
-    this.editor = monaco.editor.create(this.$refs.editorContainer, {
-      value: `test`,
-      language: 'octdat',
-      theme: 'octdatTheme',
-      scrollBeyondLastLine: false,
-      automaticLayout: true
-    })
+    // createEditor(this.$refs.editorContainer)
+    this.editor = createEditor(this.$refs.editorContainer)
+    window.addEventListener('resize', this.handleResize)
   },
   beforeUnmount() {
     if (this.editor) {
       this.editor.dispose()
+      window.removeEventListener('resize', this.handleResize)
+    }
+  },
+  methods: {
+    handleResize() {
+      if (this.editor) {
+        this.editor.layout()
+      }
     }
   }
 }

@@ -83,7 +83,7 @@
 .topPanelInner,
 .leftPanelInner,
 .midPanelInner,
-.bottomPanelInner {
+.rightPanelInner {
   height: 100%;
   width: 100%;
 }
