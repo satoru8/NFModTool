@@ -19,7 +19,7 @@ monaco.languages.setMonarchTokensProvider('octdat', {
       [/[A-Za-z]+\s==\s[A-Za-z0-9]+.*[A-Za-z0-9]+/, 'octdat.replace'],
       [/([a-zA-Z]+\s(?==))/, 'octdat.property'],
       [/\b\d+/, 'octdat.number'],
-      [/[A-Za-z0-9]+\|[A-Za-z0-9]+/, 'octdat.anim'],
+      [/[A-Za-z0-9]+\|[A-Za-z0-9]+/, 'octdat.anim']
     ]
   }
 })
@@ -42,7 +42,7 @@ monaco.editor.defineTheme('octdatTheme', {
     { token: 'octdat.null', foreground: '#F44747' },
     { token: 'octdat.comment', foreground: '#6a9955' },
     { token: 'octdat.replace', foreground: '#fadca5' },
-    { token: 'octdat.anim', foreground: '#bd94ff' },
+    { token: 'octdat.anim', foreground: '#bd94ff' }
   ],
   colors: {
     idColor: '#f700ff'
@@ -57,20 +57,20 @@ monaco.languages.setLanguageConfiguration('octdat', {
   ],
   autoClosingPairs: [
     {
-      open: "{",
-      close: "}"
+      open: '{',
+      close: '}'
     },
     {
-      open: "[",
-      close: "]"
+      open: '[',
+      close: ']'
     },
     {
-      open: "(",
-      close: ")"
+      open: '(',
+      close: ')'
     },
     {
-      open: "<",
-      close: ">"
+      open: '<',
+      close: '>'
     }
   ],
   surroundingPairs: [
@@ -116,7 +116,6 @@ self.MonacoEnvironment = {
       return new tsWorker()
     }
     return new editorWorker()
-
   }
 }
 
@@ -133,55 +132,51 @@ self.MonacoEnvironment = {
 //   });
 // }
 
-
 // Use local file for testing
 export function createEditor(container, options = {}) {
-
-  const filePath = '../src/assets/octdat.octdat';
+  const filePath = '../src/assets/octdat.octdat'
 
   fetch(filePath)
-    .then(response => {
+    .then((response) => {
       if (!response.ok) {
-        throw new Error(`Failed to fetch file: ${response.statusText}`);
+        throw new Error(`Failed to fetch file: ${response.statusText}`)
       }
-      return response.text();
+      return response.text()
     })
-    .then(fileContent => {
-
+    .then((fileContent) => {
       const editor = monaco.editor.create(container, {
         ...options,
         value: fileContent,
         language: options.language || 'octdat',
         theme: options.theme || 'octdatTheme',
-        automaticLayout: true,
-      });
+        automaticLayout: true
+      })
 
-      return editor;
+      return editor
     })
-    .catch(error => {
-      console.error(error);
-    });
+    .catch((error) => {
+      console.error(error)
+    })
 }
 
-
-import formatOctDat from './formatting';
+import formatOctDat from './formatting'
 
 monaco.languages.registerDocumentFormattingEditProvider('octdat', {
   provideDocumentFormattingEdits: (model) => {
     try {
-      const document = { getText: model.getValue.bind(model) };
-      const range = model.getFullModelRange();
-      const edits = formatOctDat(document, range);
+      const document = { getText: model.getValue.bind(model) }
+      const range = model.getFullModelRange()
+      const edits = formatOctDat(document, range)
 
-      console.log('Formatting edits:', edits);
+      console.log('Formatting edits:', edits)
 
-      return edits.map(edit => ({
+      return edits.map((edit) => ({
         range: monaco.Range.fromObject(edit.range),
         text: edit.text
-      }));
+      }))
     } catch (error) {
-      console.error(`Error formatting document: ${error.message}`);
-      return [];
+      console.error(`Error formatting document: ${error.message}`)
+      return []
     }
-  },
-});
+  }
+})

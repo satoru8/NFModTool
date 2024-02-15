@@ -14,21 +14,18 @@
  */
 
 // Normal loading
-import { createApp } from 'vue';
-import TitleBar from './components/titleBar.vue';
-import MainView from './views/mainView.vue';
+import { createApp } from 'vue'
+import TitleBar from './components/titleBar.vue'
+import MainView from './views/mainView.vue'
 import './css/main.css'
 
-const titleBar = createApp(TitleBar);
-titleBar.mount('#titleBar');
+const titleBar = createApp(TitleBar)
+titleBar.mount('#titleBar')
 
-const appMain = createApp(MainView);
-appMain.mount('#appMain');
+const appMain = createApp(MainView)
+appMain.mount('#appMain')
 
-console.log('%cNF Mod Tool', 'color: #ae00ff; font-size: 20px; font-weight: bold');
-
-
-
+console.log('%cNF Mod Tool', 'color: #ae00ff; font-size: 20px; font-weight: bold')
 
 // import { createApp } from 'vue'
 // import TitleBar from './components/titleBar.vue'
@@ -49,8 +46,6 @@ console.log('%cNF Mod Tool', 'color: #ae00ff; font-size: 20px; font-weight: bold
 // createApp(MainView).use(vuetify).mount('#appMain')
 
 // console.log('%cNF Mod Tool', 'color: #ae00ff; font-size: 20px; font-weight: bold')
-
-
 
 // import { createApp } from 'vue';
 // import TitleBar from './components/titleBar.vue';

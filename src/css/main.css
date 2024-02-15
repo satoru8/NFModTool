@@ -122,3 +122,10 @@
 .rightPanelInner {
   background-color: blue;
 }
+
+.monaco-editor,
+.monaco-diff-editor,
+.monaco-component,
+.overflow-guard {
+  width: 100% !important;
+}

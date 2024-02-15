@@ -16,18 +16,18 @@ import * as monaco from 'monaco-editor'
 // }
 
 function formatOctDat(document, range) {
-    const text = document.getText(range);
+  const text = document.getText(range)
 
-    if (typeof text !== 'string') {
-        console.error('Invalid text format. Expected a string.');
-        return [];
-    }
+  if (typeof text !== 'string') {
+    console.error('Invalid text format. Expected a string.')
+    return []
+  }
 
-    const formattedText = indentOctDat(text);
+  const formattedText = indentOctDat(text)
 
-    // const normalizedText = formattedText.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+  // const normalizedText = formattedText.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
 
-    return [monaco.TextEdit.replace(range, formattedText)];
+  return [monaco.TextEdit.replace(range, formattedText)]
 }
 
 /**
@@ -37,59 +37,56 @@ function formatOctDat(document, range) {
  * @returns {string} The formatted OctDat content.
  */
 function indentOctDat(text) {
+  const lines = text.split('\n')
+  let currentIndentation = 0
+  let insideObject = false
 
-    const lines = text.split('\n');
-    let currentIndentation = 0;
-    let insideObject = false;
+  const arrayFormat = /^[A-Za-z0-9]+\s*=\s*\[/
 
-    const arrayFormat = /^[A-Za-z0-9]+\s*=\s*\[/;
+  const getIndentation = () => '\t'.repeat(currentIndentation)
 
-    const getIndentation = () => '\t'.repeat(currentIndentation);
+  const indentedLines = lines.map((line) => {
+    const trimmedLine = line.trim()
 
-    const indentedLines = lines.map(line => {
+    if (/^\/\/.*/.test(trimmedLine)) {
+      return line
+    }
 
-        const trimmedLine = line.trim();
+    if (arrayFormat.test(trimmedLine)) {
+      const match = trimmedLine.match(/(\s*)([A-Za-z0-9]+)\s*=\s*\[/)
+      if (match) {
+        const [, indentation, variableName] = match
+        const indentedArrayStart = `${getIndentation()}${variableName} =\n${getIndentation()}[`
+        currentIndentation++
+        return indentedArrayStart
+      }
+    }
 
-        if (/^\/\/.*/.test(trimmedLine)) {
-            return line;
-        }
+    if (trimmedLine.match(/^\s*\[.*\{/)) {
+      const splitBrace = `${getIndentation()}${trimmedLine.replace('{', `\n${getIndentation()}{`)}`
+      currentIndentation++
+      return splitBrace
+    }
 
-        if (arrayFormat.test(trimmedLine)) {
-            const match = trimmedLine.match(/(\s*)([A-Za-z0-9]+)\s*=\s*\[/);
-            if (match) {
-                const [, indentation, variableName] = match;
-                const indentedArrayStart = `${getIndentation()}${variableName} =\n${getIndentation()}[`;
-                currentIndentation++;
-                return indentedArrayStart;
-            }
-        }
+    if (trimmedLine.endsWith('{') || trimmedLine.endsWith('[')) {
+      insideObject = true
+      const indentedLine = getIndentation() + trimmedLine
+      currentIndentation++
+      return indentedLine
+    } else if (trimmedLine.startsWith('}') || trimmedLine.startsWith(']')) {
+      insideObject = false
+      currentIndentation = Math.max(currentIndentation - 1, 0)
+      const indentedLine = getIndentation() + trimmedLine
+      return indentedLine
+    } else if (insideObject) {
+      return indentObjectLine(trimmedLine, currentIndentation)
+    }
 
-        if (trimmedLine.match(/^\s*\[.*\{/)) {
-            const splitBrace = `${getIndentation()}${trimmedLine.replace('{', `\n${getIndentation()}{`)}`;
-            currentIndentation++;
-            return splitBrace;
-        }
+    return getIndentation() + trimmedLine
+  })
 
-        if (trimmedLine.endsWith('{') || trimmedLine.endsWith('[')) {
-            insideObject = true;
-            const indentedLine = getIndentation() + trimmedLine;
-            currentIndentation++;
-            return indentedLine;
-        } else if (trimmedLine.startsWith('}') || trimmedLine.startsWith(']')) {
-            insideObject = false;
-            currentIndentation = Math.max(currentIndentation - 1, 0);
-            const indentedLine = getIndentation() + trimmedLine;
-            return indentedLine;
-        } else if (insideObject) {
-            return indentObjectLine(trimmedLine, currentIndentation);
-        }
-
-        return getIndentation() + trimmedLine;
-    });
-
-    return indentedLines.join('\n');
+  return indentedLines.join('\n')
 }
-
 
 /**
  * Indents a line within an OctDat object.
@@ -99,27 +96,29 @@ function indentOctDat(text) {
  * @returns {string} The indented line.
  */
 function indentObjectLine(line, indentation) {
-    if (line.includes('{') && line.includes('}')) {
-        const splitLine = line.split(/([{}])/);
-        const indentedLine = splitLine.map((text, index) => {
-            if (index % 2 === 0) {
-                return '\t'.repeat(indentation) + text.trim();
-            } else if (text === '{') {
-                return '{\n';
-            } else if (text === '}') {
-                return '\n' + '\t'.repeat(indentation) + '}';
-            } else {
-                return text;
-            }
-        }).join('');
-        return indentedLine;
-    }
+  if (line.includes('{') && line.includes('}')) {
+    const splitLine = line.split(/([{}])/)
+    const indentedLine = splitLine
+      .map((text, index) => {
+        if (index % 2 === 0) {
+          return '\t'.repeat(indentation) + text.trim()
+        } else if (text === '{') {
+          return '{\n'
+        } else if (text === '}') {
+          return '\n' + '\t'.repeat(indentation) + '}'
+        } else {
+          return text
+        }
+      })
+      .join('')
+    return indentedLine
+  }
 
-    if (line.includes('{') || line.includes('}')) {
-        return '\t'.repeat(indentation) + line.trim();
-    }
+  if (line.includes('{') || line.includes('}')) {
+    return '\t'.repeat(indentation) + line.trim()
+  }
 
-    return '\t'.repeat(indentation) + formatObjectProperty(line);
+  return '\t'.repeat(indentation) + formatObjectProperty(line)
 }
 
 /**
@@ -129,16 +128,15 @@ function indentObjectLine(line, indentation) {
  * @return {string} The formatted line with key and value separated by '='
  */
 function formatObjectProperty(line) {
-    const parts = line.split('=');
-    if (parts.length === 2) {
-        const key = parts[0].trim();
-        const value = parts[1].trim();
+  const parts = line.split('=')
+  if (parts.length === 2) {
+    const key = parts[0].trim()
+    const value = parts[1].trim()
 
-        return `${key} = ${value}`;
-    }
-    return line;
+    return `${key} = ${value}`
+  }
+  return line
 }
-
 
 // function formatArrayProperty(value) {
 //     const arrayItems = value.split('\n').map(item => `\t${item.trim()}`).join('\n');
