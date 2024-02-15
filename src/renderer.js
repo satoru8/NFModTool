@@ -14,50 +14,33 @@
  */
 
 // Normal loading
-import { createApp } from 'vue'
-import TitleBar from './components/titleBar.vue'
-import MainView from './views/mainView.vue'
-import './css/main.css'
-
-const titleBar = createApp(TitleBar)
-titleBar.mount('#titleBar')
-
-const appMain = createApp(MainView)
-appMain.mount('#appMain')
-
-console.log('%cNF Mod Tool', 'color: #ae00ff; font-size: 20px; font-weight: bold')
-
 // import { createApp } from 'vue'
 // import TitleBar from './components/titleBar.vue'
 // import MainView from './views/mainView.vue'
 // import './css/main.css'
 
-// import 'vuetify/styles'
-// import { createVuetify } from 'vuetify'
-// import * as components from 'vuetify/components'
-// import * as directives from 'vuetify/directives'
+// const titleBar = createApp(TitleBar)
+// titleBar.mount('#titleBar')
 
-// const vuetify = createVuetify({
-//   components,
-//   directives,
-// })
-
-// createApp(TitleBar).mount('#titleBar')
-// createApp(MainView).use(vuetify).mount('#appMain')
+// const appMain = createApp(MainView)
+// appMain.mount('#appMain')
 
 // console.log('%cNF Mod Tool', 'color: #ae00ff; font-size: 20px; font-weight: bold')
 
-// import { createApp } from 'vue';
-// import TitleBar from './components/titleBar.vue';
-// import MainView from './views/mainView.vue';
-// import vuetify from './plugins/vuetify';
 
-// const titleBar = createApp(TitleBar);
-// titleBar.use(vuetify);
-// titleBar.mount('#titleBar');
+// Vuetify loading
+import { createApp } from 'vue';
+import TitleBar from './components/titleBar.vue';
+import MainView from './views/mainView.vue';
+import vuetify from './js/vuetify';
+import './css/main.css'
 
-// const appMain = createApp(MainView);
-// appMain.use(vuetify);
-// appMain.mount('#appMain');
+const titleBar = createApp(TitleBar);
+titleBar.use(vuetify);
+titleBar.mount('#titleBar');
 
-// console.log('%cNF Mod Tool', 'color: #ae00ff; font-size: 20px; font-weight: bold');
+const appMain = createApp(MainView);
+appMain.use(vuetify);
+appMain.mount('#appMain');
+
+console.log('%cNF Mod Tool', 'color: #ae00ff; font-size: 20px; font-weight: bold');
