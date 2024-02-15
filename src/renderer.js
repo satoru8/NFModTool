@@ -27,20 +27,14 @@
 
 // console.log('%cNF Mod Tool', 'color: #ae00ff; font-size: 20px; font-weight: bold')
 
-
 // Vuetify loading
-import { createApp } from 'vue';
-import TitleBar from './components/titleBar.vue';
-import MainView from './views/mainView.vue';
-import vuetify from './js/vuetify';
+import { createApp } from 'vue'
+import MainView from './views/mainView.vue'
+import vuetify from './js/vuetify'
 import './css/main.css'
 
-const titleBar = createApp(TitleBar);
-titleBar.use(vuetify);
-titleBar.mount('#titleBar');
+const appMain = createApp(MainView)
+appMain.use(vuetify)
+appMain.mount('#appMain')
 
-const appMain = createApp(MainView);
-appMain.use(vuetify);
-appMain.mount('#appMain');
-
-console.log('%cNF Mod Tool', 'color: #ae00ff; font-size: 20px; font-weight: bold');
+console.log('%cNF Mod Tool', 'color: #ae00ff; font-size: 20px; font-weight: bold')

@@ -11,6 +11,10 @@
   font-weight: normal;
 }
 
+html {
+  overflow-y: hidden;
+}
+
 #mainBody {
   background: var(--backgroundColor);
   font-family:
@@ -29,17 +33,20 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow: hidden;
+  -webkit-user-select: none;
 }
 
 #titleBar {
   display: flex;
-  justify-content: center;
   background-color: #2f3241;
-  color: #52c073;
+  /* color: #52c073;
+  height: 30px;
+  width: 100%; */
 }
 
 .title {
+  display: flex;
+  align-items: center;
   height: 30px;
   width: 100%;
   user-select: none;
@@ -47,21 +54,24 @@
 }
 
 #titleText {
-  display: inline;
   vertical-align: middle;
   margin-left: 10px;
   font-weight: bold;
+
+  display: none;
 }
 
+/* 
 #titleBarBtns {
   display: flex;
-}
+  align-items: center;
+} 
+*/
 
 #logo {
   height: 30px;
   width: 30px;
   margin-left: 10px;
-  vertical-align: middle;
 }
 
 #appMain {
@@ -91,12 +101,11 @@
 
 #topPanel {
   grid-column: 1 / 4;
-  grid-row: 1 / 5;
-  flex-direction: column;
+  grid-row: 1 / 2;
 }
 
 .topPanelInner {
-  background-color: orange;
+  /* background-color: orange; */
   text-align: center;
 }
 
@@ -106,7 +115,7 @@
 }
 
 .leftPanelInner {
-  background-color: green;
+  /* background-color: green; */
 }
 
 #midPanel {
@@ -120,7 +129,7 @@
 }
 
 .rightPanelInner {
-  background-color: blue;
+  /* background-color: blue; */
 }
 
 .monaco-editor,
@@ -128,4 +137,5 @@
 .monaco-component,
 .overflow-guard {
   width: 100% !important;
+  min-width: 400px;
 }

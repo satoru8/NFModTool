@@ -1,26 +1,23 @@
 <template>
   <div id="titleBar">
-    <span id="titleText">{{ title }}</span>
-    <img id="logo" :src="logoSrc" alt="NFModTool" />
-    <nav id="titleBarBtns">
-      <button v-for="button in buttons" :id="button.tag" :key="button.id" @click="emitEvent(button.action)">
+    <div class="title">
+      <span id="titleText">{{ title }}</span>
+      <img id="logo" :src="logoSrc" alt="NFModTool" />
+    </div>
+    <v-container class="d-flex justify-end align-center v-col-auto pa-0">
+      <v-btn
+        variant="tonal"
+        size="small"
+        v-for="button in buttons"
+        :id="button.tag"
+        :key="button.id"
+        @click="emitEvent(button.action)"
+      >
         {{ button.symbol }}
-      </button>
-    </nav>
+      </v-btn>
+    </v-container>
   </div>
 </template>
-
-<!-- <template>
-  <div class="title">
-    <span id="titleText">NF Mod Tool</span>
-    <img id="logo" src="../assets/logo.png" alt="NFModTool" />
-  </div>
-  <div id="titleBarBtns">
-    <button id="min" @click="minimizeWindow">-</button>
-    <button id="max" @click="maximizeWindow">+</button>
-    <button id="close" @click="closeWindow">x</button>
-  </div>
-</template> -->
 
 <script>
 export default {
@@ -32,7 +29,6 @@ export default {
     },
     logoSrc: {
       type: String,
-      required: true,
       default: '../src/assets/logo.png'
     },
     buttons: {
@@ -45,13 +41,18 @@ export default {
     }
   },
   methods: {
-    close() {
+    emitEvent(action) {
+      if (action === 'close') this.closeWindow()
+      else if (action === 'minimize') this.minimizeWindow()
+      else if (action === 'maximize') this.maximizeWindow()
+    },
+    closeWindow() {
       window.electronAPI.closeWindow()
     },
-    minimize() {
+    minimizeWindow() {
       window.electronAPI.minimizeWindow()
     },
-    maximize() {
+    maximizeWindow() {
       window.electronAPI.maximizeWindow()
     }
   }
