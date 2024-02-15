@@ -25,9 +25,12 @@ const createWindow = () => {
     }
   })
 
+  // eslint-disable-next-line no-undef
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
+    // eslint-disable-next-line no-undef
     mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL)
   } else {
+    // eslint-disable-next-line no-undef
     mainWindow.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`))
   }
 

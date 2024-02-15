@@ -2,7 +2,6 @@ import * as monaco from 'monaco-editor'
 
 monaco.languages.register({ id: 'octdat' })
 
-// Define syntax highlighting rules for 'octdat' language
 monaco.languages.setMonarchTokensProvider('octdat', {
   tokenizer: {
     root: [
