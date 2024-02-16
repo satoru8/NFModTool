@@ -137,7 +137,7 @@ self.MonacoEnvironment = {
 export function createEditor(container, options = {}) {
   const filePath = '../octdat.octdat';
 
-  return new Promise((resolve, reject) => { 
+  return new Promise((resolve, reject) => {
     fetch(filePath)
       .then((response) => {
         if (!response.ok) {
@@ -148,7 +148,7 @@ export function createEditor(container, options = {}) {
       .then((fileContent) => {
         const editor = monaco.editor.create(container, {
           ...options,
-          value: fileContent,
+          value: fileContent || '',
           language: options.language || 'octdat',
           theme: options.theme || 'octdatTheme',
           automaticLayout: true

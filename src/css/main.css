@@ -130,3 +130,12 @@ html {
   width: 100% !important;
   min-width: 400px;
 }
+
+
+/* 
+**  Restyles
+*/
+
+.v-overlay__scrim {
+  background:  rgba(0, 0, 0, 0.8);
+}

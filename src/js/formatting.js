@@ -10,7 +10,7 @@ import * as monaco from 'monaco-editor'
  * @returns {vscode.TextEdit[]} An array of text edits to apply.
  */
 
-// Function from vscode formatter
+// Original function from vscode formatter
 
 // function formatOctDat(document, range) {
 //     const text = document.getText(range);
@@ -25,10 +25,10 @@ function formatOctDat(document, range) {
     console.error('Invalid text format. Expected a string.')
     return []
   }
-  
+
   const normalizedText = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n') // Normalize to LF
 
-  const formattedLines = indentOctDat(normalizedText).split('\n'); // Assuming indentOctDat works on whole document
+  const formattedLines = indentOctDat(normalizedText).split('\n');
 
   const edits = [];
   for (let i = 0; i < formattedLines.length; i++) {

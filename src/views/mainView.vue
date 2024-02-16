@@ -15,15 +15,15 @@ export default {
   },
   data() {
     return {
-      appIsLoading: true,
-    };
+      appIsLoading: true
+    }
   },
   mounted() {
     setTimeout(() => {
-      this.appIsLoading = false;
-    }, 3000);
-  },
-};
+      this.appIsLoading = false
+    }, 5000)
+  }
+}
 </script>
 
 <template>

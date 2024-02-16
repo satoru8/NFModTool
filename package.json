@@ -5,12 +5,16 @@
   "description": "Modding Tool for Noble Fates",
   "main": ".vite/build/main.js",
   "scripts": {
-    "start": "electron-forge start",
+    "update all": "npm update && npm fund",
+    "start": "electron-forge start --enable-logging",
     "package": "electron-forge package",
     "build": "electron-forge make",
     "publish": "electron-forge publish",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --ignore-path .gitignore",
-    "prettier": "prettier --write src/"
+    "prettier": "prettier --write src/",
+    "dev vite": "vite",
+    "build vite": "vite build",
+    "prepackage vite": "npm run build:vite"
   },
   "keywords": [],
   "author": {
@@ -29,8 +33,6 @@
     "@rushstack/eslint-patch": "^1.7.2",
     "@vitejs/plugin-vue": "^5.0.4",
     "@vue/eslint-config-prettier": "^9.0.0",
-    "edge-js": "^20.10.2",
-    "edge.js": "^6.0.1",
     "electron": "28.2.2",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
@@ -41,6 +43,7 @@
     "vite-plugin-vuetify": "^2.0.1"
   },
   "dependencies": {
+    "electron-edge-js": "^28.0.1",
     "electron-squirrel-startup": "^1.0.0",
     "vue": "^3.4.19",
     "vuetify": "^3.5.4"
