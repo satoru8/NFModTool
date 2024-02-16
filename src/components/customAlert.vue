@@ -6,7 +6,7 @@
     v-model="showAlert"
     title="Attention Required"
     message="Important message here!"
-  />    
+  />
 -->
 
 <template>

@@ -1,4 +1,3 @@
-// import { createVuetify } from 'vuetify'
 // import * as components from 'vuetify/components'
 // import * as directives from 'vuetify/directives'
 // import 'vuetify/dist/vuetify.min.css'
@@ -21,5 +20,8 @@ const vuetify = createVuetify({
     defaultTheme: 'dark'
   }
 })
+
+console.log('MDI Icons:', mdi);
+console.log('Aliases:', aliases);
 
 export default vuetify

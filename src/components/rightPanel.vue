@@ -1,9 +1,8 @@
 <template>
   <div id="rightPanel">
     <div class="rightPanelInner">
-      <!-- <h1>Right Component</h1> -->
       <v-card class="h-100">
-        <div class="d-flex flex-column">
+        <!-- <div class="d-flex flex-column"> -->
           <v-tabs v-model="tab" direction="horizontal" color="primary">
             <v-tab value="tab1">Tab 1</v-tab>
             <v-tab value="tab2">Tab 2</v-tab>
@@ -41,7 +40,7 @@
               </v-card>
             </v-window-item>
           </v-window>
-        </div>
+        <!-- </div> -->
       </v-card>
     </div>
   </div>

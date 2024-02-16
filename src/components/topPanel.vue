@@ -2,7 +2,10 @@
   <div id="topPanel">
     <div class="topPanelInner">
       <titlebar />
-      <h1>Top Component</h1>
+      <h1 class="text-center">Top Component</h1>
+      <!-- Icon test -->
+      <v-icon icon="mdi-plus" color="primary"></v-icon>
+      <v-icon icon="$vuetify" color="primary"></v-icon>
     </div>
   </div>
 </template>
