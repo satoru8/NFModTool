@@ -11,7 +11,6 @@
 
 <template>
   <v-dialog v-model="showAlert" max-width="500">
-    <v-skeleton-loader type="card"></v-skeleton-loader>
     <v-card>
         <v-alert
           :type="alertType"
