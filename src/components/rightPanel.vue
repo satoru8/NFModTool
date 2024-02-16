@@ -48,24 +48,24 @@
 </template>
 
 <script>
-import FileInput from './fileInput.vue';
-import CustomAlert from './customAlert.vue';
+import FileInput from './fileInput.vue'
+import CustomAlert from './customAlert.vue'
 
 export default {
   components: {
     FileInput,
-    CustomAlert,
+    CustomAlert
   },
   data() {
     return {
       tab: 'tab1',
-      showAlert: false,
-    };
+      showAlert: false
+    }
   },
   methods: {
     testAlert() {
-      this.showAlert = true;
-    },
-  },
-};
+      this.showAlert = true
+    }
+  }
+}
 </script>

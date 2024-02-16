@@ -20,7 +20,7 @@ monaco.languages.setMonarchTokensProvider('octdat', {
       [/([a-zA-Z]+\s(?==))/, 'octdat.property'],
       [/\b\d+/, 'octdat.number'],
       [/[A-Za-z0-9]+\|[A-Za-z0-9]+/, 'octdat.anim'],
-      [/\?|\-/, 'octdat.symbols'],
+      [/\?|\-/, 'octdat.symbols']
     ]
   }
 })
@@ -135,15 +135,15 @@ self.MonacoEnvironment = {
 // }
 
 export function createEditor(container, options = {}) {
-  const filePath = '../octdat.octdat';
+  const filePath = '../octdat.octdat'
 
   return new Promise((resolve, reject) => {
     fetch(filePath)
       .then((response) => {
         if (!response.ok) {
-          throw new Error(`Failed to fetch file: ${response.status} ${response.statusText}`);
+          throw new Error(`Failed to fetch file: ${response.status} ${response.statusText}`)
         }
-        return response.text();
+        return response.text()
       })
       .then((fileContent) => {
         const editor = monaco.editor.create(container, {
@@ -152,14 +152,14 @@ export function createEditor(container, options = {}) {
           language: options.language || 'octdat',
           theme: options.theme || 'octdatTheme',
           automaticLayout: true
-        });
-        resolve(editor);
+        })
+        resolve(editor)
       })
       .catch((error) => {
-        console.error('Error creating editor:', error);
-        reject(error);
-      });
-  });
+        console.error('Error creating editor:', error)
+        reject(error)
+      })
+  })
 }
 
 import formatOctDat from './formatting'

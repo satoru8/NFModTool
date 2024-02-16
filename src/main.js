@@ -1,7 +1,7 @@
 const { app, Tray, Menu, nativeImage, BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
 // const fs = require('fs')
-const edge = require('electron-edge-js');
+const edge = require('electron-edge-js')
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -132,26 +132,25 @@ app.whenReady().then(async () => {
 
   analyzeAssembly(assemblyPath, true, (error, result) => {
     if (error) {
-      console.error("Assembly Analysis Error:", error);
-      return;
+      console.error('Assembly Analysis Error:', error)
+      return
     }
     // Result will be an array of objects (if parsing is successful)
-    console.log("Found Classes:", result);
+    console.log('Found Classes:', result)
 
     // Example of accessing analyzed data
     for (const classInfo of result) {
-      console.log('Class: ', classInfo.ClassName);
-      console.log('Properties: ', classInfo.Properties);
+      console.log('Class: ', classInfo.ClassName)
+      console.log('Properties: ', classInfo.Properties)
     }
-  });
-
+  })
 })
 
 // Assembly analysis
-const assemblyPath = path.join(__dirname, 'Assembly.dll');
+const assemblyPath = path.join(__dirname, 'Assembly.dll')
 
 const analyzeAssembly = edge.func({
   assemblyFile: path.join(__dirname, 'NFParser.dll'),
   typeName: 'AssemblyParser',
   methodName: 'AnalyzeAssembly'
-});
+})

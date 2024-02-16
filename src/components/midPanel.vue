@@ -11,10 +11,10 @@ export default {
   name: 'OctdatEditor',
   async mounted() {
     try {
-      this.editor = await createEditor(this.$refs.editorContainer);
+      this.editor = await createEditor(this.$refs.editorContainer)
     } catch (error) {
-      // Handle the error: For example, display an error message to the user 
-      console.error('Failed to create editor', error); 
+      // Handle the error: For example, display an error message to the user
+      console.error('Failed to create editor', error)
     }
   },
   beforeUnmount() {

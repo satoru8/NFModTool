@@ -28,21 +28,24 @@ function formatOctDat(document, range) {
 
   const normalizedText = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n') // Normalize to LF
 
-  const formattedLines = indentOctDat(normalizedText).split('\n');
+  const formattedLines = indentOctDat(normalizedText).split('\n')
 
-  const edits = [];
+  const edits = []
   for (let i = 0; i < formattedLines.length; i++) {
-    const startPos = range.getStartPosition().with({ lineNumber: i + 1, column: 1 });
-    const endPos = range.getEndPosition().with({ lineNumber: i + 1, column: formattedLines[i].length + 1 });
+    const startPos = range.getStartPosition().with({ lineNumber: i + 1, column: 1 })
+    const endPos = range
+      .getEndPosition()
+      .with({ lineNumber: i + 1, column: formattedLines[i].length + 1 })
 
-    edits.push(monaco.editor.singleEditOperation(
-      monaco.Range.fromPositions(startPos, endPos),
-      formattedLines[i]
-    ));
+    edits.push(
+      monaco.editor.singleEditOperation(
+        monaco.Range.fromPositions(startPos, endPos),
+        formattedLines[i]
+      )
+    )
   }
 
-  return edits;
-
+  return edits
 }
 
 /**

@@ -28,7 +28,7 @@ export default {
 
 <template>
   <!-- <div v-if="appIsLoading"> -->
-    <LoadingScreen v-if="appIsLoading" :is-loading="appIsLoading" />
+  <LoadingScreen v-if="appIsLoading" :is-loading="appIsLoading" />
   <!-- </div> -->
   <topPanel />
   <leftPanel />
