@@ -9,8 +9,13 @@ import { createEditor } from '../js/monacoSetup.js'
 
 export default {
   name: 'OctdatEditor',
-  mounted() {
-    this.editor = createEditor(this.$refs.editorContainer)
+  async mounted() {
+    try {
+      this.editor = await createEditor(this.$refs.editorContainer);
+    } catch (error) {
+      // Handle the error: For example, display an error message to the user 
+      console.error('Failed to create editor', error); 
+    }
   },
   beforeUnmount() {
     if (this.editor) {

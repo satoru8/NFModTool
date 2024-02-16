@@ -1,5 +1,7 @@
 const { app, BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
+// const fs = require('fs') 
+// const edge = require('edge-js')
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -19,7 +21,7 @@ const createWindow = () => {
     //   symbolColor: '#52c073',
     //   height: 20,
     // },
-    icon: path.join(__dirname, './assets/icon.png'),
+    icon: path.join(__dirname, './public/logo.png'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
     }
@@ -78,3 +80,26 @@ ipcMain.on('maximize-window', () => {
     window.isMaximized() ? window.unmaximize() : window.maximize()
   }
 })
+
+// Assembly analysis
+// const assemblyPath = path.join(__dirname, 'Assembly.dll');
+
+// const analyzeAssembly = edge.func({
+//     assemblyFile: path.join(__dirname, './src/NFParser.dll'), 
+//     typeName: 'AssemblyParser.AssemblyParser',
+//     methodName: 'AnalyzeAssembly' 
+// });
+
+// app.whenReady().then(async () => {
+//   try {
+//       const classes = await analyzeAssembly(assemblyPath, true); 
+      
+//       // Log the parsed data
+//       console.log(classes); 
+
+//       // Data utilization logic (database operations, further processing, etc.)
+
+//   } catch (error) {
+//       console.error("Error analyzing assembly:", error);
+//   }
+// });

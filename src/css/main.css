@@ -1,4 +1,4 @@
-:root {
+#NF {
   --textWhite: #ddd;
   --backgroundColor: #151515;
 }
@@ -6,42 +6,36 @@
 *,
 *::before,
 *::after {
-  box-sizing: border-box;
-  margin: 0;
   font-weight: normal;
 }
 
 html {
   overflow-y: hidden;
+  -webkit-user-select: none;
+  font-family:
+  Inter,
+  -apple-system,
+  BlinkMacSystemFont,
+  'Segoe UI',
+  Roboto,
+  Oxygen,
+  Ubuntu,
+  Cantarell,
+  'Fira Sans',
+  'Droid Sans',
+  'Helvetica Neue',
+  sans-serif;
 }
 
 #mainBody {
   background: var(--backgroundColor);
-  font-family:
-    Inter,
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    Oxygen,
-    Ubuntu,
-    Cantarell,
-    'Fira Sans',
-    'Droid Sans',
-    'Helvetica Neue',
-    sans-serif;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-user-select: none;
 }
 
 #titleBar {
   display: flex;
   background-color: #2f3241;
-  /* color: #52c073;
   height: 30px;
-  width: 100%; */
+  width: 100vw;
 }
 
 .title {
@@ -49,7 +43,6 @@ html {
   align-items: center;
   height: 30px;
   width: 100%;
-  user-select: none;
   -webkit-app-region: drag;
 }
 
@@ -87,7 +80,6 @@ html {
 #midPanel,
 #bottomPanel {
   display: flex;
-  justify-content: center;
   align-items: center;
 }
 
@@ -106,7 +98,6 @@ html {
 
 .topPanelInner {
   /* background-color: orange; */
-  text-align: center;
 }
 
 #leftPanel {

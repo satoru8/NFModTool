@@ -1,15 +1,23 @@
+// import { createVuetify } from 'vuetify'
+// import * as components from 'vuetify/components'
+// import * as directives from 'vuetify/directives'
+// import 'vuetify/dist/vuetify.min.css'
+import { aliases, mdi } from 'vuetify/iconsets/mdi'
+
+
 import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
-import 'vuetify/dist/vuetify.min.css'
-import 'vuetify/iconsets/mdi'
+import 'vuetify/styles'
 
 const vuetify = createVuetify({
   ssr: true,
-  components,
-  directives,
+  // components,
+  // directives,
   icons: {
-    defaultSet: 'mdi'
+    defaultSet: 'mdi',
+    aliases,
+    sets: {
+      mdi,
+    },
   },
   theme: {
     defaultTheme: 'dark'

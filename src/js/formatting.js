@@ -9,6 +9,9 @@ import * as monaco from 'monaco-editor'
  * @param {object} options - Formatting options (if needed).
  * @returns {vscode.TextEdit[]} An array of text edits to apply.
  */
+
+// Function from vscode formatter
+
 // function formatOctDat(document, range) {
 //     const text = document.getText(range);
 //     const formattedText = indentOctDat(text);
@@ -22,12 +25,24 @@ function formatOctDat(document, range) {
     console.error('Invalid text format. Expected a string.')
     return []
   }
+  
+  const normalizedText = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n') // Normalize to LF
 
-  const formattedText = indentOctDat(text)
+  const formattedLines = indentOctDat(normalizedText).split('\n'); // Assuming indentOctDat works on whole document
 
-  // const normalizedText = formattedText.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+  const edits = [];
+  for (let i = 0; i < formattedLines.length; i++) {
+    const startPos = range.getStartPosition().with({ lineNumber: i + 1, column: 1 });
+    const endPos = range.getEndPosition().with({ lineNumber: i + 1, column: formattedLines[i].length + 1 });
 
-  return [monaco.TextEdit.replace(range, formattedText)]
+    edits.push(monaco.editor.singleEditOperation(
+      monaco.Range.fromPositions(startPos, endPos),
+      formattedLines[i]
+    ));
+  }
+
+  return edits;
+
 }
 
 /**

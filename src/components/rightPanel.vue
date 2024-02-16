@@ -5,24 +5,24 @@
       <v-card class="h-100">
         <div class="d-flex flex-column">
           <v-tabs v-model="tab" direction="horizontal" color="primary">
-            <v-tab value="tab1">Option 1</v-tab>
-            <v-tab value="tab2">Option 2</v-tab>
-            <v-tab value="tab3">Option 3</v-tab>
-            <v-tab value="tab4">Option 4</v-tab>
+            <v-tab value="tab1">Tab 1</v-tab>
+            <v-tab value="tab2">Tab 2</v-tab>
+            <v-tab value="tab3">Tab 3</v-tab>
+            <v-tab value="tab4">Tab 4</v-tab>
           </v-tabs>
           <v-window v-model="tab">
             <v-window-item value="tab1">
               <v-card flat>
                 <v-card-text>
-                  <!-- <input type="file" id="fileInput" ref="fileInput" /> -->
-                  <fileInput />
+                  <FileInput />
                 </v-card-text>
               </v-card>
             </v-window-item>
             <v-window-item value="tab2">
               <v-card flat>
                 <v-card-text>
-                  <p>test</p>
+                  <v-btn @click="testAlert" color="primary" text="Test Alert" size="large" />
+                  <CustomAlert title="Attention Required" message="Important message here!" v-model="showAlert" />
                 </v-card-text>
               </v-card>
             </v-window-item>
@@ -48,13 +48,24 @@
 </template>
 
 <script>
-export default {
-  data: () => ({
-    tab: 'tab1'
-  })
-}
-</script>
+import FileInput from './fileInput.vue';
+import CustomAlert from './customAlert.vue';
 
-<script setup>
-import fileInput from './fileInput.vue'
+export default {
+  components: {
+    FileInput,
+    CustomAlert,
+  },
+  data() {
+    return {
+      tab: 'tab1',
+      showAlert: false,
+    };
+  },
+  methods: {
+    testAlert() {
+      this.showAlert = true;
+    },
+  },
+};
 </script>

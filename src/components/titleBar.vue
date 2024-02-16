@@ -4,7 +4,7 @@
       <span id="titleText">{{ title }}</span>
       <img id="logo" :src="logoSrc" alt="NFModTool" />
     </div>
-    <v-container class="d-flex justify-end align-center v-col-auto pa-0">
+    <v-container class="d-flex align-center v-col pa-0">
       <v-btn
         variant="tonal"
         size="small"
@@ -29,7 +29,7 @@ export default {
     },
     logoSrc: {
       type: String,
-      default: '../src/assets/logo.png'
+      default: '../logo.png'
     },
     buttons: {
       type: Array,
