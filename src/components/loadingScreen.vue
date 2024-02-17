@@ -1,7 +1,7 @@
 <template>
-  <v-container v-if="isLoading" fill-height>
-    <v-row justify="center">
-      <v-col cols="auto">
+  <v-container class="pa-0">
+    <v-row class="h-100 ma-0" align="center">
+      <v-col class="text-center" >
         <v-progress-circular indeterminate color="primary" size="60"></v-progress-circular>
         <h4 class="mt-3">Loading...</h4>
       </v-col>
@@ -17,11 +17,6 @@ export default {
       type: Boolean,
       required: true
     }
-  },
-  mounted() {
-    window.electronAPI.loadingDone(() => { 
-      this.isLoading = false;
-    });
   }
 }
 </script>

@@ -3,7 +3,7 @@ const path = require('path')
 // const fs = require('fs')
 // const edge = require('electron-edge-js')
 
-// Handle creating/removing shortcuts on Windows when installing/uninstalling.
+// Quit the app when Squirrel is performing the installation/update process.
 if (require('electron-squirrel-startup')) {
   app.quit()
 }
@@ -18,11 +18,6 @@ const createWindow = () => {
     minHeight: 600,
     frame: false,
     titleBarStyle: 'hidden',
-    // titleBarOverlay: {
-    //   color: '#2f3241',
-    //   symbolColor: '#52c073',
-    //   height: 20,
-    // },
     icon: path.join(__dirname, './logo.png'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
@@ -63,6 +58,15 @@ app.on('activate', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
+
+// Assembly analysis
+// const assemblyPath = path.join(__dirname, 'Assembly.dll')
+
+// const analyzeAssembly = edge.func({
+//   assemblyFile: path.join(__dirname, 'NFParser.dll'),
+//   typeName: 'AssemblyParser',
+//   methodName: 'AnalyzeAssembly'
+// })
 
 // Title bar icons
 function handleWindowAction(action) {
@@ -119,10 +123,18 @@ const createTray = () => {
 }
 
 app.whenReady().then(async () => {
+  // Create the system tray icon
   createTray()
+
   mainWindow.webContents.openDevTools()
-  mainWindow.webContents.send('loading-done');
-  console.log('Sent loading-done signal');
+  
+  // Listen for the renderer ready event
+  // This event will be triggered when the renderer process is ready
+  ipcMain.on('renderer-ready', () => {
+    console.log('preload ipc renderer-ready');
+    mainWindow.webContents.send('loading-done');
+  });
+
   // analyzeAssembly(assemblyPath, true, (error, result) => {
   //   if (error) {
   //     console.error('Assembly Analysis Error:', error)
@@ -139,11 +151,3 @@ app.whenReady().then(async () => {
   // })
 })
 
-// Assembly analysis
-// const assemblyPath = path.join(__dirname, 'Assembly.dll')
-
-// const analyzeAssembly = edge.func({
-//   assemblyFile: path.join(__dirname, 'NFParser.dll'),
-//   typeName: 'AssemblyParser',
-//   methodName: 'AnalyzeAssembly'
-// })

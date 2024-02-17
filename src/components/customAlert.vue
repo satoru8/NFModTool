@@ -24,12 +24,12 @@
         :variant="variant"
         :density="density"
       >
-        {{ message }}
+      <div v-html="message"></div>
       </v-alert>
-      <!-- <v-btn
+      <v-btn
           text="Close"
-          @click="showAlert = false"
-        ></v-btn> -->
+          @click="closeAlert"
+        ></v-btn>
     </v-card>
   </v-dialog>
 </template>
@@ -89,6 +89,12 @@ export default {
   data() {
     return {
       showAlert: true
+    }
+  },
+  methods: {
+    closeAlert() {
+      this.showAlert = false;
+      console.log("Alert closed. showAlert:", this.showAlert);
     }
   }
 }
