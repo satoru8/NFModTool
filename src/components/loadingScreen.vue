@@ -17,6 +17,11 @@ export default {
       type: Boolean,
       required: true
     }
+  },
+  mounted() {
+    window.electronAPI.loadingDone(() => { 
+      this.isLoading = false;
+    });
   }
 }
 </script>

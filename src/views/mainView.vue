@@ -19,17 +19,15 @@ export default {
     }
   },
   mounted() {
-    setTimeout(() => {
-      this.appIsLoading = false
-    }, 5000)
+    window.electronAPI.loadingDone(() => {
+      this.appIsLoading = false;
+    });
   }
 }
 </script>
 
 <template>
-  <!-- <div v-if="appIsLoading"> -->
   <LoadingScreen v-if="appIsLoading" :is-loading="appIsLoading" />
-  <!-- </div> -->
   <topPanel />
   <leftPanel />
   <midPanel />

@@ -1,7 +1,7 @@
 const { app, Tray, Menu, nativeImage, BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
 // const fs = require('fs')
-const edge = require('electron-edge-js')
+// const edge = require('electron-edge-js')
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -65,34 +65,26 @@ app.on('activate', () => {
 // code. You can also put them in separate files and import them here.
 
 // Title bar icons
-function closeWindow() {
-  const window = BrowserWindow.getFocusedWindow()
+function handleWindowAction(action) {
+  const window = BrowserWindow.getFocusedWindow();
   if (window) {
     try {
-      window.close()
+      if (action === 'maximize' && !window.isMaximized()) {
+        window.maximize();
+      } else if (action === 'maximize' && window.isMaximized()) {
+        window.restore();
+      } else if (window[action]) {
+        window[action](); 
+      }
     } catch (error) {
-      console.error('Error closing window:', error)
+      console.error(`Error performing ${action}:`, error);
     }
   }
 }
 
-ipcMain.on('close-window', closeWindow)
-
-ipcMain.on('minimize-window', () => {
-  const window = BrowserWindow.getFocusedWindow()
-  if (window) window.minimize()
-})
-
-ipcMain.on('maximize-window', () => {
-  const window = BrowserWindow.getFocusedWindow()
-  if (window) {
-    if (window.isMaximized()) {
-      window.restore()
-    } else {
-      window.maximize()
-    }
-  }
-})
+ipcMain.on('close-window', () => handleWindowAction('close'));
+ipcMain.on('minimize-window', () => handleWindowAction('minimize'));
+ipcMain.on('maximize-window', () => handleWindowAction('maximize'));
 
 // Creates a system tray icon
 let tray
@@ -129,28 +121,29 @@ const createTray = () => {
 app.whenReady().then(async () => {
   createTray()
   mainWindow.webContents.openDevTools()
+  mainWindow.webContents.send('loading-done');
+  console.log('Sent loading-done signal');
+  // analyzeAssembly(assemblyPath, true, (error, result) => {
+  //   if (error) {
+  //     console.error('Assembly Analysis Error:', error)
+  //     return
+  //   }
+  //   // Result will be an array of objects (if parsing is successful)
+  //   console.log('Found Classes:', result)
 
-  analyzeAssembly(assemblyPath, true, (error, result) => {
-    if (error) {
-      console.error('Assembly Analysis Error:', error)
-      return
-    }
-    // Result will be an array of objects (if parsing is successful)
-    console.log('Found Classes:', result)
-
-    // Example of accessing analyzed data
-    for (const classInfo of result) {
-      console.log('Class: ', classInfo.ClassName)
-      console.log('Properties: ', classInfo.Properties)
-    }
-  })
+  //   // Example of accessing analyzed data
+  //   for (const classInfo of result) {
+  //     console.log('Class: ', classInfo.ClassName)
+  //     console.log('Properties: ', classInfo.Properties)
+  //   }
+  // })
 })
 
 // Assembly analysis
-const assemblyPath = path.join(__dirname, 'Assembly.dll')
+// const assemblyPath = path.join(__dirname, 'Assembly.dll')
 
-const analyzeAssembly = edge.func({
-  assemblyFile: path.join(__dirname, 'NFParser.dll'),
-  typeName: 'AssemblyParser',
-  methodName: 'AnalyzeAssembly'
-})
+// const analyzeAssembly = edge.func({
+//   assemblyFile: path.join(__dirname, 'NFParser.dll'),
+//   typeName: 'AssemblyParser',
+//   methodName: 'AnalyzeAssembly'
+// })
