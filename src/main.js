@@ -162,13 +162,13 @@ ipcMain.handle('get-file-info', async (event, filePath) => {
     if (fileInfo.isDirectory()) {
       const files = await fs.promises.readdir(absolutePath)
       console.log('Directory Contents:', files)
-      // ... you can do more with the directory contents
+      
+      
     }
 
     return fileInfo // Send results back to renderer
+
   } catch (error) {
     console.error('Error fetching file info:', error.message)
-    // Handle the error and return appropriate information to the renderer
-    return { error: error.message }
   }
 })

@@ -4,6 +4,7 @@ import midPanel from '../components/midPanel.vue'
 import rightPanel from '../components/rightPanel.vue'
 import topPanel from '../components/topPanel.vue'
 import LoadingScreen from '../components/loadingScreen.vue'
+import contextMenu from '../components/contextMenu.vue'
 
 export default {
   name: 'MainView',
@@ -15,6 +16,7 @@ export default {
   },
   components: {
     LoadingScreen,
+    contextMenu,
     leftPanel,
     midPanel,
     rightPanel,
@@ -22,7 +24,12 @@ export default {
   },
   data() {
     return {
-      appIsLoading: true
+      appIsLoading: true,
+      contextMenu: {
+        show: false,
+        x: 0,
+        y: 0
+      }
     }
   },
   mounted() {
@@ -36,6 +43,7 @@ export default {
 </script>
 
 <template>
+  <contextMenu @option-clicked="handleContextOption($event)"  />
   <LoadingScreen id="loadingScreen" v-if="appIsLoading" :is-loading="appIsLoading" />
   <topPanel />
   <leftPanel />

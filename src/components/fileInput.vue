@@ -1,29 +1,30 @@
-<!-- 
-  src\components\fileInput.vue
-
-  File Input Component
-
-  <FileInput />
-
-  Props:
-    none
- -->
-
 <template>
+  <CustomAlert
+    icon="mdi-close-octagon"
+    color="error"
+    title="Invalid File Type"
+    message="Invalid file type. Only .octdat or .octdat.bak files are allowed."
+    v-model="showAlert"
+    @closeAlert="closeAlert"
+  />
   <v-file-input
     v-model="files"
-    multiple
-    color="deep-purple-accent-4"
-    counter
+    @change="onFileChange"
+    @dragover.prevent="onDragOver"
+    @drop.prevent="onDrop"
+    :multiple="multiple"
+    :color="color"
+    :counter="counter"
     label="File input"
     placeholder="Select your files"
     prepend-icon="mdi-paperclip"
     variant="outlined"
     :show-size="1000"
+    accept=".octdat, .octdat.bak"
   >
     <template v-slot:selection="{ fileNames }">
       <template v-for="(fileName, index) in fileNames" :key="fileName">
-        <v-chip v-if="index < 2" color="deep-purple-accent-4" label size="small" class="me-2">
+        <v-chip v-if="index < 2" :color="color" label size="small" class="me-2">
           {{ fileName }}
         </v-chip>
 
@@ -36,10 +37,74 @@
 </template>
 
 <script>
+import CustomAlert from './customAlert.vue'
+
 export default {
   name: 'FileInput',
-  data: () => ({
-    files: []
-  })
+  emits: ['fileChanged'],
+  components: {
+    CustomAlert
+  },
+  props: {
+    multiple: {
+      type: Boolean,
+      default: false
+    },
+    color: {
+      type: String,
+      default: 'deep-purple-accent-4'
+    },
+    counter: {
+      type: Boolean,
+      default: true
+    }
+  },
+  data() {
+    return {
+      files: [],
+      showAlert: false
+    }
+  },
+  methods: {
+    closeAlert() {
+      this.showAlert = false
+    },
+    onFileChange() {
+      if (this.files.length > 0) {
+        const file = this.files[0]
+        // this.readFile(file);
+        this.$emit('fileChanged', file)
+      }
+    },
+    onDragOver(event) {
+      event.preventDefault()
+    },
+    onDrop(event) {
+      event.preventDefault()
+      event.stopPropagation()
+
+      const files = event.dataTransfer.files
+      if (files.length > 0) {
+        const file = files[0]
+        if (this.isValidFile(file)) {
+          this.readFile(file)
+        } else {          
+          this.showAlert = true
+        }
+      }
+    },
+    isValidFile(file) {
+      const fileExtension = file.name.split('.').pop().toLowerCase()
+      return fileExtension === 'octdat' || fileExtension === 'octdat.bak'
+    },
+    readFile(file) {
+      const reader = new FileReader()
+      reader.onload = (event) => {
+        const fileContent = event.target.result
+        this.$emit('fileChanged', fileContent)
+      }
+      reader.readAsText(file)
+    }
+  }
 }
 </script>

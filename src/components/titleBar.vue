@@ -29,7 +29,7 @@ export default {
     },
     logoSrc: {
       type: String,
-      default: '../public/logo.png'
+      default: './logo.png'
     },
     buttons: {
       type: Array,

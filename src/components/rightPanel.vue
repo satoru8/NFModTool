@@ -13,7 +13,7 @@
           <v-window-item value="tab1">
             <v-card flat>
               <v-card-text>
-                <FileInput />
+                <FileInput @fileChanged="onFileChanged" />
               </v-card-text>
             </v-card>
           </v-window-item>
@@ -25,6 +25,7 @@
                   title="Attention Required"
                   message="Important message here!"
                   v-model="showAlert"
+                  @closeAlert="closeAlert"
                 />
               </v-card-text>
             </v-card>
@@ -53,6 +54,7 @@
 <script>
 import FileInput from './fileInput.vue'
 import CustomAlert from './customAlert.vue'
+import { editorManager } from '../js/editorManager'
 
 export default {
   components: {
@@ -66,6 +68,19 @@ export default {
     }
   },
   methods: {
+   onFileChanged(fileContent) {
+      const editorId = 'mainEditor'
+      const editor = editorManager.getEditor(editorId)
+
+      if (editor) {
+        editor.setValue(fileContent);
+      } else {
+        console.error('Editor not found.')
+      }
+    },
+    closeAlert() {
+      this.showAlert = false
+    },
     testAlert() {
       this.showAlert = true
     }

@@ -1,4 +1,6 @@
 import * as monaco from 'monaco-editor'
+import { editorManager } from './editorManager'
+import formatOctDat from './formatting'
 
 monaco.languages.register({ id: 'octdat' })
 
@@ -121,50 +123,7 @@ self.MonacoEnvironment = {
   }
 }
 
-// Production loading of monaco-editor
-
-// export function createEditor(container, options = {}) {
-//   return monaco.editor.create(container, {
-//     ...options,
-//     value: options.value || '',
-//     language: options.language || 'octdat',
-//     theme: options.theme || 'octdatTheme',
-//     scrollBeyondLastLine: true,
-//     automaticLayout: true,
-//   });
-// }
-
-export function createEditor(container, options = {}) {
-  const filePath = '../public/octdat.octdat'
-
-  return new Promise((resolve, reject) => {
-    fetch(filePath)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Failed to fetch file: ${response.status} ${response.statusText}`)
-        }
-        return response.text()
-      })
-      .then((fileContent) => {
-        const editor = monaco.editor.create(container, {
-          ...options,
-          value: fileContent || '',
-          language: options.language || 'octdat',
-          theme: options.theme || 'octdatTheme',
-          automaticLayout: true,
-          defaultEOL: monaco.editor.DefaultEndOfLine.LF
-        })
-        resolve(editor)
-      })
-      .catch((error) => {
-        console.error('Error creating editor:', error)
-        reject(error)
-      })
-  })
-}
-
-import formatOctDat from './formatting'
-
+// Register document formatting provider
 monaco.languages.registerDocumentFormattingEditProvider('octdat', {
   provideDocumentFormattingEdits: (model) => {
     try {
@@ -184,3 +143,48 @@ monaco.languages.registerDocumentFormattingEditProvider('octdat', {
     }
   }
 })
+
+// Production loading of monaco-editor
+
+// export function createEditor(container, options = {}) {
+//   return monaco.editor.create(container, {
+//     ...options,
+//     value: options.value || '',
+//     language: options.language || 'octdat',
+//     theme: options.theme || 'octdatTheme',
+//     scrollBeyondLastLine: true,
+//     automaticLayout: true,
+//   });
+// }
+
+export function createEditor(container, options = {}, editorId) {
+  const filePath = './octdat.octdat'
+
+  return new Promise((resolve, reject) => {
+    fetch(filePath)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Failed to fetch file: ${response.status} ${response.statusText}`)
+        }
+        return response.text()
+      })
+      .then((fileContent) => {
+        const editor = monaco.editor.create(container, {
+          ...options,
+          value: fileContent || '',
+          language: options.language || 'octdat',
+          theme: options.theme || 'octdatTheme',
+          automaticLayout: true,
+          defaultEOL: monaco.editor.DefaultEndOfLine.LF
+        })
+
+        editorManager.addEditor(editorId, editor)
+
+        resolve(editor)
+      })
+      .catch((error) => {
+        console.error('Error creating editor:', error)
+        reject(error)
+      })
+  })
+}

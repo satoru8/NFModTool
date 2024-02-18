@@ -106,7 +106,18 @@ html {
 }
 
 .leftPanelInner {
-  /* background-color: green; */
+  display: flex
+}
+
+.leftPanelTabs,
+.leftPanelCard,
+.leftPanelWindow {
+  height: 100%;
+}
+
+.leftPanelInner .leftPanelTabs {
+  border-right: 1px solid rgba(var(--v-border-color), var(--v-border-opacity));
+  border-radius: 0;
 }
 
 #midPanel {

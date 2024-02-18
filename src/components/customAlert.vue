@@ -10,23 +10,21 @@
 -->
 
 <template>
-  <v-dialog v-model="showAlert" max-width="500">
+  <v-dialog v-model="showAlert" max-width="600">
     <v-card>
-      <v-alert
+      <v-alert 
         :type="alertType"
         :color="color"
         :border="border"
         :elevation="elevation"
-        :closable="closable"
         :icon="icon"
-        :close-label="closeLabel"
         :title="title"
         :variant="variant"
         :density="density"
       >
         <div v-html="message"></div>
       </v-alert>
-      <v-btn text="Close" @click="closeAlert"></v-btn>
+      <v-btn :color="btnColor" :variant="btnVariant" :text="closeLabel" @click="closeAlert"></v-btn>
     </v-card>
   </v-dialog>
 </template>
@@ -35,9 +33,22 @@
 export default {
   name: 'CustomAlert',
   props: {
+    title: {
+      type: String,
+      default: null
+    },
     message: {
       type: String,
       required: true
+    },
+    btnVariant: {
+      type: String,
+      default: 'plain',
+      validator: (value) => ['outlined', 'plain', 'prominent', 'tonal'].includes(value)
+    },
+    btnColor: {
+      type: String,
+      default: null
     },
     icon: {
       type: String,
@@ -45,7 +56,7 @@ export default {
     },
     closeLabel: {
       type: String,
-      default: 'Close Alert'
+      default: 'Close'
     },
     alertType: {
       type: String,
@@ -69,14 +80,7 @@ export default {
       type: [Number, String],
       default: null
     },
-    title: {
-      type: String,
-      default: null
-    },
-    closable: {
-      type: Boolean,
-      default: false
-    },
+
     density: {
       type: String,
       default: 'default',
@@ -91,7 +95,7 @@ export default {
   methods: {
     closeAlert() {
       this.showAlert = false
-      console.log('Alert closed. showAlert:', this.showAlert)
+      this.$emit('closeAlert')
     }
   }
 }
