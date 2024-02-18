@@ -1,6 +1,6 @@
 const { app, Tray, Menu, nativeImage, BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
-// const fs = require('fs')
+const fs = require('fs')
 // const edge = require('electron-edge-js')
 
 // Quit the app when Squirrel is performing the installation/update process.
@@ -70,25 +70,25 @@ app.on('activate', () => {
 
 // Title bar icons
 function handleWindowAction(action) {
-  const window = BrowserWindow.getFocusedWindow();
+  const window = BrowserWindow.getFocusedWindow()
   if (window) {
     try {
       if (action === 'maximize' && !window.isMaximized()) {
-        window.maximize();
+        window.maximize()
       } else if (action === 'maximize' && window.isMaximized()) {
-        window.restore();
+        window.restore()
       } else if (window[action]) {
-        window[action](); 
+        window[action]()
       }
     } catch (error) {
-      console.error(`Error performing ${action}:`, error);
+      console.error(`Error performing ${action}:`, error)
     }
   }
 }
 
-ipcMain.on('close-window', () => handleWindowAction('close'));
-ipcMain.on('minimize-window', () => handleWindowAction('minimize'));
-ipcMain.on('maximize-window', () => handleWindowAction('maximize'));
+ipcMain.on('close-window', () => handleWindowAction('close'))
+ipcMain.on('minimize-window', () => handleWindowAction('minimize'))
+ipcMain.on('maximize-window', () => handleWindowAction('maximize'))
 
 // Creates a system tray icon
 let tray
@@ -127,13 +127,13 @@ app.whenReady().then(async () => {
   createTray()
 
   mainWindow.webContents.openDevTools()
-  
+
   // Listen for the renderer ready event
   // This event will be triggered when the renderer process is ready
   ipcMain.on('renderer-ready', () => {
-    console.log('preload ipc renderer-ready');
-    mainWindow.webContents.send('loading-done');
-  });
+    console.log('preload ipc renderer-ready')
+    mainWindow.webContents.send('loading-done')
+  })
 
   // analyzeAssembly(assemblyPath, true, (error, result) => {
   //   if (error) {
@@ -151,3 +151,24 @@ app.whenReady().then(async () => {
   // })
 })
 
+// Read file
+ipcMain.handle('get-file-info', async (event, filePath) => {
+  try {
+    const absolutePath = path.join(__dirname, filePath)
+    const fileInfo = await fs.promises.stat(absolutePath)
+
+    console.log('File Info:', fileInfo)
+
+    if (fileInfo.isDirectory()) {
+      const files = await fs.promises.readdir(absolutePath)
+      console.log('Directory Contents:', files)
+      // ... you can do more with the directory contents
+    }
+
+    return fileInfo // Send results back to renderer
+  } catch (error) {
+    console.error('Error fetching file info:', error.message)
+    // Handle the error and return appropriate information to the renderer
+    return { error: error.message }
+  }
+})

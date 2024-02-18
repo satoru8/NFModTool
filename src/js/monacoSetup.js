@@ -5,22 +5,22 @@ monaco.languages.register({ id: 'octdat' })
 monaco.languages.setMonarchTokensProvider('octdat', {
   tokenizer: {
     root: [
-      [/\/\/.*$/, 'comment'],
-      [/id\s(([a-zA-Z0-9]+(\.[a-zA-Z0-9]+)+))/, 'octdat.id'],
-      [/inherit\s(([a-zA-Z0-9]+(\.[a-zA-Z0-9]+)+))/, 'octdat.inherit'],
-      [/alias\s(([a-zA-Z0-9]+(\.[a-zA-Z0-9]+)+))/, 'octdat.alias'],
-      [/type\s+[a-zA-Z0-9]+/, 'octdat.type'],
-      [/\$clear|appendonly|abstract/, 'octdat.keyword'],
-      [/\btrue\b|\bTrue\b/, 'octdat.true'],
-      [/\bfalse\b|\bFalse\b/, 'octdat.false'],
-      [/\bnull\b/, 'octdat.null'],
-      [/((?!<)(([a-zA-Z0-9]+(\.[a-zA-Z0-9]+)+))(?=>))/, 'octdat.id'],
-      [/[<|>]/, 'octdat.markers'],
-      [/[A-Za-z]+\s==\s[A-Za-z0-9]+.*[A-Za-z0-9]+/, 'octdat.replace'],
-      [/([a-zA-Z]+\s(?==))/, 'octdat.property'],
-      [/\b\d+/, 'octdat.number'],
-      [/[A-Za-z0-9]+\|[A-Za-z0-9]+/, 'octdat.anim'],
-      [/\?|\-/, 'octdat.symbols']
+      [/\/\/.*$/, 'comment.octdat'],
+      [/id\s(([a-zA-Z0-9]+(\.[a-zA-Z0-9]+)+))/, 'id.octdat'],
+      [/inherit\s(([a-zA-Z0-9]+(\.[a-zA-Z0-9]+)+))/, 'inherit.octdat'],
+      [/alias\s(([a-zA-Z0-9]+(\.[a-zA-Z0-9]+)+))/, 'alias.octdat'],
+      [/type\s+[a-zA-Z0-9]+/, 'type.octdat'],
+      [/\$clear|appendonly|abstract/, 'keyword.octdat'],
+      [/\btrue\b|\bTrue\b/, 'true.octdat'],
+      [/\bfalse\b|\bFalse\b/, 'false.octdat'],
+      [/\bnull\b/, 'null.octdat'],
+      [/((?!<)(([a-zA-Z0-9]+(\.[a-zA-Z0-9]+)+))(?=>))/, 'id.octdat'],
+      [/[<|>]/, 'markers.octdat'],
+      [/[A-Za-z]+\s==\s[A-Za-z0-9]+.*[A-Za-z0-9]+/, 'replace.octdat'],
+      [/([a-zA-Z]+\s(?==))/, 'property.octdat'],
+      [/\b\d+/, 'number.octdat'],
+      [/[A-Za-z0-9]+\|[A-Za-z0-9]+/, 'anim.octdat'],
+      [/\?|\-/, 'symbols.octdat']
     ]
   }
 })
@@ -29,22 +29,22 @@ monaco.editor.defineTheme('octdatTheme', {
   base: 'vs-dark',
   inherit: true,
   rules: [
-    { token: 'octdat.id', foreground: '#C586C0' },
-    { token: 'octdat.inherit', foreground: '#4EC9B0' },
-    { token: 'octdat.alias', foreground: '#CE9178' },
-    { token: 'octdat.type', foreground: '#9CDCFE' },
-    { token: 'octdat.keyword', foreground: '#DCDCAA' },
-    { token: 'octdat.property', foreground: '#569CD6' },
-    { token: 'octdat.string', foreground: '#CE9178' },
-    { token: 'octdat.number', foreground: '#D7BA7D' },
-    { token: 'octdat.markers', foreground: '#ff9d76' },
-    { token: 'octdat.true', foreground: '#6A9955', fontStyle: 'bold' },
-    { token: 'octdat.false', foreground: '#F44747', fontStyle: 'bold' },
-    { token: 'octdat.null', foreground: '#F44747' },
-    { token: 'octdat.comment', foreground: '#6a9955' },
-    { token: 'octdat.replace', foreground: '#fadca5' },
-    { token: 'octdat.anim', foreground: '#00fff7' },
-    { token: 'octdat.symbols', foreground: '#00ff0d' }
+    { token: 'id', foreground: '#C586C0' },
+    { token: 'inherit', foreground: '#4EC9B0' },
+    { token: 'alias', foreground: '#CE9178' },
+    { token: 'type', foreground: '#9CDCFE' },
+    { token: 'keyword', foreground: '#DCDCAA' },
+    { token: 'property', foreground: '#569CD6' },
+    { token: 'string', foreground: '#CE9178' },
+    { token: 'number', foreground: '#D7BA7D' },
+    { token: 'markers', foreground: '#ff9d76' },
+    { token: 'true', foreground: '#6A9955', fontStyle: 'bold' },
+    { token: 'false', foreground: '#F44747', fontStyle: 'bold' },
+    { token: 'null', foreground: '#F44747' },
+    { token: 'comment', foreground: '#6a9955' },
+    { token: 'replace', foreground: '#fadca5' },
+    { token: 'anim', foreground: '#00fff7' },
+    { token: 'symbols', foreground: '#00ff0d' }
   ],
   colors: {
     idColor: '#f700ff'
@@ -135,7 +135,7 @@ self.MonacoEnvironment = {
 // }
 
 export function createEditor(container, options = {}) {
-  const filePath = '../octdat.octdat'
+  const filePath = '../public/octdat.octdat'
 
   return new Promise((resolve, reject) => {
     fetch(filePath)
@@ -151,7 +151,8 @@ export function createEditor(container, options = {}) {
           value: fileContent || '',
           language: options.language || 'octdat',
           theme: options.theme || 'octdatTheme',
-          automaticLayout: true
+          automaticLayout: true,
+          defaultEOL: monaco.editor.DefaultEndOfLine.LF
         })
         resolve(editor)
       })

@@ -1,14 +1,14 @@
-import { defineConfig } from 'vite';
-import vue from '@vitejs/plugin-vue';
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  // build: {
-  //   base: './',
-  // },
+  build: {
+    base: './'
+  },
   plugins: [
-    vue({ 
+    vue({
       template: { transformAssetUrls }
     }),
     vuetify(
@@ -18,4 +18,4 @@ export default defineConfig({
       }
     )
   ]
-});
+})

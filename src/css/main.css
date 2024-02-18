@@ -140,11 +140,10 @@ html {
 }
 
 #loadingScreen {
-  grid-column:  1 / 4;
-  grid-row:  1 / 5;
+  grid-column: 1 / 4;
+  grid-row: 1 / 5;
   z-index: 1000;
   max-width: 100% !important;
   max-height: 100% !important;
   background-color: var(--backgroundColor);
 }
-  

@@ -6,14 +6,14 @@
     </div>
     <v-container class="d-flex align-center v-col pa-0">
       <v-btn
-        variant="tonal"
+        variant="text"
         size="small"
         v-for="button in buttons"
-        :id="button.tag"
+        :class="button.class"
         :key="button.id"
         @click="emitEvent(button.action)"
       >
-        {{ button.symbol }}
+        <v-icon size="large" :icon="button.symbol" />
       </v-btn>
     </v-container>
   </div>
@@ -29,14 +29,14 @@ export default {
     },
     logoSrc: {
       type: String,
-      default: '../logo.png'
+      default: '../public/logo.png'
     },
     buttons: {
       type: Array,
       default: () => [
-        { id: 'min', tag: 'min', symbol: '-', action: 'minimize' },
-        { id: 'max', tag: 'max', symbol: '+', action: 'maximize' },
-        { id: 'close', tag: 'close', symbol: 'x', action: 'close' }
+        { id: 'min', class: 'titleBarBtn min', symbol: 'mdi-window-minimize', action: 'minimize' },
+        { id: 'max', class: 'titleBarBtn max', symbol: 'mdi-fullscreen', action: 'maximize' },
+        { id: 'close', class: 'titleBarBtn close', symbol: 'mdi-window-close', action: 'close' }
       ]
     }
   },

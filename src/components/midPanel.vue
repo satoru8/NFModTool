@@ -13,7 +13,6 @@ export default {
     try {
       this.editor = await createEditor(this.$refs.editorContainer)
     } catch (error) {
-      // Handle the error: For example, display an error message to the user
       console.error('Failed to create editor', error)
     }
   },

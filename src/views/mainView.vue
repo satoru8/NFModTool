@@ -26,11 +26,11 @@ export default {
     }
   },
   mounted() {
-    window.electronAPI.send('renderer-ready');
+    window.electronAPI.send('renderer-ready')
     window.electronAPI.loadingDone(() => {
-      console.log("Received 'loading-done' message");
-      this.appIsLoading = false;
-    });
+      console.log("Received 'loading-done' message")
+      this.appIsLoading = false
+    })
   }
 }
 </script>

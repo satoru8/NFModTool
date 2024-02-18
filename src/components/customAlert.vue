@@ -24,12 +24,9 @@
         :variant="variant"
         :density="density"
       >
-      <div v-html="message"></div>
+        <div v-html="message"></div>
       </v-alert>
-      <v-btn
-          text="Close"
-          @click="closeAlert"
-        ></v-btn>
+      <v-btn text="Close" @click="closeAlert"></v-btn>
     </v-card>
   </v-dialog>
 </template>
@@ -93,8 +90,8 @@ export default {
   },
   methods: {
     closeAlert() {
-      this.showAlert = false;
-      console.log("Alert closed. showAlert:", this.showAlert);
+      this.showAlert = false
+      console.log('Alert closed. showAlert:', this.showAlert)
     }
   }
 }
