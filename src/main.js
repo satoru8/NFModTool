@@ -14,8 +14,8 @@ const createWindow = () => {
   mainWindow = new BrowserWindow({
     width: 1000,
     height: 800,
-    minWidth: 800,
-    minHeight: 600,
+    minWidth: 1000,
+    minHeight: 800,
     frame: false,
     titleBarStyle: 'hidden',
     icon: path.join(__dirname, './logo.png'),
@@ -56,9 +56,6 @@ app.on('activate', () => {
   }
 })
 
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and import them here.
-
 // Assembly analysis
 // const assemblyPath = path.join(__dirname, 'Assembly.dll')
 
@@ -77,6 +74,9 @@ function handleWindowAction(action) {
         window.maximize()
       } else if (action === 'maximize' && window.isMaximized()) {
         window.restore()
+      } else if (action === 'devTools') {
+        window.webContents.openDevTools()
+        console.log('Opening dev tools...')
       } else if (window[action]) {
         window[action]()
       }
@@ -89,13 +89,15 @@ function handleWindowAction(action) {
 ipcMain.on('close-window', () => handleWindowAction('close'))
 ipcMain.on('minimize-window', () => handleWindowAction('minimize'))
 ipcMain.on('maximize-window', () => handleWindowAction('maximize'))
+ipcMain.on('open-dev-tools', () => handleWindowAction('devTools'))
 
 // Creates a system tray icon
 let tray
+const iconPath = path.join(__dirname, './logo.png')
+const icon = nativeImage.createFromPath(iconPath)
 
 const createTray = () => {
-  const iconPath = path.join(__dirname, './logo.png')
-  const icon = nativeImage.createFromPath(iconPath)
+
   tray = new Tray(icon)
 
   const contextMenu = Menu.buildFromTemplate([
@@ -123,15 +125,12 @@ const createTray = () => {
 }
 
 app.whenReady().then(async () => {
-  // Create the system tray icon
+
   createTray()
 
   mainWindow.webContents.openDevTools()
 
-  // Listen for the renderer ready event
-  // This event will be triggered when the renderer process is ready
   ipcMain.on('renderer-ready', () => {
-    console.log('preload ipc renderer-ready')
     mainWindow.webContents.send('loading-done')
   })
 
@@ -151,24 +150,17 @@ app.whenReady().then(async () => {
   // })
 })
 
-// Read file
-ipcMain.handle('get-file-info', async (event, filePath) => {
+// Read directory
+ipcMain.handle('read-directory', async ( path) => {
   try {
-    const absolutePath = path.join(__dirname, filePath)
-    const fileInfo = await fs.promises.stat(absolutePath)
+    const files = await fs.promises.readdir(path, { withFileTypes: true });
 
-    console.log('File Info:', fileInfo)
-
-    if (fileInfo.isDirectory()) {
-      const files = await fs.promises.readdir(absolutePath)
-      console.log('Directory Contents:', files)
-      
-      
-    }
-
-    return fileInfo // Send results back to renderer
-
+    return files.map((file) => ({
+      name: file.name,
+      path: path + '/' + file.name,
+      isDirectory: file.isDirectory(),
+    }));
   } catch (error) {
-    console.error('Error fetching file info:', error.message)
+    return { error: error.message };
   }
-})
+});

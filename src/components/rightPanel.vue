@@ -2,8 +2,7 @@
   <div id="rightPanel">
     <div class="rightPanelInner">
       <v-card class="h-100">
-        <!-- <div class="d-flex flex-column"> -->
-        <v-tabs v-model="tab" direction="horizontal" color="primary">
+        <v-tabs fixed-tabs hide-slider v-model="tab" direction="horizontal" color="primary">
           <v-tab value="tab1">Tab 1</v-tab>
           <v-tab value="tab2">Tab 2</v-tab>
           <v-tab value="tab3">Tab 3</v-tab>
@@ -45,7 +44,6 @@
             </v-card>
           </v-window-item>
         </v-window>
-        <!-- </div> -->
       </v-card>
     </div>
   </div>

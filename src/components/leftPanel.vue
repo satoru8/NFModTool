@@ -3,8 +3,10 @@
     <div class="leftPanelInner">
     <!-- Left Panel with Tabs -->
     <v-card class="leftPanelTabs" min-width="75" max-width="75">
-      <v-tabs v-model="tab" direction="vertical" color="primary">
-        <v-tab value="tab1">Tab 1</v-tab>
+      <v-tabs hide-slider v-model="tab" direction="vertical" color="primary">
+        <v-tab value="tab1">
+          <v-icon size="x-large">mdi-home</v-icon>
+        </v-tab>
         <v-tab value="tab2">Tab 2</v-tab>
         <v-tab value="tab3">Tab 3</v-tab>
         <v-tab value="tab4">Tab 4</v-tab>
@@ -16,7 +18,7 @@
         <v-card flat class="leftPanelCard">
           <v-card-text>
             <p>Content for Tab 1</p>
-            <fileManager />
+            <!-- <fileManager @fileChanged="onFileChanged" /> -->
           </v-card-text>
         </v-card>
       </v-window-item>
@@ -47,16 +49,24 @@
 </template>
 
 <script>
-import fileManager from './fileManager.vue'
+// import { ipcMain } from 'electron';
+// import fileManager from './fileManager.vue'
 export default {
   components: {
-    fileManager
+    // fileManager
   },
   name: 'LeftPanel',
   data() {
     return {
       tab: 'tab1'
     }
+  },
+  methods: {
+    // onFileChanged() {
+    //   ipcMain.emit('read-directory');
+
+    //   console.log('File Changed');
+    // }
   }
 }
 </script>

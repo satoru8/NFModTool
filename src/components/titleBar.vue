@@ -34,6 +34,8 @@ export default {
     buttons: {
       type: Array,
       default: () => [
+        { id: 'help', class: 'titleBarBtn help', symbol: 'mdi-help-circle', action: 'help' },
+        { id: 'devTools', class: 'titleBarBtn dev', symbol: 'mdi-code-braces', action: 'devTools' },
         { id: 'min', class: 'titleBarBtn min', symbol: 'mdi-window-minimize', action: 'minimize' },
         { id: 'max', class: 'titleBarBtn max', symbol: 'mdi-fullscreen', action: 'maximize' },
         { id: 'close', class: 'titleBarBtn close', symbol: 'mdi-window-close', action: 'close' }
@@ -42,19 +44,28 @@ export default {
   },
   methods: {
     emitEvent(action) {
-      if (action === 'close') this.closeWindow()
-      else if (action === 'minimize') this.minimizeWindow()
-      else if (action === 'maximize') this.maximizeWindow()
+      if (action === 'close') this.closeWindow();
+      else if (action === 'minimize') this.minimizeWindow();
+      else if (action === 'maximize') this.maximizeWindow();
+      else if (action === 'help') this.openHelp();
+      else if (action === 'devTools') this.openDevTools();
     },
     closeWindow() {
-      window.electronAPI.closeWindow()
+      window.electronAPI.closeWindow();
     },
     minimizeWindow() {
-      window.electronAPI.minimizeWindow()
+      window.electronAPI.minimizeWindow();
     },
     maximizeWindow() {
-      window.electronAPI.maximizeWindow()
+      window.electronAPI.maximizeWindow();
+    },
+    openHelp() {
+      console.log('Opening Help');
+    },
+    openDevTools() {
+      window.electronAPI.openDevTools();
+      console.log('Opening Developer Tools');
     }
   }
-}
+};
 </script>

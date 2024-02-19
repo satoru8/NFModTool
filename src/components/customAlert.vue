@@ -12,7 +12,7 @@
 <template>
   <v-dialog v-model="showAlert" max-width="600">
     <v-card>
-      <v-alert 
+      <v-alert
         :type="alertType"
         :color="color"
         :border="border"
@@ -80,7 +80,6 @@ export default {
       type: [Number, String],
       default: null
     },
-
     density: {
       type: String,
       default: 'default',

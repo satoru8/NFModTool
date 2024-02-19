@@ -13,8 +13,10 @@ export default {
   async mounted() {
     const editorId = 'mainEditor'
     try {
-      this.editor = await createEditor(this.$refs.editorContainer, {}, editorId)
-      console.log(`Monaco Setup Complete. Editor Instance for ID ${editorId}`, editorManager.getEditor(editorId))
+
+      const editor = await createEditor(this.$refs.editorContainer, {}, editorId)
+      return editor
+
     } catch (error) {
       console.error('Failed to create editor', error)
     }

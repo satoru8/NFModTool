@@ -2,7 +2,7 @@ const { contextBridge, ipcRenderer } = require('electron')
 
 /**
  *  This allows you to communicate with the main process.
- *
+ * @see https://www.electronjs.org/docs/latest/tutorial/tutorial-preload
  * @see https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
  * @see https://www.electronjs.org/docs/latest/api/context-bridge
  * @see https://www.electronjs.org/docs/latest/api/ipc-renderer
@@ -11,11 +11,14 @@ contextBridge.exposeInMainWorld('electronAPI', {
   closeWindow: () => ipcRenderer.send('close-window'),
   minimizeWindow: () => ipcRenderer.send('minimize-window'),
   maximizeWindow: () => ipcRenderer.send('maximize-window'),
+  openDevTools: () => ipcRenderer.send('open-dev-tools'),
   loadingDone: (callback) => ipcRenderer.on('loading-done', callback),
+  readDirectory: (directoryPath) => ipcRenderer.send('read-directory', directoryPath),
 
   /**
    * Sends data through the specified channel if it's valid.
-   * Otherwise, it doesn't do anything. This is used to send data from the main process
+   * This is the same as using the ipcRenderer method
+   * Alternatively, you can use ipcRenderer.send
    *
    * @param {string} channel - the channel to send data through
    * @param {any} data - the data to send
@@ -26,8 +29,5 @@ contextBridge.exposeInMainWorld('electronAPI', {
       ipcRenderer.send(channel, data)
     }
   }
-})
 
-window.addEventListener('DOMContentLoaded', () => {
-  console.log('DOM fully loaded and parsed')
 })

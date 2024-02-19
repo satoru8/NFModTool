@@ -2,9 +2,15 @@
   <div id="topPanel">
     <div class="topPanelInner">
       <titlebar />
-      <v-icon icon="mdi-plus" color="primary" />
-      <v-icon icon="$vuetify" color="primary" />
-      <v-btn icon="mdi-dots-vertical" />
+
+      <v-card flat>
+        <v-tabs v-model="tab" align-tabs="center" hide-slider fixed-tabs color="primary">
+          <v-tab value="monaco" text="Monaco Editor" @click="changeTab('monaco')" />
+          <v-tab value="visual" text="Visual Editor" @click="changeTab('visual')" />
+          <v-tab value="settings" text="Settings" @click="changeTab('settings')" />
+        </v-tabs>
+      </v-card>
+
     </div>
   </div>
 </template>
@@ -16,6 +22,20 @@ export default {
   name: 'TopPanel',
   components: {
     titlebar
+  },
+  data() {
+    return {
+      tab: 'one'
+    }
+  },
+  methods: {
+    changeTab(tab) {
+      this.tab = tab;
+      this.$emit('tab-changed', tab);
+      if (tab === 'settings') {
+        this.$emit('settings-clicked');
+      }
+    }
   }
 }
 </script>

@@ -34,6 +34,7 @@ html {
 #titleBar {
   display: flex;
   background-color: #2f3241;
+  /* background-color: rgb(var(--v-theme-surface)); */
   height: 30px;
   width: 100vw;
 }
@@ -70,7 +71,7 @@ html {
 #appMain {
   display: grid;
   grid-template-columns: 0.5fr 1fr 0.5fr;
-  grid-template-rows: 0.25fr 1fr 1fr 1fr;
+  grid-template-rows: 0.1fr 1fr 1fr 1fr;
   width: 100vw;
   height: 100vh;
 }
@@ -78,7 +79,8 @@ html {
 #topPanel,
 #leftPanel,
 #midPanel,
-#bottomPanel {
+#bottomPanel,
+#settingsPanel {
   display: flex;
   align-items: center;
 }
@@ -86,7 +88,8 @@ html {
 .topPanelInner,
 .leftPanelInner,
 .midPanelInner,
-.rightPanelInner {
+.rightPanelInner,
+.settingsPanelInner {
   height: 100%;
   width: 100%;
 }
@@ -139,7 +142,7 @@ html {
 .monaco-component,
 .overflow-guard {
   width: 100% !important;
-  min-width: 400px;
+  /* min-width: 280px; */
 }
 
 /* 
@@ -147,7 +150,7 @@ html {
 */
 
 .v-overlay__scrim {
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 1);
 }
 
 #loadingScreen {

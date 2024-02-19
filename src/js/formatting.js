@@ -26,7 +26,8 @@ function formatOctDat(document, range) {
     return []
   }
 
-  const normalizedText = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n') // Normalize to LF
+  // const normalizedText = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n') // Normalize to LF
+  const normalizedText = text.replace(/\r\n/g, '\r\n').replace(/\r/g, '\r\n'); // Normalize to CRLF
 
   const formattedLines = indentOctDat(normalizedText).split('\n')
 

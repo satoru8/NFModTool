@@ -15,10 +15,9 @@
     :multiple="multiple"
     :color="color"
     :counter="counter"
-    label="File input"
-    placeholder="Select your files"
-    prepend-icon="mdi-paperclip"
-    variant="outlined"
+    :label="label"
+    :prepend-icon="icon"
+    :variant="variant"
     :show-size="1000"
     accept=".octdat, .octdat.bak"
   >
@@ -57,6 +56,21 @@ export default {
     counter: {
       type: Boolean,
       default: true
+    },
+    icon: {
+      type: String,
+      default: null
+    },
+    label: {
+      type: String,
+      default: 'File'
+    },
+    variant: {
+      type: String,
+      default: 'outlined',
+      validator: (value) => {
+        return ['outlined', 'underlined', 'filled', 'plain'].includes(value)
+      }
     }
   },
   data() {
@@ -72,8 +86,12 @@ export default {
     onFileChange() {
       if (this.files.length > 0) {
         const file = this.files[0]
-        // this.readFile(file);
-        this.$emit('fileChanged', file)
+        if (!this.isValidFile(file)) {
+          this.showAlert = true
+          return
+        }
+        this.readFile(file);
+        // this.$emit('fileChanged', file)
       }
     },
     onDragOver(event) {
