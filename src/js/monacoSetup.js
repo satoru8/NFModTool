@@ -245,4 +245,5 @@ export function createEditor(container, options = {}, editorId) {
 
   const editor = monaco.editor.create(container, editorOptions)
   editorManager.addEditor(editorId, editor)
+  return editor;
 }

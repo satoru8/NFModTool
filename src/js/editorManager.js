@@ -3,6 +3,10 @@ class EditorManager {
     this.editors = new Map()
   }
 
+  getAllEditors() {
+    return this.editors
+  }
+
   addEditor(id, editorInstance) {
     this.editors.set(id, editorInstance)
   }

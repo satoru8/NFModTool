@@ -52,11 +52,6 @@ export default {
   },
   mounted() {
     this.openSettings()
-  },
-  watch: {
-    showSettings(newValue) {
-      console.log('showSettings:', newValue)
-    }
   }
 }
 </script>

@@ -1,16 +1,19 @@
 <template>
+
     <v-card flat>
-      <v-tabs v-model="selectedTab" background-color="transparent" show-arrows>
-        <v-tab v-for="tab in tabs" :key="tab.id" @click="selectTab(tab.id)">
+
+      <v-tabs v-model="selectedTab" background-color="transparent" show-arrows slider-color="primary">
+
+        <v-tab v-for="tab in tabs" :value="tab.id" :class="tab.id" :key="tab.id" @click="selectTab(tab.id)">
           {{ tab.name }}
         </v-tab>
-        <v-tab>
-          <v-btn icon @click="addTab">
-            <v-icon>mdi-plus</v-icon>
-          </v-btn>
-        </v-tab>
+        
+        <v-tab prepend-icon="mdi-plus" @click="addTab" density="comfortable" size="small" slim variant="flat" width="10"/>
+
       </v-tabs>
+
     </v-card>
+
   </template>
   
   <script>
@@ -21,7 +24,7 @@
     },
     data() {
       return {
-        selectedTab: this.activeTab,
+        selectedTab: this.activeTab
       };
     },
     watch: {
