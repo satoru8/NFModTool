@@ -60,11 +60,10 @@ export default {
       window.electronAPI.maximizeWindow();
     },
     openHelp() {
-      console.log('Opening Help');
+     window.electronAPI.openHelp();
     },
     openDevTools() {
       window.electronAPI.openDevTools();
-      console.log('Opening Developer Tools');
     }
   }
 };

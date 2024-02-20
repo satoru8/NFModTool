@@ -12,6 +12,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   minimizeWindow: () => ipcRenderer.send('minimize-window'),
   maximizeWindow: () => ipcRenderer.send('maximize-window'),
   openDevTools: () => ipcRenderer.send('open-dev-tools'),
+  openHelp: () => ipcRenderer.send('open-help'),
   loadingDone: (callback) => ipcRenderer.on('loading-done', callback),
   readDirectory: (directoryPath) => ipcRenderer.send('read-directory', directoryPath),
 

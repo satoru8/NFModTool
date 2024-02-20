@@ -2,14 +2,20 @@
   <div id="leftPanel">
     <div class="leftPanelInner">
     <!-- Left Panel with Tabs -->
-    <v-card class="leftPanelTabs" min-width="75" max-width="75">
+    <v-card class="leftPanelTabs" min-width="60" max-width="60">
       <v-tabs hide-slider v-model="tab" direction="vertical" color="primary">
         <v-tab value="tab1">
           <v-icon size="x-large">mdi-home</v-icon>
         </v-tab>
-        <v-tab value="tab2">Tab 2</v-tab>
-        <v-tab value="tab3">Tab 3</v-tab>
-        <v-tab value="tab4">Tab 4</v-tab>
+        <v-tab value="tab2">
+          <v-icon size="x-large">mdi-heart-broken</v-icon>
+        </v-tab>
+        <v-tab value="tab3">
+          <v-icon size="x-large">mdi-file-tree-outline</v-icon>
+        </v-tab>
+        <v-tab value="tab4">
+          <v-icon size="x-large">mdi-code-array</v-icon>
+        </v-tab>
       </v-tabs>
     </v-card>
     <!-- Right Panel with Windows -->

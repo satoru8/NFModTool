@@ -66,6 +66,31 @@ app.on('activate', () => {
 // })
 
 // Title bar icons
+
+ipcMain.on('close-window', () => {
+  BrowserWindow.getFocusedWindow()?.close();
+});
+
+ipcMain.on('minimize-window', () => {
+  BrowserWindow.getFocusedWindow()?.minimize();
+});
+
+ipcMain.on('maximize-window', () => {
+  const window = BrowserWindow.getFocusedWindow(); 
+  if (window) {
+    window.isMaximized() ? window.restore() : window.maximize();
+  }
+})
+
+ipcMain.on('open-dev-tools', () => {
+  BrowserWindow.getFocusedWindow()?.webContents.openDevTools();
+});
+
+ipcMain.on('open-help', () => {
+  shell.openExternal('https://github.com/satoru8/NFModTool');
+});
+
+
 function handleWindowAction(action) {
   const window = BrowserWindow.getFocusedWindow()
   if (window) {
@@ -77,8 +102,9 @@ function handleWindowAction(action) {
       } else if (action === 'devTools') {
         window.webContents.openDevTools()
         console.log('Opening dev tools...')
-      } else if (window[action]) {
-        window[action]()
+      } else if (action === 'help') {
+        const{ shell } = require('electron')
+        shell.openExternal('https://github.com/satoru8/NFModTool');
       }
     } catch (error) {
       console.error(`Error performing ${action}:`, error)
@@ -90,7 +116,7 @@ ipcMain.on('close-window', () => handleWindowAction('close'))
 ipcMain.on('minimize-window', () => handleWindowAction('minimize'))
 ipcMain.on('maximize-window', () => handleWindowAction('maximize'))
 ipcMain.on('open-dev-tools', () => handleWindowAction('devTools'))
-
+ipcMain.on('open-help', () => handleWindowAction('help'))
 // Creates a system tray icon
 let tray
 const iconPath = path.join(__dirname, './logo.png')
