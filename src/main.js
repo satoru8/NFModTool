@@ -1,4 +1,4 @@
-const { app, Tray, Menu, nativeImage, BrowserWindow, ipcMain } = require('electron')
+const { app, shell, Tray, Menu, nativeImage, BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
 const fs = require('fs')
 // const edge = require('electron-edge-js')
@@ -90,33 +90,6 @@ ipcMain.on('open-help', () => {
   shell.openExternal('https://github.com/satoru8/NFModTool');
 });
 
-
-function handleWindowAction(action) {
-  const window = BrowserWindow.getFocusedWindow()
-  if (window) {
-    try {
-      if (action === 'maximize' && !window.isMaximized()) {
-        window.maximize()
-      } else if (action === 'maximize' && window.isMaximized()) {
-        window.restore()
-      } else if (action === 'devTools') {
-        window.webContents.openDevTools()
-        console.log('Opening dev tools...')
-      } else if (action === 'help') {
-        const{ shell } = require('electron')
-        shell.openExternal('https://github.com/satoru8/NFModTool');
-      }
-    } catch (error) {
-      console.error(`Error performing ${action}:`, error)
-    }
-  }
-}
-
-ipcMain.on('close-window', () => handleWindowAction('close'))
-ipcMain.on('minimize-window', () => handleWindowAction('minimize'))
-ipcMain.on('maximize-window', () => handleWindowAction('maximize'))
-ipcMain.on('open-dev-tools', () => handleWindowAction('devTools'))
-ipcMain.on('open-help', () => handleWindowAction('help'))
 // Creates a system tray icon
 let tray
 const iconPath = path.join(__dirname, './logo.png')

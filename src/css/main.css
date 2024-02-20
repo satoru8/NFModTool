@@ -123,6 +123,10 @@ html {
   border-radius: 0;
 }
 
+#NF .leftPanelTab {
+  min-width: 60px;
+}
+
 #midPanel {
   grid-column: 2 / 3;
   grid-row: 2 / 5;
