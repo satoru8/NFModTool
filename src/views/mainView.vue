@@ -2,21 +2,25 @@
   <div id="appMain">
     <contextMenu @option-clicked="handleContextOption($event)" />
     <loadingScreen id="loadingScreen" v-if="appIsLoading" :is-loading="appIsLoading" />
-    <topPanel @tab-changed="handleTabChange($event)" @settings-clicked="openSettings" />
+    <topPanel @tab-changed="handleTabChange($event)"  />
 
     <keep-alive>
-    <leftPanel v-if="selectedTab === 'monaco'" :key="selectedTab" />
+      <leftPanel v-if="selectedTab === 'monaco'" :key="selectedTab" />
     </keep-alive>
 
     <keep-alive>
-    <midPanel v-if="selectedTab === 'monaco'" :key="selectedTab" />
+      <midPanel v-if="selectedTab === 'monaco'" :key="selectedTab" />
     </keep-alive>
 
     <keep-alive>
-    <rightPanel v-if="selectedTab === 'monaco'" :key="selectedTab" />
+      <rightPanel v-if="selectedTab === 'monaco'" :key="selectedTab" />
     </keep-alive>
 
-    <settingsPanel v-if="showSettings" :key="selectedTab" />
+    <keep-alive>
+      <visualEditor v-if="selectedTab === 'visual'" :key="selectedTab" />
+    </keep-alive>
+
+    <settingsPanel v-if="selectedTab === 'settings'" :key="selectedTab" />
   </div>
 </template>
 
@@ -27,6 +31,7 @@ import rightPanel from '../components/rightPanel.vue'
 import topPanel from '../components/topPanel.vue'
 import loadingScreen from '../components/loadingScreen.vue'
 import contextMenu from '../components/contextMenu.vue'
+import visualEditor from '../components/visualEditor.vue'
 import settingsPanel from '../components/settingsPanel.vue'
 
 export default {
@@ -44,6 +49,7 @@ export default {
     midPanel,
     rightPanel,
     topPanel,
+    visualEditor,
     settingsPanel
   },
   data() {
@@ -67,11 +73,17 @@ export default {
   methods: {
     handleTabChange(tab) {
       this.selectedTab = tab
-      this.showSettings = tab === 'settings';
+      // this.showSettings = tab === 'settings';
     },
-    openSettings() {
-      this.showSettings = true;
-    },
+    // openSettings() {
+    //   this.showSettings = true;
+    // },
+    // openVisual() {
+    //   this.showVisual = true
+    // },
+    handleContextOption(option) {
+      console.log(`Clicked ${option}`)
+    }
   }
 }
 </script>

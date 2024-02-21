@@ -75,11 +75,9 @@ export default {
       this.showMessages = !this.showMessages;
     },
     editMessage(index) {
-      // Implement edit functionality
       this.messages[index].text = 'Edited message';
     },
     deleteMessage(index) {
-      // Implement delete functionality
       this.messages.splice(index, 1);
     },
   },

@@ -3,22 +3,14 @@
     <div class="settingsPanelInner">
       <v-container v-model="showSettings" class="settingsContainer pa-0">
         <v-card class="settingsCard">
-          <v-card-text>
-            <v-form>
-              <v-container>
-                <v-row>
-                  <v-col cols="12">
-                    <v-text-field label="Setting 1" v-model="setting1"></v-text-field>
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col cols="12">
-                    <v-text-field label="Setting 2" v-model="setting2"></v-text-field>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-form>
-          </v-card-text>
+          <v-container>
+            <v-row>
+              <v-switch color="primary" label="Setting 1" v-model="setting1"></v-switch>
+            </v-row>
+            <v-row>
+              <v-switch color="primary" label="Setting 2" v-model="setting2"></v-switch>
+            </v-row>
+          </v-container>
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn @click="saveSettings" color="primary">Save</v-btn>
@@ -35,23 +27,26 @@ export default {
   data() {
     return {
       showSettings: false,
-      setting1: '',
-      setting2: ''
+      setting1: false,
+      setting2: false
     }
   },
   methods: {
-    openSettings() {
-      this.showSettings = true
-    },
-    closeSettings() {
-      this.showSettings = false
-    },
+    // toggleSettings() {
+    //   this.showSettings = !this.showSettings
+    // },
+    // openSettings() {
+    //   this.showSettings = true
+    // },
+    // closeSettings() {
+    //   this.showSettings = false
+    // },
     saveSettings() {
       // example: this.$emit('settings-saved', { setting1: this.setting1, setting2: this.setting2 });
     }
   },
-  mounted() {
-    this.openSettings()
-  }
+  // mounted() {
+  //   this.openSettings()
+  // }
 }
 </script>
