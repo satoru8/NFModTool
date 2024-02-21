@@ -1,8 +1,8 @@
 <template>
   <div id="settingsPanel">
     <div class="settingsPanelInner">
-      <v-container v-model="showSettings" class="pa-0 w-100">
-        <v-card class="w-100">
+      <v-container v-model="showSettings" class="settingsContainer pa-0">
+        <v-card class="settingsCard">
           <v-card-text>
             <v-form>
               <v-container>

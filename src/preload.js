@@ -14,21 +14,10 @@ contextBridge.exposeInMainWorld('electronAPI', {
   openDevTools: () => ipcRenderer.send('open-dev-tools'),
   openHelp: () => ipcRenderer.send('open-help'),
   loadingDone: (callback) => ipcRenderer.on('loading-done', callback),
-  readDirectory: (directoryPath) => ipcRenderer.send('read-directory', directoryPath),
+  rendererReady: () => ipcRenderer.send('renderer-ready'),
+  // readDirectory: (directoryPath) => ipcRenderer.send('read-directory', directoryPath),
 
-  /**
-   * Sends data through the specified channel if it's valid.
-   * This is the same as using the ipcRenderer method
-   * Alternatively, you can use ipcRenderer.send
-   *
-   * @param {string} channel - the channel to send data through
-   * @param {any} data - the data to send
-   */
-  send: (channel, data) => {
-    let validChannels = ['renderer-ready'] // Extend this list with more channels as needed
-    if (validChannels.includes(channel)) {
-      ipcRenderer.send(channel, data)
-    }
-  }
-
+  getAppPath: () => ipcRenderer.invoke('get-app-path'),
+  fetchFiles: (path) => ipcRenderer.invoke('read-directory', path),
+  onDirectoryRead: (callback) => ipcRenderer.on('directory-contents', callback)
 })

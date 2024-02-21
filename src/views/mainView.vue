@@ -59,7 +59,7 @@ export default {
     }
   },
   mounted() {
-    window.electronAPI.send('renderer-ready')
+    window.electronAPI.rendererReady('renderer-ready')
     window.electronAPI.loadingDone(() => {
       this.appIsLoading = false
     })

@@ -40,7 +40,8 @@
     "monaco-editor": "^0.46.0",
     "prettier": "^3.2.5",
     "vite-plugin-monaco-editor": "^1.1.0",
-    "vite-plugin-vuetify": "^2.0.1"
+    "vite-plugin-vuetify": "^2.0.1",
+    "vue-tree-list": "^1.5.0"
   },
   "dependencies": {
     "electron-edge-js": "^28.0.1",
