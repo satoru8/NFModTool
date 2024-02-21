@@ -4,8 +4,9 @@
     v-model="contextMenu.show"
     :position-x="contextMenu.x"
     :position-y="contextMenu.y"
+    :style="{ left: contextMenu.x + 'px', top: contextMenu.y + 'px' }"
   >
-    <v-list>
+    <v-list class="contextMenuList">
       <v-list-item @click="handleMenuItemClick('Option1')">
         <v-list-item-title>Option 1</v-list-item-title>
       </v-list-item>
@@ -18,6 +19,7 @@
 
 <script>
 export default {
+  name: 'ContextMenu',
   data() {
     return {
       contextMenu: {
@@ -52,11 +54,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.contextMenu {
-  border: 1px solid #ccc;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  z-index: 2;
-}
-</style>

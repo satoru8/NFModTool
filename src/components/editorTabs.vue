@@ -18,6 +18,7 @@
   
   <script>
   export default {
+    name: 'EditorTabs',
     props: {
       tabs: Array,
       activeTab: String,

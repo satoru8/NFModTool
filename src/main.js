@@ -164,6 +164,54 @@ app.whenReady().then(async () => {
 //   }
 // });
 
+// ipcMain.handle('read-directory', async (event, itemPath) => {
+//   try {
+//     const files = await fs.promises.readdir(itemPath, { withFileTypes: true });
+//     const transformedFiles = await Promise.all(
+//       files.map(async (file) => {
+//         const isDirectory = file.isDirectory();
+//         const name = file.name;
+//         const fullPath = path.join(itemPath, name);
+
+//         if (isDirectory) {
+//           const children = await readDirectoryRecursively(fullPath);
+//           return { name, isDirectory, children };
+//         } else {
+//           return { name, isDirectory: false };
+//         }
+//       })
+//     );
+
+//     return transformedFiles;
+//   } catch (error) {
+//     console.error('Failed to read directory:', error);
+//     throw error; // This will be caught as a rejected promise in the renderer process
+//   }
+// });
+
+// ipcMain.handle('get-app-path', () => app.getAppPath());
+
+
+// async function readDirectoryRecursively(directoryPath) {
+//   const files = await fs.promises.readdir(directoryPath, { withFileTypes: true });
+//   const transformedFiles = await Promise.all(
+//     files.map(async (file) => {
+//       const isDirectory = file.isDirectory();
+//       const name = file.name;
+//       const fullPath = path.join(directoryPath, name);
+
+//       if (isDirectory) {
+//         const children = await readDirectoryRecursively(fullPath);
+//         return { name, isDirectory, children };
+//       } else {
+//         return { name, isDirectory: false };
+//       }
+//     })
+//   );
+
+//   return transformedFiles;
+// }
+
 ipcMain.handle('read-directory', async (event, itemPath) => {
   try {
     const files = await fs.promises.readdir(itemPath, { withFileTypes: true });
@@ -182,15 +230,14 @@ ipcMain.handle('read-directory', async (event, itemPath) => {
       })
     );
 
-    return transformedFiles;
+    return transformedFiles || []; 
   } catch (error) {
     console.error('Failed to read directory:', error);
-    throw error; // This will be caught as a rejected promise in the renderer process
+    throw error; 
   }
 });
 
 ipcMain.handle('get-app-path', () => app.getAppPath());
-
 
 async function readDirectoryRecursively(directoryPath) {
   const files = await fs.promises.readdir(directoryPath, { withFileTypes: true });
@@ -209,5 +256,5 @@ async function readDirectoryRecursively(directoryPath) {
     })
   );
 
-  return transformedFiles;
+  return transformedFiles || [];
 }

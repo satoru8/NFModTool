@@ -31,6 +31,10 @@ html {
   background: var(--backgroundColor);
 }
 
+
+/* 
+**  Titlebar
+*/
 #titleBar {
   display: flex;
   background-color: #2f3241;
@@ -60,6 +64,9 @@ html {
   margin-left: 10px;
 }
 
+/* 
+**  Main
+*/
 #appMain {
   display: grid;
   grid-template-columns: 0.5fr 1fr 0.5fr;
@@ -121,27 +128,68 @@ html {
   grid-row: 2 / 5;
 }
 
+.midPanelInner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
 #rightPanel {
   grid-column: 3 / 4;
   grid-row: 2 / 5;
 }
 
+/* 
+**  Settings
+*/
 #settingsPanel {
   grid-row: 2 / 5;
   grid-column: 1 / 4;
- }
- 
- .settingsCard,
- .settingsContainer {
-   max-width: none;
-   height: 100%;
- }
+}
 
+.settingsCard,
+.settingsContainer {
+  max-width: none;
+  height: 100%;
+}
+
+/* 
+**  Context Menu
+*/
+.contextMenu {
+  width: 100px;
+  height: 0;
+}
+
+.contextMenuList {
+  border: 1px solid rgba(var(--v-border-color), var(--v-border-opacity));
+}
+
+/* 
+**  Monaco
+*/
 .monaco-editor,
 .monaco-diff-editor,
 .monaco-component,
 .overflow-guard {
   width: 100% !important;
+}
+
+.editorContainer {
+  width: 100%;
+  height: 100%;
+}
+
+/* 
+**  Loading Screen
+*/
+#loadingScreen {
+  grid-column: 1 / 4;
+  grid-row: 1 / 5;
+  z-index: 1000;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  background-color: var(--backgroundColor);
 }
 
 
@@ -150,13 +198,4 @@ html {
 */
 .v-overlay__scrim {
   background: #000;
-}
-
-#loadingScreen {
-  grid-column: 1 / 4;
-  grid-row: 1 / 5;
-  z-index: 1000;
-  max-width: 100% !important;
-  max-height: 100% !important;
-  background-color: var(--backgroundColor);
 }

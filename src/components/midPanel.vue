@@ -93,16 +93,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.midPanelInner {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-.editorContainer {
-  width: 100%;
-  height: 100%;
-}
-</style>

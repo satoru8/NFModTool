@@ -55,6 +55,7 @@ import CustomAlert from './customAlert.vue'
 import { editorManager } from '../js/editorManager'
 
 export default {
+  name: 'RightPanel',
   components: {
     FileInput,
     CustomAlert
