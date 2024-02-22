@@ -31,8 +31,7 @@ html {
   background: var(--backgroundColor);
 }
 
-
-/* 
+/*
 **  Titlebar
 */
 #titleBar {
@@ -62,9 +61,11 @@ html {
   height: 30px;
   width: 30px;
   margin-left: 10px;
+
+  display: none;
 }
 
-/* 
+/*
 **  Main
 */
 #appMain {
@@ -79,6 +80,8 @@ html {
 #leftPanel,
 #midPanel,
 #bottomPanel,
+#rightPanel,
+#visualEditor,
 #settingsPanel {
   display: flex;
   align-items: center;
@@ -88,17 +91,24 @@ html {
 .leftPanelInner,
 .midPanelInner,
 .rightPanelInner,
+.visualEditorInner,
 .settingsPanelInner {
   height: 100%;
   width: 100%;
 }
 
+/*
+**  Top
+*/
 #topPanel {
   grid-column: 1 / 4;
   grid-row: 1 / 2;
   border-bottom: 1px solid rgba(var(--v-border-color), var(--v-border-opacity));
 }
 
+/*
+**  Left
+*/
 #leftPanel {
   grid-column: 1 / 2;
   grid-row: 2 / 5;
@@ -123,23 +133,31 @@ html {
   min-width: 60px;
 }
 
+/*
+**  Mid
+*/
 #midPanel {
   grid-column: 2 / 3;
   grid-row: 2 / 5;
 }
 
-.midPanelInner {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
+/*
+**  Right
+*/
 #rightPanel {
   grid-column: 3 / 4;
   grid-row: 2 / 5;
 }
 
-/* 
+/*
+**  Visual Editor
+*/
+#visualEditor {
+  grid-row: 2 / 5;
+  grid-column: 1 / 4;
+}
+
+/*
 **  Settings
 */
 #settingsPanel {
@@ -153,7 +171,7 @@ html {
   height: 100%;
 }
 
-/* 
+/*
 **  Context Menu
 */
 .contextMenu {
@@ -165,7 +183,7 @@ html {
   border: 1px solid rgba(var(--v-border-color), var(--v-border-opacity));
 }
 
-/* 
+/*
 **  Monaco
 */
 .monaco-editor,
@@ -180,7 +198,7 @@ html {
   height: 100%;
 }
 
-/* 
+/*
 **  Loading Screen
 */
 #loadingScreen {
@@ -193,7 +211,7 @@ html {
 }
 
 
-/* 
+/*
 **  Restyles
 */
 .v-overlay__scrim {
