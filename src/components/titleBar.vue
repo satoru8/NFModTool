@@ -1,63 +1,9 @@
 <template>
   <div id="titleBar">
-    <div class="d-flex justify-space-around">
-    <v-menu>
-      <template v-slot:activator="{ props }">
-        <v-btn
-          color="primary"
-          v-bind="props"
-        >
-          Activator slot
-        </v-btn>
-      </template>
-      <v-list>
-        <v-list-item
-          v-for="(item, index) in items"
-          :key="index"
-          :value="index"
-        >
-          <v-list-item-title>{{ item.title }}</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-menu>
 
-    <v-btn
-      color="primary"
-    >
-      Parent activator
+    <TitleMenu title="File" :menuItems="fileMenuItems" @select="handleMenuSelect" />
+    <TitleMenu title="Edit" :menuItems="editMenuItems" @select="handleMenuSelect" />
 
-      <v-menu activator="parent">
-        <v-list>
-          <v-list-item
-            v-for="(item, index) in items"
-            :key="index"
-            :value="index"
-          >
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
-    </v-btn>
-
-    <v-btn
-      id="menu-activator"
-      color="primary"
-    >
-      Sibling activator
-    </v-btn>
-
-    <v-menu activator="#menu-activator">
-      <v-list>
-        <v-list-item
-          v-for="(item, index) in items"
-          :key="index"
-          :value="index"
-        >
-          <v-list-item-title>{{ item.title }}</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-menu>
-  </div>
     <div class="title">
       <span id="titleText">{{ title }}</span>
       <img id="logo" :src="logoSrc" alt="NFModTool" />
@@ -78,17 +24,27 @@
 </template>
 
 <script>
+import TitleMenu from './titleMenu.vue';
+
 export default {
   name: 'TitleBar',
+  components: {
+    TitleMenu
+  },
   data() {
     return {
-      items: [
-        { title: 'Click Me' },
-        { title: 'Click Me' },
-        { title: 'Click Me' },
-        { title: 'Click Me 2' },
+      fileMenuItems: [
+        { id: 1, title: 'New File' },
+        { id: 2, title: 'New Window' },
+        { id: 3, title: 'Open Folder' },
+        { id: 4, title: 'Save' },
       ],
-      // ... other data properties
+      editMenuItems: [
+        { id: 5, title: 'Undo' },
+        { id: 6, title: 'Redo' },
+        { id: 7, title: 'Copy' },
+        { id: 8, title: 'Paste' },
+      ],
     };
   },
   props: {
@@ -133,7 +89,21 @@ export default {
     },
     openDevTools() {
       window.electronAPI.openDevTools();
-    }
+    },
+    handleMenuSelect(itemId) {
+      const actions = {
+        1: 'New File',
+        2: 'New Window',
+        3: 'Open Folder',
+        4: 'Save',
+        5: 'Undo',
+        6: 'Redo',
+        7: 'Copy',
+        8: 'Paste',
+      };
+
+      console.log(actions[itemId]);
+    },
   }
 };
 </script>
