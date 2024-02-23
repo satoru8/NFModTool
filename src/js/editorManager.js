@@ -15,6 +15,22 @@ class EditorManager {
     return this.editors.get(id)
   }
 
+  getActiveEditorId() {
+    return [...this.editors.values()].find(editor => editor.document.isDirty).id
+  }
+
+  getActiveEditor() {
+    return [...this.editors.values()].find(editor => editor.document.isDirty)
+  }
+
+  getEditorByUri(uri) {
+    for (const editor of this.editors.values()) {
+      if (editor.document.uri === uri) {
+        return editor
+      }
+    }
+  }
+
   removeEditor(id) {
     const editor = this.editors.get(id);
     if (editor) {

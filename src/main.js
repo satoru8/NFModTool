@@ -1,6 +1,7 @@
 const { app, shell, Tray, Menu, nativeImage, BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
 const fs = require('fs')
+import { fileURLToPath } from 'url'
 // const edge = require('electron-edge-js')
 
 // Quit the app when Squirrel is performing the installation/update process.
@@ -20,17 +21,15 @@ const createWindow = () => {
     titleBarStyle: 'hidden',
     icon: path.join(__dirname, './logo.png'),
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js')
+      preload: fileURLToPath(new URL('../preload/index.js', import.meta.url))
     }
   })
-
-  // eslint-disable-next-line no-undef
-  if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
-    // eslint-disable-next-line no-undef
-    mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL)
+  
+  // mainWindow.loadFile(path.join(__dirname, '../renderer/index.html'))
+  if (!app.isPackaged && process.env['ELECTRON_RENDERER_URL']) {
+    mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'])
   } else {
-    // eslint-disable-next-line no-undef
-    mainWindow.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`))
+    mainWindow.loadFile(path.join(__dirname, '../renderer/index.html'))
   }
 }
 

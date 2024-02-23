@@ -68,13 +68,13 @@ export default {
   },
   methods: {
    onFileChanged(fileContent) {
-      const editorId = 'mainEditor'
-      const editor = editorManager.getEditor(editorId)
+      const editor = editorManager.getEditor(this.tab)
 
       if (editor) {
         editor.setValue(fileContent);
       } else {
-        console.error('Editor not found.')
+        console.error('Editor:', editor);
+        console.error('Editor IDs:', editorManager.getEditorIds());
       }
     },
     closeAlert() {

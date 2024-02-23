@@ -15,6 +15,8 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn @click="saveSettings" color="primary">Save</v-btn>
+             <!-- reset settings -->
+            <v-btn @click="resetSettings" textarea color="primary">Reset</v-btn>
           </v-card-actions>
         </v-card>
       </v-container>
@@ -39,6 +41,11 @@ export default {
       const settings = await window.electronAPI.loadSettings();
       this.setting1 = settings.setting1 || '';
       this.setting2 = settings.setting2 || '';
+    },
+    resetSettings() {
+      window.electronAPI.loadSettings();
+      this.loadSettings();
+      console.log('Settings reset.');
     }
   },
   mounted() {

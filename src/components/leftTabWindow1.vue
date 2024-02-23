@@ -18,13 +18,15 @@ export default {
 
     const fetchFilesAndTransform = async () => {
       try {
-        const files = await window.electronAPI.fetchFiles('E:/Repo/NFModTool/src/js')
-        const transformed = transformFileStructureToTree(files)
-        fileTree.value = transformed
-
+        const appPath = await window.electronAPI.getAppPath() 
+        const contentPath = '\\src\\js'
+        const filePath = appPath + contentPath
+        const files = await window.electronAPI.fetchFiles(filePath)
         console.log('Original file structure:', files)
+        const transformed = transformFileStructureToTree(files)
         console.log('Transformed file structure:', transformed)
-        console.log('Transformed file tree:', fileTree.value)
+        fileTree.value = transformed
+        console.log('File tree:', fileTree.value)
       } catch (error) {
         console.error('Failed to fetch files or get app path:', error)
       }
@@ -50,29 +52,29 @@ function transformFileStructureToTree(files, parentPath = '') {
     return;
   }
 
-  // const transformedFiles = files
-  //   .filter((file) => !file.error)
-  //   .flatMap((file) => {
-  //     const path = parentPath + '/' + file.name;
-
-  //     const node = {
-  //       name: file.name,
-  //       isDirectory: file.isDirectory,
-  //     };
-
-  //     if (file.isDirectory && file.children) {
-  //       node.children = transformFileStructureToTree(file.children, path);
-  //     }
-
-  //     return node;
-  //   });
-
   const transformedFiles = files
-  .filter((file) => !file.error)
-  .map((file) => ({
-    name: file.name,
-    isDirectory: file.isDirectory,
-  }));
+    .filter((file) => !file.error)
+    .map((file) => {
+      const path = parentPath + '/' + file.name;
+
+      const node = {
+        name: file.name,
+        isDirectory: file.isDirectory,
+      };
+
+      if (file.isDirectory && file.children) {
+        node.children = transformFileStructureToTree(file.children, path);
+      }
+
+      return node;
+    });
+
+  // const transformedFiles = files
+  // .filter((file) => !file.error)
+  // .map((file) => ({
+  //   name: file.name,
+  //   isDirectory: file.isDirectory,
+  // }));
 
   return transformedFiles;
 }

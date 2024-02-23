@@ -3,20 +3,25 @@
   "productName": "NFModTool",
   "version": "0.0.1",
   "description": "Modding Tool for Noble Fates",
-  "main": ".vite/build/main.js",
+  "main": "./dist/main/index.js",
+  "repository": "https://gitlab.com/satoru8/nfmodtool",
+  "homepage": "https://gitlab.com/satoru8/nfmodtool",
   "scripts": {
     "update all": "npm update && npm fund",
-    "start": "electron-forge start --enable-logging",
-    "package": "electron-forge package",
-    "build": "electron-forge make",
-    "publish": "electron-forge publish",
+    "start": "electron-vite preview --outDir=dist",
+    "dev": "electron-vite dev --outDir=dist -w",
+    "package": "electron-vite build --outDir=dist && electron-forge package",
+    "make ": "electron-vite build --outDir=dist && electron-forge make",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --ignore-path .gitignore",
-    "prettier": "prettier --write src/",
-    "dev vite": "vite",
-    "build vite": "vite build",
-    "prepackage vite": "npm run build:vite"
+    "prettier": "prettier --write src/"
   },
-  "keywords": [],
+  "keywords": [
+    "electron",
+    "vite",
+    "vue",
+    "modding",
+    "noble fates"
+  ],
   "author": {
     "name": "Sato",
     "email": "katsuryoku2@gmail.com"
@@ -34,6 +39,7 @@
     "@vitejs/plugin-vue": "^5.0.4",
     "@vue/eslint-config-prettier": "^9.0.0",
     "electron": "28.2.2",
+    "electron-vite": "^2.0.0",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-vue": "^9.21.1",
