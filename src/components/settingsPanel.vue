@@ -1,14 +1,15 @@
 <template>
   <div id="settingsPanel">
     <div class="settingsPanelInner">
-      <v-container v-model="showSettings" class="settingsContainer pa-0">
+      <v-container class="settingsContainer pa-0">
+        <p>Octdat Folder: {{ setting2 }}</p>
         <v-card class="settingsCard">
           <v-container>
             <v-row>
-              <v-switch color="primary" label="Setting 1" v-model="setting1"></v-switch>
+              <v-text-field color="primary" label="NF Mod Folder" v-model="setting1"></v-text-field>
             </v-row>
             <v-row>
-              <v-switch color="primary" label="Setting 2" v-model="setting2"></v-switch>
+              <v-text-field color="primary" label="NF Octdat Folder" v-model="setting2"></v-text-field>
             </v-row>
           </v-container>
           <v-card-actions>
@@ -26,27 +27,22 @@ export default {
   name: 'SettingsPanel',
   data() {
     return {
-      showSettings: false,
-      setting1: false,
-      setting2: false
+      setting1: '',
+      setting2: ''
     }
   },
   methods: {
-    // toggleSettings() {
-    //   this.showSettings = !this.showSettings
-    // },
-    // openSettings() {
-    //   this.showSettings = true
-    // },
-    // closeSettings() {
-    //   this.showSettings = false
-    // },
-    saveSettings() {
-      // example: this.$emit('settings-saved', { setting1: this.setting1, setting2: this.setting2 });
+    async saveSettings() {
+      window.electronAPI.saveSettings({ setting1: this.setting1, setting2: this.setting2 });
+    },
+    async loadSettings() {
+      const settings = await window.electronAPI.loadSettings();
+      this.setting1 = settings.setting1 || '';
+      this.setting2 = settings.setting2 || '';
     }
   },
-  // mounted() {
-  //   this.openSettings()
-  // }
+  mounted() {
+    this.loadSettings()
+  }
 }
 </script>

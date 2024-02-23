@@ -65,8 +65,11 @@ app.on('activate', () => {
 //   methodName: 'AnalyzeAssembly'
 // })
 
-// Title bar icons
+// IPC events
+ipcMain.handle('get-app-path', () => app.getAppPath());
 
+
+// Title bar icons
 ipcMain.on('close-window', () => {
   BrowserWindow.getFocusedWindow()?.close();
 });
@@ -123,6 +126,73 @@ const createTray = () => {
   })
 }
 
+// Settings
+const SETTINGS_FILE = path.join(app.getPath('userData'), 'settings.json');
+
+function saveSettings(settings) {
+  fs.writeFileSync(SETTINGS_FILE, JSON.stringify(settings, null, 2), 'utf8');
+}
+
+ipcMain.on('save-settings', (event, settings) => {
+  saveSettings(settings);
+});
+
+ipcMain.handle('load-settings', async () => {
+  if (fs.existsSync(SETTINGS_FILE)) {
+    return JSON.parse(fs.readFileSync(SETTINGS_FILE, 'utf8'));
+  }
+  return {};
+});
+
+// File Manager
+ipcMain.handle('read-directory', async (event, itemPath) => {
+  try {
+    if (!fs.existsSync(itemPath)) {
+      throw new Error(`Item does not exist: ${itemPath}`);
+    }
+    const files = await fs.promises.readdir(itemPath, { withFileTypes: true });
+    const transformedFiles = await Promise.all(
+      files.map(async (file) => {
+        const isDirectory = file.isDirectory();
+        const name = file.name;
+        const fullPath = path.join(itemPath, name);
+
+        if (isDirectory) {
+          const children = await readDirectoryRecursively(fullPath);
+          return { name, isDirectory, children };
+        } else {
+          return { name, isDirectory: false };
+        }
+      })
+    );
+
+    return transformedFiles || []; 
+  } catch (error) {
+    console.error('Failed to read directory:', error);
+    throw error; 
+  }
+});
+
+async function readDirectoryRecursively(directoryPath) {
+  const files = await fs.promises.readdir(directoryPath, { withFileTypes: true });
+  const transformedFiles = await Promise.all(
+    files.map(async (file) => {
+      const isDirectory = file.isDirectory();
+      const name = file.name;
+      const fullPath = path.join(directoryPath, name);
+
+      if (isDirectory) {
+        const children = await readDirectoryRecursively(fullPath);
+        return { name, isDirectory, children };
+      } else {
+        return { name, isDirectory: false };
+      }
+    })
+  );
+
+  return transformedFiles || [];
+}
+
 app.whenReady().then(async () => {
 
   createTray()
@@ -148,113 +218,3 @@ app.whenReady().then(async () => {
   //   }
   // })
 })
-
-// Read directory
-// ipcMain.handle('read-directory', async ( path) => {
-//   try {
-//     const files = await fs.promises.readdir(path, { withFileTypes: true });
-
-//     return files.map((file) => ({
-//       name: file.name,
-//       path: path + '/' + file.name,
-//       isDirectory: file.isDirectory(),
-//     }));
-//   } catch (error) {
-//     return { error: error.message };
-//   }
-// });
-
-// ipcMain.handle('read-directory', async (event, itemPath) => {
-//   try {
-//     const files = await fs.promises.readdir(itemPath, { withFileTypes: true });
-//     const transformedFiles = await Promise.all(
-//       files.map(async (file) => {
-//         const isDirectory = file.isDirectory();
-//         const name = file.name;
-//         const fullPath = path.join(itemPath, name);
-
-//         if (isDirectory) {
-//           const children = await readDirectoryRecursively(fullPath);
-//           return { name, isDirectory, children };
-//         } else {
-//           return { name, isDirectory: false };
-//         }
-//       })
-//     );
-
-//     return transformedFiles;
-//   } catch (error) {
-//     console.error('Failed to read directory:', error);
-//     throw error; // This will be caught as a rejected promise in the renderer process
-//   }
-// });
-
-// ipcMain.handle('get-app-path', () => app.getAppPath());
-
-
-// async function readDirectoryRecursively(directoryPath) {
-//   const files = await fs.promises.readdir(directoryPath, { withFileTypes: true });
-//   const transformedFiles = await Promise.all(
-//     files.map(async (file) => {
-//       const isDirectory = file.isDirectory();
-//       const name = file.name;
-//       const fullPath = path.join(directoryPath, name);
-
-//       if (isDirectory) {
-//         const children = await readDirectoryRecursively(fullPath);
-//         return { name, isDirectory, children };
-//       } else {
-//         return { name, isDirectory: false };
-//       }
-//     })
-//   );
-
-//   return transformedFiles;
-// }
-
-ipcMain.handle('read-directory', async (event, itemPath) => {
-  try {
-    const files = await fs.promises.readdir(itemPath, { withFileTypes: true });
-    const transformedFiles = await Promise.all(
-      files.map(async (file) => {
-        const isDirectory = file.isDirectory();
-        const name = file.name;
-        const fullPath = path.join(itemPath, name);
-
-        if (isDirectory) {
-          const children = await readDirectoryRecursively(fullPath);
-          return { name, isDirectory, children };
-        } else {
-          return { name, isDirectory: false };
-        }
-      })
-    );
-
-    return transformedFiles || []; 
-  } catch (error) {
-    console.error('Failed to read directory:', error);
-    throw error; 
-  }
-});
-
-ipcMain.handle('get-app-path', () => app.getAppPath());
-
-async function readDirectoryRecursively(directoryPath) {
-  const files = await fs.promises.readdir(directoryPath, { withFileTypes: true });
-  const transformedFiles = await Promise.all(
-    files.map(async (file) => {
-      const isDirectory = file.isDirectory();
-      const name = file.name;
-      const fullPath = path.join(directoryPath, name);
-
-      if (isDirectory) {
-        const children = await readDirectoryRecursively(fullPath);
-        return { name, isDirectory, children };
-      } else {
-        return { name, isDirectory: false };
-      }
-    })
-  );
-
-  return transformedFiles || [];
-}

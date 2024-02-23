@@ -186,6 +186,10 @@ html {
 /*
 **  Monaco
 */
+.editorTabs {
+  max-width: 99%;
+}
+
 .monaco-editor,
 .monaco-diff-editor,
 .monaco-component,
