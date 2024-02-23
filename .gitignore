@@ -91,4 +91,5 @@ typings/
 # Electron-Forge
 out/
 dist/
+octdatidx/octdats
 *.code-workspace
