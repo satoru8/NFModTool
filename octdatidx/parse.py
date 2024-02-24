@@ -5,23 +5,19 @@ from pathlib import Path
 def parse_value(value):
     if value.startswith('[') and value.endswith(']'):
         array_content = value[1:-1].strip()
-
-        array_items = split_by_comma_not_within_brackets(array_content)  
-
-        # Parse individual items 
-        parsed_items = []
-        for item in array_items:
-            parsed_items.append(parse_value(item.strip()))
-
-        return parsed_items
+        array_items = split_by_comma_not_within_brackets(array_content)
+        return [parse_value(item.strip()) for item in array_items]
 
     elif value.startswith('{') and value.endswith('}'):
-        # It's an object, use the main parsing function
         return parse_octdat(value)
     elif '=' in value:
-        # It's a key-value pair, parse it
-        key, inner_value = value.split('=', 1)
-        return {key.strip(): parse_value(inner_value.strip())}
+        key, inner_value = map(str.strip, value.split('=', 1))
+        key_actions = {
+            'id': lambda v: parse_value(v),
+            'type': lambda v: parse_value(v),
+
+        }
+        return {key: key_actions[key](inner_value) if key in key_actions else parse_value(inner_value)}
     elif value.startswith('<') and value.endswith('>'):
         return value
     elif value.isdigit():
@@ -31,19 +27,17 @@ def parse_value(value):
     elif value.lower() in ['true', 'false']:
         return value.lower() == 'true'
     else:
-        return value.strip()
+        return [parse_value(v.strip()) for v in value.split(',')] if ',' in value else value.strip()
 
 def parse_octdat(content):
     data = {}
-    current_id = None
-    current_types = None
-    current_alias = None
-    current_inherit = None
-
-    # Split the content by lines and parse
     lines = content.split('\n')
     for line in lines:
         line = line.strip()
+        # line = re.sub(r'//.*', '', line) # Remove comments
+        if not line:
+            continue
+
         if '=' in line:
             key_value = line.split('=', 1)
             key = key_value[0].strip()
@@ -51,16 +45,25 @@ def parse_octdat(content):
 
             if key == 'id':
                 data['id'] = parse_value(value)
-            elif key == 'types':
-                data['types'] = parse_value(value)
+            elif key == 'type':
+                data['type'] = parse_value(value)
             elif key == 'alias':
                 data['alias'] = parse_value(value)
             elif key == 'inherit':
                 data['inherit'] = parse_value(value)
+            elif key == 'attributes':
+                data[key] = parse_value(value) 
+            elif key in ["activation", "targetType", "actions"]:
+                data[key] = parse_octdat(value)  # Nested objects
+            elif key == 'effect' and value.startswith('<') and value.endswith('>'):
+                data[key] = value[1:-1]  # Handle references  
             else:
-                data[key] = parse_value(value)  
+                data[key] = parse_value(value) 
 
-    return data
+    return data 
+
+def parse_array(lines):
+    return [parse_value(line.strip()) for line in lines if line != ']']
 
 def split_by_comma_not_within_brackets(text):
     parts = []
@@ -101,13 +104,16 @@ def extract_top_level_objects(content):
     return objects
 
 def parse_file_content(content):
-    top_level_objects = extract_top_level_objects(content)
-    return [parse_octdat(obj[1:-1]) for obj in top_level_objects]
+    return [parse_octdat(obj[1:-1]) for obj in extract_top_level_objects(content)]
 
 def parse_octdat_file(filepath):
-    with open(filepath, 'r') as file:
-        content = file.read()
-        return parse_file_content(content)
+    try:
+        with open(filepath, 'r') as file:
+            content = file.read()
+            return parse_file_content(content)
+    except Exception as e:
+        print(f"Error processing file {filepath}: {e}")
+        return []
 
 def find_and_parse_octdats(directory):
     octdat_files = Path(directory).rglob('*.octdat')
@@ -118,10 +124,6 @@ def find_and_parse_octdats(directory):
         all_data.extend([
             {
                 "filename": octdat_file.name,
-                "id": obj.get('id', None),
-                "type": obj.get('types', None),
-                "alias": obj.get('alias', None),
-                "inherit": obj.get('inherit', None),
                 "path": str(octdat_file),
                 "data": obj
             } for obj in parsed_data
