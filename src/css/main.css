@@ -139,6 +139,8 @@ html {
 #midPanel {
   grid-column: 2 / 3;
   grid-row: 2 / 5;
+  overflow-x: auto;
+  overflow-y: hidden
 }
 
 /*
@@ -187,7 +189,8 @@ html {
 **  Monaco
 */
 .editorTabs {
-  max-width: 99%;
+  height: 30px;
+  align-items: center
 }
 
 .monaco-editor,
