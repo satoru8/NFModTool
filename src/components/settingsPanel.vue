@@ -9,13 +9,17 @@
               <v-text-field color="primary" label="NF Mod Folder" v-model="setting1"></v-text-field>
             </v-row>
             <v-row>
-              <v-text-field color="primary" label="NF Octdat Folder" v-model="setting2"></v-text-field>
+              <v-text-field
+                color="primary"
+                label="NF Octdat Folder"
+                v-model="setting2"
+              ></v-text-field>
             </v-row>
           </v-container>
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn @click="saveSettings" color="primary">Save</v-btn>
-             <!-- reset settings -->
+            <!-- reset settings -->
             <v-btn @click="resetSettings" textarea color="primary">Reset</v-btn>
           </v-card-actions>
         </v-card>
@@ -35,17 +39,17 @@ export default {
   },
   methods: {
     async saveSettings() {
-      window.electronAPI.saveSettings({ setting1: this.setting1, setting2: this.setting2 });
+      window.electronAPI.saveSettings({ setting1: this.setting1, setting2: this.setting2 })
     },
     async loadSettings() {
-      const settings = await window.electronAPI.loadSettings();
-      this.setting1 = settings.setting1 || '';
-      this.setting2 = settings.setting2 || '';
+      const settings = await window.electronAPI.loadSettings()
+      this.setting1 = settings.setting1 || ''
+      this.setting2 = settings.setting2 || ''
     },
     resetSettings() {
-      window.electronAPI.loadSettings();
-      this.loadSettings();
-      console.log('Settings reset.');
+      window.electronAPI.loadSettings()
+      this.loadSettings()
+      console.log('Settings reset.')
     }
   },
   mounted() {

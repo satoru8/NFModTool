@@ -18,9 +18,11 @@ export default {
 
     const fetchFilesAndTransform = async () => {
       try {
-        const appPath = await window.electronAPI.getAppPath() 
+        const appPath = await window.electronAPI.getAppPath()
         const contentPath = '\\src\\js'
         const filePath = appPath + contentPath
+
+        console.log('File path:', filePath)
         const files = await window.electronAPI.fetchFiles(filePath)
         console.log('Original file structure:', files)
         const transformed = transformFileStructureToTree(files)
@@ -28,7 +30,7 @@ export default {
         fileTree.value = transformed
         console.log('File tree:', fileTree.value)
       } catch (error) {
-        console.error('Failed to fetch files or get app path:', error)
+        console.error('Failed to fetch files:', error)
       }
     }
 
@@ -48,26 +50,26 @@ export default {
 }
 function transformFileStructureToTree(files, parentPath = '') {
   if (!files || files.length === 0) {
-    console.error('Files are undefined or empty.');
-    return;
+    console.error('Files are undefined or empty.')
+    return
   }
 
   const transformedFiles = files
     .filter((file) => !file.error)
     .map((file) => {
-      const path = parentPath + '/' + file.name;
+      const path = parentPath + '/' + file.name
 
       const node = {
         name: file.name,
-        isDirectory: file.isDirectory,
-      };
-
-      if (file.isDirectory && file.children) {
-        node.children = transformFileStructureToTree(file.children, path);
+        isDirectory: file.isDirectory
       }
 
-      return node;
-    });
+      if (file.isDirectory && file.children) {
+        node.children = transformFileStructureToTree(file.children, path)
+      }
+
+      return node
+    })
 
   // const transformedFiles = files
   // .filter((file) => !file.error)
@@ -76,6 +78,6 @@ function transformFileStructureToTree(files, parentPath = '') {
   //   isDirectory: file.isDirectory,
   // }));
 
-  return transformedFiles;
+  return transformedFiles
 }
 </script>

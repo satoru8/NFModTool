@@ -90,7 +90,7 @@ export default {
           this.showAlert = true
           return
         }
-        this.readFile(file);
+        this.readFile(file)
         // this.$emit('fileChanged', file)
       }
     },
@@ -106,7 +106,7 @@ export default {
         const file = files[0]
         if (this.isValidFile(file)) {
           this.readFile(file)
-        } else {          
+        } else {
           this.showAlert = true
         }
       }

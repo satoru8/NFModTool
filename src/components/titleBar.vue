@@ -1,6 +1,5 @@
 <template>
   <div id="titleBar">
-
     <TitleMenu title="File" :menuItems="fileMenuItems" @select="handleMenuSelect" />
     <TitleMenu title="Edit" :menuItems="editMenuItems" @select="handleMenuSelect" />
 
@@ -24,7 +23,7 @@
 </template>
 
 <script>
-import TitleMenu from './titleMenu.vue';
+import TitleMenu from './titleMenu.vue'
 
 export default {
   name: 'TitleBar',
@@ -37,15 +36,15 @@ export default {
         { id: 1, title: 'New File' },
         { id: 2, title: 'New Window' },
         { id: 3, title: 'Open Folder' },
-        { id: 4, title: 'Save' },
+        { id: 4, title: 'Save' }
       ],
       editMenuItems: [
         { id: 5, title: 'Undo' },
         { id: 6, title: 'Redo' },
         { id: 7, title: 'Copy' },
-        { id: 8, title: 'Paste' },
-      ],
-    };
+        { id: 8, title: 'Paste' }
+      ]
+    }
   },
   props: {
     title: {
@@ -69,26 +68,26 @@ export default {
   },
   methods: {
     emitEvent(action) {
-      if (action === 'close') this.closeWindow();
-      else if (action === 'minimize') this.minimizeWindow();
-      else if (action === 'maximize') this.maximizeWindow();
-      else if (action === 'help') this.openHelp();
-      else if (action === 'devTools') this.openDevTools();
+      if (action === 'close') this.closeWindow()
+      else if (action === 'minimize') this.minimizeWindow()
+      else if (action === 'maximize') this.maximizeWindow()
+      else if (action === 'help') this.openHelp()
+      else if (action === 'devTools') this.openDevTools()
     },
     closeWindow() {
-      window.electronAPI.closeWindow();
+      window.electronAPI.closeWindow()
     },
     minimizeWindow() {
-      window.electronAPI.minimizeWindow();
+      window.electronAPI.minimizeWindow()
     },
     maximizeWindow() {
-      window.electronAPI.maximizeWindow();
+      window.electronAPI.maximizeWindow()
     },
     openHelp() {
-     window.electronAPI.openHelp();
+      window.electronAPI.openHelp()
     },
     openDevTools() {
-      window.electronAPI.openDevTools();
+      window.electronAPI.openDevTools()
     },
     handleMenuSelect(itemId) {
       const actions = {
@@ -99,11 +98,11 @@ export default {
         5: 'Undo',
         6: 'Redo',
         7: 'Copy',
-        8: 'Paste',
-      };
+        8: 'Paste'
+      }
 
-      console.log(actions[itemId]);
-    },
+      console.log(actions[itemId])
+    }
   }
-};
+}
 </script>

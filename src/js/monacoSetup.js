@@ -146,94 +146,97 @@ monaco.languages.registerDocumentFormattingEditProvider('octdat', {
 
 // Dictionary of keywords and their descriptions
 const keywordDescriptions = {
-  'type': 'Defines a new type or class.',
-  'id': 'Specifies the unique identifier for an object.',
-  'inherit': 'Indicates that a class inherits from another class.',
-  'alias': 'Defines an alias for another class.',
-  'true': 'Specifies a true value.',
-  'false': 'Specifies a false value.',
-  'null': 'Specifies null value.',
-};
+  type: 'Defines a new type or class.',
+  id: 'Specifies the unique identifier for an object.',
+  inherit: 'Indicates that a class inherits from another class.',
+  alias: 'Defines an alias for another class.',
+  true: 'Specifies a true value.',
+  false: 'Specifies a false value.',
+  null: 'Specifies null value.'
+}
 
 // Context detection and hover information generation
 monaco.languages.registerHoverProvider('octdat', {
   provideHover: (model, position) => {
-    console.log('Hover triggered at:', position.toString());
+    console.log('Hover triggered at:', position.toString())
 
-    const wordInfo = model.getWordAtPosition(position);
-    console.log('WordInfo:', wordInfo);
+    const wordInfo = model.getWordAtPosition(position)
+    console.log('WordInfo:', wordInfo)
 
-    if (!wordInfo) return null;
+    if (!wordInfo) return null
 
-    const hoveredWord = wordInfo.word;
-    const { context, matchRange } = getContextAndRange(model, position, hoveredWord);
-    console.log('Context:', context);
+    const hoveredWord = wordInfo.word
+    const { context, matchRange } = getContextAndRange(model, position, hoveredWord)
+    console.log('Context:', context)
 
     if (context) {
       return {
         range: matchRange,
-        contents: generateHoverContents(context, model),
-      };
+        contents: generateHoverContents(context, model)
+      }
     }
 
-    return null;
-  },
-});
+    return null
+  }
+})
 
 function getContextAndRange(model, position, hoveredWord) {
-  const lineContent = model.getLineContent(position.lineNumber);
-  const wordRange = model.getWordUntilPosition(position);
-  const matchRange = new monaco.Range(position.lineNumber, wordRange.startColumn, position.lineNumber, wordRange.endColumn);
+  const lineContent = model.getLineContent(position.lineNumber)
+  const wordRange = model.getWordUntilPosition(position)
+  const matchRange = new monaco.Range(
+    position.lineNumber,
+    wordRange.startColumn,
+    position.lineNumber,
+    wordRange.endColumn
+  )
 
   // For complex key-value parsing
   if (lineContent.trim().startsWith('{') || lineContent.trim().startsWith('[')) {
-
     // Implement logic to parse complex structures and determine context
-    return { context: { type: 'complex', name: hoveredWord }, matchRange };
+    return { context: { type: 'complex', name: hoveredWord }, matchRange }
   } else if (lineContent.includes('<') && lineContent.includes('>')) {
-    return { context: { type: 'typeReference', name: hoveredWord }, matchRange };
+    return { context: { type: 'typeReference', name: hoveredWord }, matchRange }
   }
 
   // For simple key-value parsing
-  const keyValuePattern = /^\s*(\w+)\s*=\s*(.*)$/;
-  const match = lineContent.match(keyValuePattern);
+  const keyValuePattern = /^\s*(\w+)\s*=\s*(.*)$/
+  const match = lineContent.match(keyValuePattern)
   if (match) {
-    const key = match[1];
-    const value = match[2];
+    const key = match[1]
+    const value = match[2]
     if (key === hoveredWord || value.includes(hoveredWord)) {
-      return { context: { type: 'keyValue', key, value: hoveredWord }, matchRange };
+      return { context: { type: 'keyValue', key, value: hoveredWord }, matchRange }
     }
   }
 
-  return { context: null, matchRange };
+  return { context: null, matchRange }
 }
 
 function generateHoverContents(context) {
   switch (context.type) {
     case 'complex':
-
-    return [{ value: `**Complex structure**: This starts a complex structure like an object or array.` }];
+      return [
+        { value: `**Complex structure**: This starts a complex structure like an object or array.` }
+      ]
 
     case 'typeReference': {
-      const typeDescription = `**Type reference**: Reference to another defined type or object.`;
+      const typeDescription = `**Type reference**: Reference to another defined type or object.`
 
-      return [{ value: typeDescription }];
+      return [{ value: typeDescription }]
     }
 
     case 'keyValue': {
-      const keyValueDescription = keywordDescriptions[context.key] || "This is a key-value pair.";
-      return [{ value: `**${context.key}**: ${keyValueDescription}` }];
+      const keyValueDescription = keywordDescriptions[context.key] || 'This is a key-value pair.'
+      return [{ value: `**${context.key}**: ${keyValueDescription}` }]
     }
 
     default:
-      return [{ value: "Context-specific information or description here." }];
+      return [{ value: 'Context-specific information or description here.' }]
   }
 }
 
-
 // Load Monaco editor
 export function createEditor(container, options = {}, editorId) {
-
   const editorOptions = {
     ...options,
     value: '',
@@ -241,9 +244,9 @@ export function createEditor(container, options = {}, editorId) {
     theme: options.theme || 'octdatTheme',
     automaticLayout: true,
     defaultEOL: monaco.editor.DefaultEndOfLine.CRLF
-  };
+  }
 
   const editor = monaco.editor.create(container, editorOptions)
   editorManager.addEditor(editorId, editor)
-  return editor;
+  return editor
 }

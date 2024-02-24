@@ -1,10 +1,10 @@
 /**
  * This file will automatically be loaded by vite and run in the "renderer" context.
  * To learn more about the differences between the "main" and the "renderer" context in
- * 
+ *
  * @see https://www.electronjs.org/docs/latest/tutorial/process-model#renderer-process
  * @see https://electronjs.org/docs/tutorial/security
- * 
+ *
  */
 
 // Vuetify loading
@@ -19,5 +19,5 @@ appMain.mount('#mainBody')
 
 console.log('%cNF Mod Tool', 'color: #ae00ff; font-size: 20px; font-weight: bold')
 window.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM fully loaded and parsed')
-  })
+  console.log('DOM fully loaded and parsed')
+})

@@ -140,7 +140,7 @@ html {
   grid-column: 2 / 3;
   grid-row: 2 / 5;
   overflow-x: auto;
-  overflow-y: hidden
+  overflow-y: hidden;
 }
 
 /*
@@ -190,7 +190,7 @@ html {
 */
 .editorTabs {
   height: 30px;
-  align-items: center
+  align-items: center;
 }
 
 .monaco-editor,
@@ -216,7 +216,6 @@ html {
   max-height: 100% !important;
   background-color: var(--backgroundColor);
 }
-
 
 /*
 **  Restyles

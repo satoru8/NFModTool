@@ -16,11 +16,11 @@ class EditorManager {
   }
 
   getActiveEditorId() {
-    return [...this.editors.values()].find(editor => editor.document.isDirty).id
+    return [...this.editors.values()].find((editor) => editor.document.isDirty).id
   }
 
   getActiveEditor() {
-    return [...this.editors.values()].find(editor => editor.document.isDirty)
+    return [...this.editors.values()].find((editor) => editor.document.isDirty)
   }
 
   getEditorByUri(uri) {
@@ -32,10 +32,10 @@ class EditorManager {
   }
 
   removeEditor(id) {
-    const editor = this.editors.get(id);
+    const editor = this.editors.get(id)
     if (editor) {
-      editor.dispose();
-      this.editors.delete(id);
+      editor.dispose()
+      this.editors.delete(id)
     }
   }
 
@@ -44,11 +44,11 @@ class EditorManager {
   }
 
   getEditorIds() {
-    return [...this.editors.keys()];
+    return [...this.editors.keys()]
   }
 
   getEditorCount() {
-    return this.editors.size;
+    return this.editors.size
   }
 }
 

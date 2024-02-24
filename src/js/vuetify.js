@@ -16,7 +16,7 @@ const vuetify = createVuetify({
       nfDark: {
         dark: true,
         colors: {
-          primary: '#9900ff',
+          primary: '#9900ff'
         }
       }
     }

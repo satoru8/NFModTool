@@ -2,7 +2,7 @@
   <div id="appMain">
     <contextMenu @option-clicked="handleContextOption($event)" />
     <loadingScreen id="loadingScreen" v-if="appIsLoading" :is-loading="appIsLoading" />
-    <topPanel @tab-changed="handleTabChange($event)"  />
+    <topPanel @tab-changed="handleTabChange($event)" />
 
     <keep-alive>
       <leftPanel v-if="selectedTab === 'monaco'" :key="selectedTab" />

@@ -10,7 +10,6 @@
           <v-tab value="settings" text="Settings" @click="changeTab('settings')" />
         </v-tabs>
       </v-card>
-
     </div>
   </div>
 </template>
@@ -30,10 +29,10 @@ export default {
   },
   methods: {
     changeTab(tab) {
-      this.tab = tab;
-      this.$emit('tab-changed', tab);
+      this.tab = tab
+      this.$emit('tab-changed', tab)
       if (tab === 'settings') {
-        this.$emit('settings-clicked');
+        this.$emit('settings-clicked')
       }
     }
   }

@@ -58,28 +58,28 @@ export default {
       messages: [],
       textFieldRules: [
         (v) => !!v || 'Text is required',
-        (v) => v.length <= 20 || 'Text must be less than 20 characters',
-      ],
-    };
+        (v) => v.length <= 20 || 'Text must be less than 20 characters'
+      ]
+    }
   },
   methods: {
     addMessage() {
-      const timestamp = new Date().toLocaleTimeString();
-      this.messages.push({ text: this.textFieldValue, timestamp });
-      this.textFieldValue = '';
+      const timestamp = new Date().toLocaleTimeString()
+      this.messages.push({ text: this.textFieldValue, timestamp })
+      this.textFieldValue = ''
     },
     clearMessages() {
-      this.messages = [];
+      this.messages = []
     },
     toggleMessages() {
-      this.showMessages = !this.showMessages;
+      this.showMessages = !this.showMessages
     },
     editMessage(index) {
-      this.messages[index].text = 'Edited message';
+      this.messages[index].text = 'Edited message'
     },
     deleteMessage(index) {
-      this.messages.splice(index, 1);
-    },
-  },
-};
+      this.messages.splice(index, 1)
+    }
+  }
+}
 </script>

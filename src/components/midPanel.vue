@@ -1,7 +1,14 @@
 <template>
   <div id="midPanel">
     <div class="midPanelInner">
-      <EditorTabs show-arrows stacked :tabs="tabs" :activeTab="activeTab" @switchTab="switchTab" @addTab="addTab" />
+      <EditorTabs
+        show-arrows
+        stacked
+        :tabs="tabs"
+        :activeTab="activeTab"
+        @switchTab="switchTab"
+        @addTab="addTab"
+      />
       <div class="editorContainer" ref="editorContainer"></div>
     </div>
   </div>

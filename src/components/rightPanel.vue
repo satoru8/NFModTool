@@ -67,14 +67,14 @@ export default {
     }
   },
   methods: {
-   onFileChanged(fileContent) {
+    onFileChanged(fileContent) {
       const editor = editorManager.getEditor(this.tab)
 
       if (editor) {
-        editor.setValue(fileContent);
+        editor.setValue(fileContent)
       } else {
-        console.error('Editor:', editor);
-        console.error('Editor IDs:', editorManager.getEditorIds());
+        console.error('Editor:', editor)
+        console.error('Editor IDs:', editorManager.getEditorIds())
       }
     },
     closeAlert() {

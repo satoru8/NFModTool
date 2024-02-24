@@ -24,8 +24,7 @@ const createWindow = () => {
       preload: fileURLToPath(new URL('../preload/index.js', import.meta.url))
     }
   })
-  
-  // mainWindow.loadFile(path.join(__dirname, '../renderer/index.html'))
+
   if (!app.isPackaged && process.env['ELECTRON_RENDERER_URL']) {
     mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'])
   } else {
@@ -65,32 +64,31 @@ app.on('activate', () => {
 // })
 
 // IPC events
-ipcMain.handle('get-app-path', () => app.getAppPath());
-
+ipcMain.handle('get-app-path', () => app.getAppPath())
 
 // Title bar icons
 ipcMain.on('close-window', () => {
-  BrowserWindow.getFocusedWindow()?.close();
-});
+  BrowserWindow.getFocusedWindow()?.close()
+})
 
 ipcMain.on('minimize-window', () => {
-  BrowserWindow.getFocusedWindow()?.minimize();
-});
+  BrowserWindow.getFocusedWindow()?.minimize()
+})
 
 ipcMain.on('maximize-window', () => {
-  const window = BrowserWindow.getFocusedWindow(); 
+  const window = BrowserWindow.getFocusedWindow()
   if (window) {
-    window.isMaximized() ? window.restore() : window.maximize();
+    window.isMaximized() ? window.restore() : window.maximize()
   }
 })
 
 ipcMain.on('open-dev-tools', () => {
-  BrowserWindow.getFocusedWindow()?.webContents.openDevTools();
-});
+  BrowserWindow.getFocusedWindow()?.webContents.openDevTools()
+})
 
 ipcMain.on('open-help', () => {
-  shell.openExternal('https://github.com/satoru8/NFModTool');
-});
+  shell.openExternal('https://github.com/satoru8/NFModTool')
+})
 
 // Creates a system tray icon
 let tray
@@ -98,7 +96,6 @@ const iconPath = path.join(__dirname, './logo.png')
 const icon = nativeImage.createFromPath(iconPath)
 
 const createTray = () => {
-
   tray = new Tray(icon)
 
   const contextMenu = Menu.buildFromTemplate([
@@ -126,74 +123,73 @@ const createTray = () => {
 }
 
 // Settings
-const SETTINGS_FILE = path.join(app.getPath('userData'), 'settings.json');
+const SETTINGS_FILE = path.join(app.getPath('userData'), 'settings.json')
 
 function saveSettings(settings) {
-  fs.writeFileSync(SETTINGS_FILE, JSON.stringify(settings, null, 2), 'utf8');
+  fs.writeFileSync(SETTINGS_FILE, JSON.stringify(settings, null, 2), 'utf8')
 }
 
 ipcMain.on('save-settings', (event, settings) => {
-  saveSettings(settings);
-});
+  saveSettings(settings)
+})
 
 ipcMain.handle('load-settings', async () => {
   if (fs.existsSync(SETTINGS_FILE)) {
-    return JSON.parse(fs.readFileSync(SETTINGS_FILE, 'utf8'));
+    return JSON.parse(fs.readFileSync(SETTINGS_FILE, 'utf8'))
   }
-  return {};
-});
+  return {}
+})
 
 // File Manager
 ipcMain.handle('read-directory', async (event, itemPath) => {
   try {
     if (!fs.existsSync(itemPath)) {
-      throw new Error(`Item does not exist: ${itemPath}`);
+      throw new Error(`Item does not exist: ${itemPath}`)
     }
-    const files = await fs.promises.readdir(itemPath, { withFileTypes: true });
+    const files = await fs.promises.readdir(itemPath, { withFileTypes: true })
     const transformedFiles = await Promise.all(
       files.map(async (file) => {
-        const isDirectory = file.isDirectory();
-        const name = file.name;
-        const fullPath = path.join(itemPath, name);
+        const isDirectory = file.isDirectory()
+        const name = file.name
+        const fullPath = path.join(itemPath, name)
 
         if (isDirectory) {
-          const children = await readDirectoryRecursively(fullPath);
-          return { name, isDirectory, children };
+          const children = await readDirectoryRecursively(fullPath)
+          return { name, isDirectory, children }
         } else {
-          return { name, isDirectory: false };
+          return { name, isDirectory: false }
         }
       })
-    );
+    )
 
-    return transformedFiles || []; 
+    return transformedFiles || []
   } catch (error) {
-    console.error('Failed to read directory:', error);
-    throw error; 
+    console.error('Failed to read directory:', error)
+    throw error
   }
-});
+})
 
 async function readDirectoryRecursively(directoryPath) {
-  const files = await fs.promises.readdir(directoryPath, { withFileTypes: true });
+  const files = await fs.promises.readdir(directoryPath, { withFileTypes: true })
   const transformedFiles = await Promise.all(
     files.map(async (file) => {
-      const isDirectory = file.isDirectory();
-      const name = file.name;
-      const fullPath = path.join(directoryPath, name);
+      const isDirectory = file.isDirectory()
+      const name = file.name
+      const fullPath = path.join(directoryPath, name)
 
       if (isDirectory) {
-        const children = await readDirectoryRecursively(fullPath);
-        return { name, isDirectory, children };
+        const children = await readDirectoryRecursively(fullPath)
+        return { name, isDirectory, children }
       } else {
-        return { name, isDirectory: false };
+        return { name, isDirectory: false }
       }
     })
-  );
+  )
 
-  return transformedFiles || [];
+  return transformedFiles || []
 }
 
 app.whenReady().then(async () => {
-
   createTray()
 
   mainWindow.webContents.openDevTools()
