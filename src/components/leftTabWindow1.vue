@@ -1,32 +1,94 @@
 <template>
   <v-card flat class="leftPanelCard">
-    <VueTree v-if="fileTree.length" @change="handleChange" v-model:nodes="fileTree" />
+    <v-card-text>
+      <v-text-field
+        color="primary"
+        density="compact"
+        label="Search"
+        variant="outlined"
+        v-model="searchText"
+        type="text"
+        clearable
+        single-line
+      />
+      <Tree
+        v-if="fileTree.length"
+        v-model:nodes="fileTree"
+        :search-text="searchText"
+        @nodeExpanded="onNodeExpanded"
+        @update:nodes="onUpdate"
+        @nodeClick="onNodeClick"
+        showChildCount
+      />
+    </v-card-text>
   </v-card>
 </template>
 
 <script>
 import { ref, onMounted } from 'vue'
-import VueTree from 'vue3-tree'
+import Tree from 'vue3-tree'
+import 'vue3-tree/dist/style.css'
+import { editorManager } from '../js/editorManager'
 
 export default {
   name: 'Tab1Content',
   components: {
-    VueTree
+    Tree
+  },
+  data() {
+    return {
+      searchText: ''
+    }
+  },
+  methods: {
+    readFile(node) {
+      const reader = new FileReader()
+      reader.onload = (event) => {
+        const fileContent = event.target.result
+        this.$emit('fileChanged', fileContent)
+      }
+      reader.readAsText(node)
+    }
   },
   setup() {
     const fileTree = ref([])
+    const searchText = ref('')
+
+    // const fetchFilesAndTransform = async () => {
+    //   try {
+    //     const appPath = await window.electronAPI.getAppPath()
+    //     const contentPath = '\\src\\'
+    //     const filePath = appPath + contentPath
+
+    //     console.log('File path:', filePath)
+    //     const files = await window.electronAPI.fetchFiles(filePath)
+    //     const transformed = transformFileStructureToTree(files)
+    //     fileTree.value = transformed
+    //     console.log('File tree:', fileTree.value)
+    //   } catch (error) {
+    //     console.error('Failed to fetch files:', error)
+    //   }
+    // }
 
     const fetchFilesAndTransform = async () => {
       try {
         const appPath = await window.electronAPI.getAppPath()
-        const contentPath = '\\src\\js'
+        const contentPath = '\\src\\'
         const filePath = appPath + contentPath
 
-        console.log('File path:', filePath)
         const files = await window.electronAPI.fetchFiles(filePath)
-        console.log('Original file structure:', files)
-        const transformed = transformFileStructureToTree(files)
-        console.log('Transformed file structure:', transformed)
+        const rootFolder = {
+          name: contentPath,
+
+          label: contentPath,
+          path: filePath,
+
+          expandable: true,
+          isDirectory: true,
+          children: files
+        }
+
+        const transformed = transformFileStructureToTree([rootFolder])
         fileTree.value = transformed
         console.log('File tree:', fileTree.value)
       } catch (error) {
@@ -38,13 +100,31 @@ export default {
       fetchFilesAndTransform()
     })
 
-    const handleChange = (node) => {
-      console.log('Selected files:', node)
+    const onNodeExpanded = (node, state) => {
+      console.log('onExpanded State: ', state)
+      console.log('onExpanded Node: ', node)
+    }
+
+    const onUpdate = (nodes) => {
+      console.log('onUpdate:', nodes)
+    }
+
+    const onNodeClick = (node) => {
+      console.log('Node clicked: ', node)
+      
+      if (node.isDirectory) {
+        // expand the node
+        node.expanded = true
+      }
     }
 
     return {
       fileTree,
-      handleChange
+      searchText,
+      fetchFilesAndTransform,
+      onNodeExpanded,
+      onNodeClick,
+      onUpdate
     }
   }
 }
@@ -60,8 +140,10 @@ function transformFileStructureToTree(files, parentPath = '') {
       const path = parentPath + '/' + file.name
 
       const node = {
-        name: file.name,
-        isDirectory: file.isDirectory
+        label: file.name,
+        path: path,
+        isDirectory: file.isDirectory,
+        expandable: file.isDirectory
       }
 
       if (file.isDirectory && file.children) {
@@ -70,13 +152,6 @@ function transformFileStructureToTree(files, parentPath = '') {
 
       return node
     })
-
-  // const transformedFiles = files
-  // .filter((file) => !file.error)
-  // .map((file) => ({
-  //   name: file.name,
-  //   isDirectory: file.isDirectory,
-  // }));
 
   return transformedFiles
 }
