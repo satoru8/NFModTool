@@ -19,7 +19,7 @@ const createWindow = () => {
     minHeight: 800,
     frame: false,
     titleBarStyle: 'hidden',
-    icon: path.join(__dirname, './logo.png'),
+    icon: fileURLToPath(new URL('../renderer/logo.png', import.meta.url)),
     webPreferences: {
       preload: fileURLToPath(new URL('../preload/index.js', import.meta.url))
     }
@@ -106,11 +106,15 @@ ipcMain.on('open-help', () => {
 
 // Creates a system tray icon
 let tray
-const iconPath = path.join(__dirname, './logo.png')
-const icon = nativeImage.createFromPath(iconPath)
+
 
 const createTray = () => {
+  // const iconPath = path.join(app.getAppPath(), './public/logo.png')
+  const iconPath = fileURLToPath(new URL('../renderer/logo.png', import.meta.url))
+  const icon = nativeImage.createFromPath(iconPath)
   tray = new Tray(icon)
+
+  console.log('Tray icon path:', iconPath)
 
   const contextMenu = Menu.buildFromTemplate([
     { label: 'Open', click: () => mainWindow && mainWindow.show() },
@@ -194,17 +198,17 @@ async function readDirectoryRecursively(directoryPath) {
 
       if (isDirectory) {
         const nodes = await readDirectoryRecursively(fullPath)
-        return { name, isDirectory, nodes, icon}
+        return { name, isDirectory, nodes, icon }
       } else {
         return { name, isDirectory: false }
       }
     })
   )
-  
+
   transformedFiles
-  .filter((result) => result.status === 'fulfilled')
-  .map((result) => result.value)
-  .flat() || [];
+    .filter((result) => result.status === 'fulfilled')
+    .map((result) => result.value)
+    .flat() || [];
 
   return transformedFiles
 }
@@ -233,3 +237,5 @@ app.whenReady().then(async () => {
   //   }
   // })
 })
+
+app.setName('Rawrr');
