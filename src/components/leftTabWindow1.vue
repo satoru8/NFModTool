@@ -1,6 +1,15 @@
 <template>
-  <v-card flat class="leftPanelCard">
-    <v-card-text>
+  <v-card flat class="leftPanelCard fileManager">
+    <v-card-text class="fileManagerInner">
+      <v-btn
+        block
+        flat
+        @click="selectDir"
+        text="Select Folder"
+        size="small"
+        prepend-icon="mdi-folder"
+        class="selectFolderBtn"
+      />
       <v-text-field
         color="primary"
         density="compact"
@@ -12,9 +21,13 @@
         single-line
       />
       <Tree
+        class="fileManagerTree"
         v-if="fileTree.length"
         v-model:nodes="fileTree"
         :search-text="searchText"
+        :indentSize="indentSize"
+        :gap="gap"
+        rowHoverBackground="#a8a8a831"
         @nodeExpanded="onNodeExpanded"
         @update:nodes="onUpdate"
         @nodeClick="onNodeClick"
@@ -25,7 +38,7 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import Tree from 'vue3-tree'
 import 'vue3-tree/dist/style.css'
 import { editorManager } from '../js/editorManager'
@@ -35,70 +48,48 @@ export default {
   components: {
     Tree
   },
+
+  props: {
+    gap: {
+      type: Number,
+      default: 0
+    },
+    indentSize: {
+      type: Number,
+      default: 6
+    }
+  },
   data() {
     return {
       searchText: ''
     }
   },
   methods: {
-    readFile(node) {
-      const reader = new FileReader()
-      reader.onload = (event) => {
-        const fileContent = event.target.result
-        this.$emit('fileChanged', fileContent)
-      }
-      reader.readAsText(node)
+    async selectDir() {
+      await this.fetchFilesAndTransform()
     }
   },
   setup() {
     const fileTree = ref([])
-    const searchText = ref('')
 
-    // const fetchFilesAndTransform = async () => {
-    //   try {
-    //     const appPath = await window.electronAPI.getAppPath()
-    //     const contentPath = '\\src\\'
-    //     const filePath = appPath + contentPath
-
-    //     console.log('File path:', filePath)
-    //     const files = await window.electronAPI.fetchFiles(filePath)
-    //     const transformed = transformFileStructureToTree(files)
-    //     fileTree.value = transformed
-    //     console.log('File tree:', fileTree.value)
-    //   } catch (error) {
-    //     console.error('Failed to fetch files:', error)
-    //   }
-    // }
-
-    const fetchFilesAndTransform = async () => {
+    const fetchFilesAndTransform = async function () {
       try {
-        const appPath = await window.electronAPI.getAppPath()
-        const contentPath = '\\src\\'
-        const filePath = appPath + contentPath
-
+        const filePath = await window.electronAPI.selectFolder()
         const files = await window.electronAPI.fetchFiles(filePath)
         const rootFolder = {
-          name: contentPath,
-
-          label: contentPath,
+          name: filePath.split('\\').pop(),
           path: filePath,
-
           expandable: true,
           isDirectory: true,
-          children: files
+          nodes: files
         }
 
         const transformed = transformFileStructureToTree([rootFolder])
         fileTree.value = transformed
-        console.log('File tree:', fileTree.value)
       } catch (error) {
         console.error('Failed to fetch files:', error)
       }
     }
-
-    onMounted(() => {
-      fetchFilesAndTransform()
-    })
 
     const onNodeExpanded = (node, state) => {
       console.log('onExpanded State: ', state)
@@ -110,17 +101,32 @@ export default {
     }
 
     const onNodeClick = (node) => {
-      console.log('Node clicked: ', node)
-      
       if (node.isDirectory) {
-        // expand the node
-        node.expanded = true
+        return
+      }
+
+      const activeEditorId = editorManager.getActiveEditorId()
+
+      if (activeEditorId !== null) {
+        const editor = editorManager.getEditor(activeEditorId)
+
+        if (editor) {
+          const fileContent = window.electronAPI.readFileContent(node.path)
+
+          if (fileContent) {
+            console.log('File content:', fileContent)
+          }
+        } else {
+          console.error(`Editor with ID ${activeEditorId} not found.`)
+        }
+      } else {
+        console.log('Editor IDs:', editorManager.getActiveEditorId())
+        console.error('No active editor found.')
       }
     }
 
     return {
       fileTree,
-      searchText,
       fetchFilesAndTransform,
       onNodeExpanded,
       onNodeClick,
@@ -130,29 +136,26 @@ export default {
 }
 function transformFileStructureToTree(files, parentPath = '') {
   if (!files || files.length === 0) {
-    console.error('Files are undefined or empty.')
-    return
+    return []
   }
 
-  const transformedFiles = files
-    .filter((file) => !file.error)
-    .map((file) => {
-      const path = parentPath + '/' + file.name
+  const tree = files.map((file) => {
+    const path = `${parentPath}${file.name}`
+    const node = {
+      label: file.name,
+      path: path,
+      isDirectory: file.isDirectory,
+      expandable: file.isDirectory,
+      nodes: file.isDirectory ? [] : null
+    }
 
-      const node = {
-        label: file.name,
-        path: path,
-        isDirectory: file.isDirectory,
-        expandable: file.isDirectory
-      }
+    if (file.isDirectory && file.nodes) {
+      node.nodes = transformFileStructureToTree(file.nodes, `${path}/`)
+    }
 
-      if (file.isDirectory && file.children) {
-        node.children = transformFileStructureToTree(file.children, path)
-      }
+    return node
+  })
 
-      return node
-    })
-
-  return transformedFiles
+  return tree
 }
 </script>
