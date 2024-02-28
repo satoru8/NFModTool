@@ -49,12 +49,7 @@ export default {
       tabs: [
         { value: 'tab1', icon: 'mdi-home', label: 'Tab 1', component: markRaw(Tab1Content) },
         { value: 'tab2', icon: 'mdi-account', label: 'Tab 2', component: markRaw(Tab2Content) },
-        {
-          value: 'tab3',
-          icon: 'mdi-file-tree-outline',
-          label: 'Tab 3',
-          component: markRaw(Tab3Content)
-        },
+        { value: 'tab3', icon: 'mdi-file-tree-outline', label: 'Tab 3', component: markRaw(Tab3Content) },
         { value: 'tab4', icon: 'mdi-code-array', label: 'Tab 4', component: markRaw(Tab4Content) }
       ]
     }

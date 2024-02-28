@@ -1,11 +1,11 @@
 <template>
   <div id="topPanel">
     <div class="topPanelInner">
-      <titlebar />
+      <Titlebar />
 
       <v-card flat>
         <v-tabs v-model="tab" align-tabs="center" hide-slider fixed-tabs color="primary">
-          <v-tab value="monaco" text="Monaco Editor" @click="changeTab('monaco')" />
+          <v-tab value="octdat" text="Octdat Editor" @click="changeTab('octdat')" />
           <v-tab value="visual" text="Visual Editor" @click="changeTab('visual')" />
           <v-tab value="settings" text="Settings" @click="changeTab('settings')" />
         </v-tabs>
@@ -15,12 +15,12 @@
 </template>
 
 <script>
-import titlebar from '../components/titleBar.vue'
+import Titlebar from '../components/titleBar.vue'
 
 export default {
   name: 'TopPanel',
   components: {
-    titlebar
+    Titlebar
   },
   data() {
     return {

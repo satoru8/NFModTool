@@ -91,7 +91,6 @@ export default {
           return
         }
         this.readFile(file)
-        // this.$emit('fileChanged', file)
       }
     },
     onDragOver(event) {
