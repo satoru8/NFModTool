@@ -10,5 +10,5 @@
 </template>
 
 <script setup>
-const props = defineProps(['isLoading']);
+const props = defineProps(['isLoading'])
 </script>

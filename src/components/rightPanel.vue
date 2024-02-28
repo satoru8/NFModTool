@@ -25,26 +25,24 @@ import Tab1Content from './rightTabWindow1.vue'
 export default {
   name: 'RightPanel',
   components: {
-    Tab1Content,
+    Tab1Content
     // TabTwoContent,
     // TabThreeContent,
     // TabFourContent
   },
   data() {
     return {
-      tab: 'tab1',
+      tab: 'tab1'
     }
   },
   setup() {
     const tab = shallowRef('tab1')
     const tabs = [
-      { label: 'Tab 1', value: 'tab1', component: Tab1Content },
+      { label: 'Tab 1', value: 'tab1', component: Tab1Content }
       // { label: 'Tab 2', value: 'tab2', component: TabTwoContent },
       // { label: 'Tab 3', value: 'tab3', component: TabThreeContent },
       // { label: 'Tab 4', value: 'tab4', component: TabFourContent }
     ]
-
-
 
     return {
       tab,

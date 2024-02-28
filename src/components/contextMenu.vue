@@ -18,28 +18,28 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 
-const props = defineProps(['showContextMenu']);
-const emits = defineEmits(['option-clicked']);
+const props = defineProps(['showContextMenu'])
+const emits = defineEmits(['option-clicked'])
 
 const contextMenu = ref({
   show: false,
   x: 0,
   y: 0
-});
+})
 
 const handleMenuItemClick = (option) => {
-  console.log(`Clicked ${option}`);
-  contextMenu.show = false;  // Hide the context menu
-  emits('option-clicked', option);  // Emit the option-clicked event
-};
+  console.log(`Clicked ${option}`)
+  contextMenu.value.show = false
+  emits('option-clicked', option)
+}
 
 onMounted(() => {
-  document.addEventListener('contextmenu', props.showContextMenu);
-});
+  document.addEventListener('contextmenu', props.showContextMenu)
+})
 
 onBeforeUnmount(() => {
-  document.removeEventListener('contextmenu', props.showContextMenu);
-});
+  document.removeEventListener('contextmenu', props.showContextMenu)
+})
 </script>

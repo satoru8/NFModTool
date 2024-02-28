@@ -107,7 +107,6 @@ ipcMain.on('open-help', () => {
 // Creates a system tray icon
 let tray
 
-
 const createTray = () => {
   // const iconPath = path.join(app.getAppPath(), './public/logo.png')
   const iconPath = fileURLToPath(new URL('../renderer/logo.png', import.meta.url))
@@ -180,7 +179,7 @@ ipcMain.handle('read-directory', async (event, itemPath) => {
       })
     )
 
-    return transformedFiles.flat() || [];
+    return transformedFiles.flat() || []
   } catch (error) {
     console.error('Failed to read directory:', error)
     throw error
@@ -208,7 +207,7 @@ async function readDirectoryRecursively(directoryPath) {
   transformedFiles
     .filter((result) => result.status === 'fulfilled')
     .map((result) => result.value)
-    .flat() || [];
+    .flat() || []
 
   return transformedFiles
 }
@@ -238,4 +237,4 @@ app.whenReady().then(async () => {
   // })
 })
 
-app.setName('Rawrr');
+app.setName('Rawrr')

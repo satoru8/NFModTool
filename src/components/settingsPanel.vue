@@ -21,7 +21,6 @@
                 <v-btn @click="resetSettings" color="primary" text="Reset" v-bind="props" />
               </template>
             </v-tooltip>
-
           </v-card-actions>
         </v-card>
       </v-container>

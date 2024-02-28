@@ -38,95 +38,95 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import Tree from 'vue3-tree';
-import 'vue3-tree/dist/style.css';
-import { editorManager } from '../js/editorManager';
+import { ref } from 'vue'
+import Tree from 'vue3-tree'
+import 'vue3-tree/dist/style.css'
+import { editorManager } from '../js/editorManager'
 
-const fileTree = ref([]);
-const searchText = ref('');
+const fileTree = ref([])
+const searchText = ref('')
 
-const props = defineProps(['indentSize', 'gap']);
+const props = defineProps(['indentSize', 'gap'])
 
 const selectDir = async () => {
-  await fetchFilesAndTransform();
-};
+  await fetchFilesAndTransform()
+}
 
 const fetchFilesAndTransform = async () => {
   try {
-    const filePath = await window.electronAPI.selectFolder();
-    const files = await window.electronAPI.fetchFiles(filePath);
+    const filePath = await window.electronAPI.selectFolder()
+    const files = await window.electronAPI.fetchFiles(filePath)
     const rootFolder = {
       name: filePath.split('\\').pop(),
       path: filePath,
       expandable: true,
       isDirectory: true,
-      nodes: files,
-    };
+      nodes: files
+    }
 
-    const transformed = transformFileStructureToTree([rootFolder]);
-    fileTree.value = transformed;
+    const transformed = transformFileStructureToTree([rootFolder])
+    fileTree.value = transformed
   } catch (error) {
-    console.error('Failed to fetch files:', error);
+    console.error('Failed to fetch files:', error)
   }
-};
+}
 
 const onNodeExpanded = (node, state) => {
-  console.log('onExpanded State: ', state);
-  console.log('onExpanded Node: ', node);
-};
+  console.log('onExpanded State: ', state)
+  console.log('onExpanded Node: ', node)
+}
 
 const onUpdate = (nodes) => {
-  console.log('onUpdate:', nodes);
-};
+  console.log('onUpdate:', nodes)
+}
 
 const onNodeClick = (node) => {
   if (node.isDirectory) {
-    return;
+    return
   }
 
-  const activeEditorId = editorManager.getActiveEditorId();
+  const activeEditorId = editorManager.getActiveEditorId()
 
   if (activeEditorId !== null) {
-    const editor = editorManager.getEditor(activeEditorId);
+    const editor = editorManager.getEditor(activeEditorId)
 
     if (editor) {
-      const fileContent = window.electronAPI.readFileContent(node.path);
+      const fileContent = window.electronAPI.readFileContent(node.path)
 
       if (fileContent) {
-        console.log('File content:', fileContent);
+        console.log('File content:', fileContent)
       }
     } else {
-      console.error(`Editor with ID ${activeEditorId} not found.`);
+      console.error(`Editor with ID ${activeEditorId} not found.`)
     }
   } else {
-    console.log('Editor IDs:', editorManager.getActiveEditorId());
-    console.error('No active editor found.');
+    console.log('Editor IDs:', editorManager.getActiveEditorId())
+    console.error('No active editor found.')
   }
-};
+}
 
 function transformFileStructureToTree(files, parentPath = '') {
   if (!files || files.length === 0) {
-    return [];
+    return []
   }
 
   const tree = files.map((file) => {
-    const path = `${parentPath}${file.name}`;
+    const path = `${parentPath}${file.name}`
     const node = {
       label: file.name,
       path: path,
       isDirectory: file.isDirectory,
       expandable: file.isDirectory,
-      nodes: file.isDirectory ? [] : null,
-    };
-
-    if (file.isDirectory && file.nodes) {
-      node.nodes = transformFileStructureToTree(file.nodes, `${path}/`);
+      nodes: file.isDirectory ? [] : null
     }
 
-    return node;
-  });
+    if (file.isDirectory && file.nodes) {
+      node.nodes = transformFileStructureToTree(file.nodes, `${path}/`)
+    }
 
-  return tree;
+    return node
+  })
+
+  return tree
 }
 </script>

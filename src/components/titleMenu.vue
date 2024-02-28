@@ -21,10 +21,10 @@
 </template>
 
 <script setup>
-const props = defineProps(['title', 'menuItems']);
-const emit = defineEmits(['select']);
+const props = defineProps(['title', 'menuItems'])
+const emit = defineEmits(['select'])
 
 const handleMenuSelect = (itemId) => {
-  emit('select', itemId);
-};
+  emit('select', itemId)
+}
 </script>
