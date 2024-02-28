@@ -9,18 +9,21 @@ module.exports = {
   },
   'extends': [
     'plugin:vue/vue3-essential',
+    'plugin:prettier/recommended',
     'eslint:recommended',
     '@vue/eslint-config-prettier/skip-formatting'
   ],
   "env": {
     "browser": true,
     "node": true,
-    "es6": true
+    "es6": true,
+    "vue/setup-compiler-macros": true,
   },
   "plugins": [
-    "vue"
+    "vue",
+    "prettier",
   ],
   "rules": {
-
+    
   }
 }

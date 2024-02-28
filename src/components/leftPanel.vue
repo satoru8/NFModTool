@@ -27,37 +27,20 @@
   </div>
 </template>
 
-<script>
-import { markRaw } from 'vue'
+<script setup>
+import { ref, defineAsyncComponent } from 'vue'
 
-import Tab1Content from './leftTabWindow1.vue'
-import Tab2Content from './leftTabWindow2.vue'
-import Tab3Content from './leftTabWindow3.vue'
-import Tab4Content from './leftTabWindow4.vue'
+const Tab1Content = defineAsyncComponent(() => import('./leftTabWindow1.vue'))
+const Tab2Content = defineAsyncComponent(() => import('./leftTabWindow2.vue'))
+const Tab3Content = defineAsyncComponent(() => import('./leftTabWindow3.vue'))
+const Tab4Content = defineAsyncComponent(() => import('./leftTabWindow4.vue'))
 
-export default {
-  name: 'LeftPanel',
-  components: {
-    Tab1Content,
-    Tab2Content,
-    Tab3Content,
-    Tab4Content
-  },
-  data() {
-    return {
-      tab: 'tab1',
-      tabs: [
-        { value: 'tab1', icon: 'mdi-home', label: 'Tab 1', component: markRaw(Tab1Content) },
-        { value: 'tab2', icon: 'mdi-account', label: 'Tab 2', component: markRaw(Tab2Content) },
-        {
-          value: 'tab3',
-          icon: 'mdi-file-tree-outline',
-          label: 'Tab 3',
-          component: markRaw(Tab3Content)
-        },
-        { value: 'tab4', icon: 'mdi-code-array', label: 'Tab 4', component: markRaw(Tab4Content) }
-      ]
-    }
-  }
-}
+const tab = ref('tab1')
+
+const tabs = [
+  { value: 'tab1', icon: 'mdi-home', label: 'Tab 1', component: Tab1Content },
+  { value: 'tab2', icon: 'mdi-account', label: 'Tab 2', component: Tab2Content },
+  { value: 'tab3', icon: 'mdi-file-tree-outline', label: 'Tab 3', component: Tab3Content },
+  { value: 'tab4', icon: 'mdi-code-array', label: 'Tab 4', component: Tab4Content }
+]
 </script>

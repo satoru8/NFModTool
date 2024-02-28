@@ -15,39 +15,18 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { shallowRef } from 'vue'
 import Tab1Content from './rightTabWindow1.vue'
-// import TabTwoContent from './rightTabWindow2.vue'
-// import TabThreeContent from './rightTabWindow3.vue'
-// import TabFourContent from './rightTabWindow4.vue'
+// import TabTwoContent from './rightTabWindow2.vue';
+// import TabThreeContent from './rightTabWindow3.vue';
+// import TabFourContent from './rightTabWindow4.vue';
 
-export default {
-  name: 'RightPanel',
-  components: {
-    Tab1Content
-    // TabTwoContent,
-    // TabThreeContent,
-    // TabFourContent
-  },
-  data() {
-    return {
-      tab: 'tab1'
-    }
-  },
-  setup() {
-    const tab = shallowRef('tab1')
-    const tabs = [
-      { label: 'Tab 1', value: 'tab1', component: Tab1Content }
-      // { label: 'Tab 2', value: 'tab2', component: TabTwoContent },
-      // { label: 'Tab 3', value: 'tab3', component: TabThreeContent },
-      // { label: 'Tab 4', value: 'tab4', component: TabFourContent }
-    ]
-
-    return {
-      tab,
-      tabs
-    }
-  }
-}
+const tab = shallowRef('tab1')
+const tabs = [
+  { label: 'Tab 1', value: 'tab1', component: Tab1Content }
+  // { label: 'Tab 2', value: 'tab2', component: TabTwoContent },
+  // { label: 'Tab 3', value: 'tab3', component: TabThreeContent },
+  // { label: 'Tab 4', value: 'tab4', component: TabFourContent }
+]
 </script>

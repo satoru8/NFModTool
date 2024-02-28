@@ -1,5 +1,5 @@
 <template>
-  <v-card flat class="leftPanelCard fileManager">
+  <v-card flat class="leftPanelCard fileManager rounded-0">
     <v-card-text class="fileManagerInner">
       <v-btn
         block
@@ -46,7 +46,7 @@ import { editorManager } from '../js/editorManager'
 const fileTree = ref([])
 const searchText = ref('')
 
-const props = defineProps(['indentSize', 'gap'])
+defineProps(['indentSize', 'gap'])
 
 const selectDir = async () => {
   await fetchFilesAndTransform()

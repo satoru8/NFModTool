@@ -21,7 +21,7 @@
 </template>
 
 <script setup>
-const props = defineProps(['title', 'menuItems'])
+defineProps(['title', 'menuItems'])
 const emit = defineEmits(['select'])
 
 const handleMenuSelect = (itemId) => {

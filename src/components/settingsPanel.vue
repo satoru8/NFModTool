@@ -28,38 +28,35 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'SettingsPanel',
-  data() {
-    return {
-      setting1: '',
-      setting2: '',
-      mainColor: ''
-    }
-  },
-  methods: {
-    async saveSettings() {
-      window.electronAPI.saveSettings({
-        setting1: this.setting1,
-        setting2: this.setting2,
-        mainColor: this.mainColor
-      })
-    },
-    async loadSettings() {
-      const settings = await window.electronAPI.loadSettings()
-      this.setting1 = settings.setting1 || ''
-      this.setting2 = settings.setting2 || ''
-      this.mainColor = settings.mainColor || ''
-    },
-    resetSettings() {
-      window.electronAPI.loadSettings()
-      this.loadSettings()
-      console.log('Settings reset.')
-    }
-  },
-  mounted() {
-    this.loadSettings()
-  }
+<script setup>
+import { ref, onMounted } from 'vue'
+
+const setting1 = ref('')
+const setting2 = ref('')
+const mainColor = ref('')
+
+const saveSettings = async () => {
+  window.electronAPI.saveSettings({
+    setting1: setting1.value,
+    setting2: setting2.value,
+    mainColor: mainColor.value
+  })
 }
+
+const loadSettings = async () => {
+  const settings = await window.electronAPI.loadSettings()
+  setting1.value = settings.setting1 || ''
+  setting2.value = settings.setting2 || ''
+  mainColor.value = settings.mainColor || ''
+}
+
+const resetSettings = () => {
+  window.electronAPI.loadSettings()
+  loadSettings()
+  console.log('Settings reset.')
+}
+
+onMounted(() => {
+  loadSettings()
+})
 </script>

@@ -1,45 +1,58 @@
 <template>
-  <v-card flat>
-    <v-tabs class="editorTabs" v-model="selectedTab" slider-color="primary" show-arrows>
+  <v-card flat class="editorTabsWrapper rounded-0">
+    <v-tabs
+      class="editorTabs"
+      color="primary"
+      v-model="selectedTab"
+      hide-slider
+      show-arrows
+      density="compact"
+    >
       <v-tab
+        class="editorTab"
         v-for="tab in tabs"
+        :key="tab.id"
         :value="tab.id"
         :class="tab.id"
-        :key="tab.id"
         @click="selectTab(tab.id)"
       >
         {{ tab.name }}
       </v-tab>
-
-      <v-tab class="addTab" prepend-icon="mdi-plus" @click="addTab" />
+      <v-btn
+        flat
+        class="addTabButton rounded-0"
+        icon="mdi-plus"
+        density="compact"
+        @click="addTab"
+      />
     </v-tabs>
   </v-card>
 </template>
 
-<script>
-export default {
-  name: 'EditorTabs',
-  props: {
-    tabs: Array,
-    activeTab: String
-  },
-  data() {
-    return {
-      selectedTab: this.activeTab
-    }
-  },
-  watch: {
-    activeTab(newVal) {
-      this.selectedTab = newVal
-    }
-  },
-  methods: {
-    selectTab(tabId) {
-      this.$emit('switchTab', tabId)
-    },
-    addTab() {
-      this.$emit('addTab')
-    }
+<script setup>
+import { ref, watch } from 'vue'
+
+const props = defineProps({
+  tabs: Array,
+  activeTab: String
+})
+
+const emit = defineEmits(['switchTab', 'addTab'])
+
+const selectedTab = ref(props.activeTab)
+
+watch(
+  () => props.activeTab,
+  (newVal) => {
+    selectedTab.value = newVal
   }
+)
+
+const selectTab = (tabId) => {
+  emit('switchTab', tabId)
+}
+
+const addTab = () => {
+  emit('addTab')
 }
 </script>

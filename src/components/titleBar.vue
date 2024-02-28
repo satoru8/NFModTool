@@ -22,87 +22,53 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import TitleMenu from './titleMenu.vue'
 
-export default {
-  name: 'TitleBar',
-  components: {
-    TitleMenu
-  },
-  data() {
-    return {
-      fileMenuItems: [
-        { id: 1, title: 'New File' },
-        { id: 2, title: 'New Window' },
-        { id: 3, title: 'Open Folder' },
-        { id: 4, title: 'Save' }
-      ],
-      editMenuItems: [
-        { id: 5, title: 'Undo' },
-        { id: 6, title: 'Redo' },
-        { id: 7, title: 'Copy' },
-        { id: 8, title: 'Paste' }
-      ]
-    }
-  },
-  props: {
-    title: {
-      type: String,
-      default: 'NF Mod Tool'
-    },
-    logoSrc: {
-      type: String,
-      default: './logo.png'
-    },
-    buttons: {
-      type: Array,
-      default: () => [
-        { id: 'help', class: 'titleBarBtn help', symbol: 'mdi-help-circle', action: 'help' },
-        { id: 'devTools', class: 'titleBarBtn dev', symbol: 'mdi-code-braces', action: 'devTools' },
-        { id: 'min', class: 'titleBarBtn min', symbol: 'mdi-window-minimize', action: 'minimize' },
-        { id: 'max', class: 'titleBarBtn max', symbol: 'mdi-fullscreen', action: 'maximize' },
-        { id: 'close', class: 'titleBarBtn close', symbol: 'mdi-window-close', action: 'close' }
-      ]
-    }
-  },
-  methods: {
-    emitEvent(action) {
-      if (action === 'close') this.closeWindow()
-      else if (action === 'minimize') this.minimizeWindow()
-      else if (action === 'maximize') this.maximizeWindow()
-      else if (action === 'help') this.openHelp()
-      else if (action === 'devTools') this.openDevTools()
-    },
-    closeWindow() {
-      window.electronAPI.closeWindow()
-    },
-    minimizeWindow() {
-      window.electronAPI.minimizeWindow()
-    },
-    maximizeWindow() {
-      window.electronAPI.maximizeWindow()
-    },
-    openHelp() {
-      window.electronAPI.openHelp()
-    },
-    openDevTools() {
-      window.electronAPI.openDevTools()
-    },
-    handleMenuSelect(itemId) {
-      const actions = {
-        1: 'New File',
-        2: 'New Window',
-        3: 'Open Folder',
-        4: 'Save',
-        5: 'Undo',
-        6: 'Redo',
-        7: 'Copy',
-        8: 'Paste'
-      }
+defineProps(['title', 'logoSrc', 'buttons'])
 
-      console.log(actions[itemId])
-    }
+const { emit } = defineEmits([
+  'closeWindow',
+  'minimizeWindow',
+  'maximizeWindow',
+  'openHelp',
+  'openDevTools'
+])
+
+const emitEvent = (action) => {
+  if (action === 'close') emit('closeWindow')
+  else if (action === 'minimize') emit('minimizeWindow')
+  else if (action === 'maximize') emit('maximizeWindow')
+  else if (action === 'help') emit('openHelp')
+  else if (action === 'devTools') emit('openDevTools')
+}
+
+const fileMenuItems = [
+  { id: 1, title: 'New File' },
+  { id: 2, title: 'New Window' },
+  { id: 3, title: 'Open Folder' },
+  { id: 4, title: 'Save' }
+]
+
+const editMenuItems = [
+  { id: 5, title: 'Undo' },
+  { id: 6, title: 'Redo' },
+  { id: 7, title: 'Copy' },
+  { id: 8, title: 'Paste' }
+]
+
+const handleMenuSelect = (itemId) => {
+  const actions = {
+    1: 'New File',
+    2: 'New Window',
+    3: 'Open Folder',
+    4: 'Save',
+    5: 'Undo',
+    6: 'Redo',
+    7: 'Copy',
+    8: 'Paste'
   }
+
+  console.log(actions[itemId])
 }
 </script>
