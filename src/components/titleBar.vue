@@ -25,23 +25,26 @@
 <script setup>
 import TitleMenu from './titleMenu.vue'
 
-defineProps(['title', 'logoSrc', 'buttons'])
-
-const { emit } = defineEmits([
-  'closeWindow',
-  'minimizeWindow',
-  'maximizeWindow',
-  'openHelp',
-  'openDevTools'
-])
-
-const emitEvent = (action) => {
-  if (action === 'close') emit('closeWindow')
-  else if (action === 'minimize') emit('minimizeWindow')
-  else if (action === 'maximize') emit('maximizeWindow')
-  else if (action === 'help') emit('openHelp')
-  else if (action === 'devTools') emit('openDevTools')
-}
+defineProps({
+  title: {
+    type: String,
+    default: 'Default Title'
+  },
+  logoSrc: {
+    type: String,
+    default: '/path/to/default/logo.png'
+  },
+  buttons: {
+    type: Array,
+    default: () => [
+      { id: 'help', class: 'titleBarBtn help', symbol: 'mdi-help-circle', action: 'help' },
+      { id: 'devTools', class: 'titleBarBtn dev', symbol: 'mdi-code-braces', action: 'devTools' },
+      { id: 'min', class: 'titleBarBtn min', symbol: 'mdi-window-minimize', action: 'minimize' },
+      { id: 'max', class: 'titleBarBtn max', symbol: 'mdi-fullscreen', action: 'maximize' },
+      { id: 'close', class: 'titleBarBtn close', symbol: 'mdi-window-close', action: 'close' }
+    ]
+  }
+})
 
 const fileMenuItems = [
   { id: 1, title: 'New File' },
@@ -70,5 +73,13 @@ const handleMenuSelect = (itemId) => {
   }
 
   console.log(actions[itemId])
+}
+
+const emitEvent = (action) => {
+  if (action === 'close') window.electronAPI.closeWindow()
+  else if (action === 'minimize') window.electronAPI.minimizeWindow()
+  else if (action === 'maximize') window.electronAPI.maximizeWindow()
+  else if (action === 'help') window.electronAPI.openHelp()
+  else if (action === 'devTools') window.electronAPI.openDevTools()
 }
 </script>
