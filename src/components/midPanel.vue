@@ -15,37 +15,82 @@
 </template>
 
 <script setup>
-import { storeToRefs } from 'pinia'
-import { onMounted, onBeforeUnmount, ref } from 'vue'
-import { useEditorStore } from '../js/editorStore'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import EditorTabs from '../components/editorTabs.vue'
+import { createEditor } from '../js/monacoSetup.js'
 import { editorManager } from '../js/editorManager'
 
+const tabs = ref([{ id: 'tab1', name: 'Tab 1', active: true }])
+const activeTab = ref('tab1')
+const editorsInitialized = ref(false)
 const editorContainer = ref(null)
-const store = useEditorStore()
 
-const tabs = ref([])
-const activeTab = ref('')
-const { addTab, switchTab } = store
+onMounted(async () => {
+  await initializeEditor(activeTab.value)
+})
 
-const { tabs: tabsState, activeTab: activeTabState } = storeToRefs(store)
+function switchTab(tabId) {
+  activeTab.value = tabId
+  updateEditorVisibility()
+}
 
-const handleSwitchTab = (tabId) => {
+function handleSwitchTab(tabId) {
   switchTab(tabId)
 }
 
-onMounted(() => {
-  store.initializeEditors(editorContainer.value, handleSwitchTab)
+async function addTab() {
+  const newTabId = 'tab' + (tabs.value.length + 1)
+  tabs.value.push({
+    id: newTabId,
+    name: 'Tab ' + (tabs.value.length + 1),
+    active: false
+  })
+  await initializeEditor(newTabId)
+  switchTab(newTabId)
+}
 
-  tabs.value = tabsState.value
-  activeTab.value = activeTabState.value
+function updateEditorVisibility() {
+  const activeTabId = activeTab.value
+  editorManager.getEditorIds().forEach((id) => {
+    const editor = editorManager.getEditor(id)
+    if (editor) {
+      const containerId = `editorContainer-${id}`
+      const container = document.getElementById(containerId)
+      if (container) {
+        const displayStyle = id === activeTabId ? 'block' : 'none'
+        container.style.display = displayStyle
+      } else {
+        console.error(`Container element not found for tab ${id}`)
+      }
+    } else {
+      console.error(`Editor instance is undefined for tab ${id}`)
+    }
+  })
+}
 
-  if (tabs.value.length > 0) {
-    switchTab(tabs.value[0].id)
+async function initializeEditor(tabId) {
+  let editor = editorManager.getEditor(tabId)
+  if (!editor) {
+    const containerId = `editorContainer-${tabId}`
+    let container = document.getElementById(containerId)
+    if (!container) {
+      container = document.createElement('div')
+      container.id = containerId
+      container.className = 'editorContainer'
+      editorContainer.value.appendChild(container)
+    }
+    editor = await createEditor(container, {}, tabId)
+    editorManager.addEditor(tabId, editor)
   }
-})
+  if (!editorsInitialized.value) {
+    editorsInitialized.value = true
+    updateEditorVisibility()
+  }
+}
 
 onBeforeUnmount(() => {
-  editorManager.dispose()
+  editorManager.getEditorIds().forEach((editorId) => {
+    editorManager.removeEditor(editorId)
+  })
 })
 </script>

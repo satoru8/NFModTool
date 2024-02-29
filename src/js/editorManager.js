@@ -37,6 +37,11 @@ class EditorManager {
       this.editors.delete(id)
     }
   }
+  
+  clear() {
+    this.editors.forEach((editor) => editor.dispose());
+    this.editors.clear();
+  }
 
   updateEditorOptions(editor, newOptions) {
     editor.updateOptions(newOptions)
