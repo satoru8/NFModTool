@@ -237,4 +237,4 @@ app.whenReady().then(async () => {
   // })
 })
 
-app.setName('Rawrr')
+app.setName('NF Mod Tool')

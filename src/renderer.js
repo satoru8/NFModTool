@@ -9,11 +9,14 @@
 
 // Vuetify loading
 import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 import MainView from './views/mainView.vue'
 import vuetify from './js/vuetify'
 import './css/main.css'
 
+const pinia = createPinia()
 const appMain = createApp(MainView)
+appMain.use(pinia)
 appMain.use(vuetify)
 appMain.mount('#mainBody')
 
