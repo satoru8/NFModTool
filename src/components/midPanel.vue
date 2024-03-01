@@ -2,8 +2,6 @@
   <div id="midPanel">
     <div class="midPanelInner">
       <EditorTabs
-        show-arrows
-        stacked
         :tabs="tabs"
         :activeTab="activeTab"
         @switchTab="handleSwitchTab"
@@ -29,16 +27,16 @@ onMounted(async () => {
   await initializeEditor(activeTab.value)
 })
 
-function switchTab(tabId) {
+const switchTab = (tabId) => {
   activeTab.value = tabId
   updateEditorVisibility()
 }
 
-function handleSwitchTab(tabId) {
+const handleSwitchTab = (tabId) => {
   switchTab(tabId)
 }
 
-async function addTab() {
+const addTab = async () => {
   const newTabId = 'tab' + (tabs.value.length + 1)
   tabs.value.push({
     id: newTabId,
@@ -49,7 +47,7 @@ async function addTab() {
   switchTab(newTabId)
 }
 
-function updateEditorVisibility() {
+const updateEditorVisibility = () => {
   const activeTabId = activeTab.value
   editorManager.getEditorIds().forEach((id) => {
     const editor = editorManager.getEditor(id)
@@ -68,7 +66,7 @@ function updateEditorVisibility() {
   })
 }
 
-async function initializeEditor(tabId) {
+const initializeEditor = async (tabId) => {
   let editor = editorManager.getEditor(tabId)
   if (!editor) {
     const containerId = `editorContainer-${tabId}`

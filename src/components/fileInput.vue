@@ -92,6 +92,7 @@ const onDrop = (event) => {
 
 const isValidFile = (file) => {
   const fileExtension = file.name.split('.').pop().toLowerCase()
+  console.log('File extension:', fileExtension)
   return fileExtension === 'octdat' || fileExtension === 'octdat.bak'
 }
 
@@ -99,8 +100,15 @@ const readFile = (file) => {
   const reader = new FileReader()
   reader.onload = (event) => {
     const fileContent = event.target.result
+
+    if (fileContent === null || fileContent === undefined || fileContent === '') {
+      console.error('File content is null.')
+      return
+    }
+
     emit('fileChanged', fileContent)
   }
+
   reader.readAsText(file)
 }
 </script>

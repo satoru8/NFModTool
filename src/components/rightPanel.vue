@@ -24,7 +24,7 @@ import Tab1Content from './rightTabWindow1.vue'
 
 const tab = shallowRef('tab1')
 const tabs = [
-  { label: 'Tab 1', value: 'tab1', component: Tab1Content }
+  { label: 'Tools', value: 'tab1', component: Tab1Content }
   // { label: 'Tab 2', value: 'tab2', component: TabTwoContent },
   // { label: 'Tab 3', value: 'tab3', component: TabThreeContent },
   // { label: 'Tab 4', value: 'tab4', component: TabFourContent }
