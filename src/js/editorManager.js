@@ -3,31 +3,12 @@ class EditorManager {
     this.editors = new Map()
   }
 
-  getAllEditors() {
-    return this.editors
-  }
-
   addEditor(id, editorInstance) {
-    this.editors.set(id, editorInstance)
-  }
-
-  getEditor(id) {
-    return this.editors.get(id)
-  }
-
-  getActiveEditorId() {
-    const activeEditor = Array.from(this.editors.values()).find(
-      (editor) => editor.document?.isDirty
-    )
-    return activeEditor?.id || null
-  }
-
-  getActiveEditor() {
-    return Array.from(this.editors.values()).find((editor) => editor.document?.isDirty)
-  }
-
-  getEditorByUri(uri) {
-    return Array.from(this.editors.values()).find((editor) => editor.document?.uri === uri)
+    if (this.editors.has(id)) {
+      console.warn(`Editor with id ${id} already exists.`)
+    } else {
+      this.editors.set(id, editorInstance)
+    }
   }
 
   removeEditor(id) {
@@ -38,16 +19,24 @@ class EditorManager {
     }
   }
 
-  clear() {
+  clearAllEditors() {
     this.editors.forEach((editor) => editor.dispose())
     this.editors.clear()
   }
 
-  updateEditorOptions(editor, newOptions) {
-    editor.updateOptions(newOptions)
+  getAllEditors() {
+    return this.editors
   }
 
-  getEditorIds() {
+  getAllEditorsAsArray() {
+    return Array.from(this.editors.values())
+  }
+
+  getEditorById(id) {
+    return this.editors.get(id)
+  }
+
+  getAllEditorIds() {
     return Array.from(this.editors.keys())
   }
 

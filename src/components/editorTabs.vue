@@ -10,6 +10,7 @@
     >
       <v-tab
         class="editorTab"
+        variant="tonal"
         v-for="tab in tabs"
         :key="tab.id"
         :value="tab.id"

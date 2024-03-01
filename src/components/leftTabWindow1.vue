@@ -88,7 +88,7 @@ const onNodeClick = (node) => {
   const activeEditorId = editorManager.getActiveEditorId()
 
   if (activeEditorId !== null) {
-    const editor = editorManager.getEditor(activeEditorId)
+    const editor = editorManager.getEditorById(activeEditorId)
 
     if (editor) {
       const fileContent = window.electronAPI.readFileContent(node.path)

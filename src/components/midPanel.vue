@@ -6,6 +6,7 @@
         :activeTab="activeTab"
         @switchTab="handleSwitchTab"
         @addTab="addTab"
+        @removeTab="removeTab"
       />
       <div class="editorContainer" ref="editorContainer"></div>
     </div>
@@ -22,6 +23,18 @@ const tabs = ref([{ id: 'tab1', name: 'Tab 1', active: true }])
 const activeTab = ref('tab1')
 const editorsInitialized = ref(false)
 const editorContainer = ref(null)
+
+const removeTab = (tabId) => {
+  const index = tabs.value.findIndex((tab) => tab.id === tabId)
+  if (index !== -1) {
+    tabs.value.splice(index, 1)
+    if (activeTab.value === tabId) {
+      activeTab.value = tabs.value[0].id
+      editorManager.removeEditor(tabId)
+      updateEditorVisibility()
+    }
+  }
+}
 
 onMounted(async () => {
   await initializeEditor(activeTab.value)
@@ -49,8 +62,8 @@ const addTab = async () => {
 
 const updateEditorVisibility = () => {
   const activeTabId = activeTab.value
-  editorManager.getEditorIds().forEach((id) => {
-    const editor = editorManager.getEditor(id)
+  editorManager.getAllEditorIds().forEach((id) => {
+    const editor = editorManager.getEditorById(id)
     if (editor) {
       const containerId = `editorContainer-${id}`
       const container = document.getElementById(containerId)
@@ -67,7 +80,7 @@ const updateEditorVisibility = () => {
 }
 
 const initializeEditor = async (tabId) => {
-  let editor = editorManager.getEditor(tabId)
+  let editor = editorManager.getEditorById(tabId)
   if (!editor) {
     const containerId = `editorContainer-${tabId}`
     let container = document.getElementById(containerId)
@@ -87,7 +100,7 @@ const initializeEditor = async (tabId) => {
 }
 
 onBeforeUnmount(() => {
-  editorManager.getEditorIds().forEach((editorId) => {
+  editorManager.getAllEditorIds().forEach((editorId) => {
     editorManager.removeEditor(editorId)
   })
 })

@@ -159,6 +159,11 @@ html {
   grid-column: 1 / 4;
 }
 
+.visualEditorCard,
+.visualEditorContainer {
+  max-width: 100%;
+  height: 100%;
+}
 /*
 **  Settings
 */
@@ -169,7 +174,7 @@ html {
 
 .settingsCard,
 .settingsContainer {
-  max-width: none;
+  max-width: 100%;
   height: 100%;
 }
 
@@ -193,6 +198,10 @@ html {
 #NF .editorTabs,
 #NF .editorTab {
   height: 30px;
+}
+
+.editorTab {
+  border-right: #202020 1px solid;
 }
 
 .monaco-editor,
