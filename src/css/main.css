@@ -188,9 +188,11 @@ html {
 /*
 **  Monaco
 */
-.editorTabs {
+#NF .addTabButton,
+#NF .editorTabsWrapper,
+#NF .editorTabs,
+#NF .editorTab {
   height: 30px;
-  align-items: center;
 }
 
 .monaco-editor,

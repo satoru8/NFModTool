@@ -3,7 +3,7 @@
     <v-btn color="transparent" elevation="0" density="comfortable" class="text-capitalize">
       {{ title }}
 
-      <v-menu activator="parent">
+      <v-menu activator="parent" v-if="menuItems && menuItems.length">
         <template v-slot="{ items }">
           <v-list>
             <v-list-item
@@ -20,17 +20,11 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'TitleMenu',
-  props: {
-    title: String,
-    menuItems: Array
-  },
-  methods: {
-    handleMenuSelect(itemId) {
-      this.$emit('select', itemId)
-    }
-  }
+<script setup>
+defineProps(['title', 'menuItems'])
+const emit = defineEmits(['select'])
+
+const handleMenuSelect = (itemId) => {
+  emit('select', itemId)
 }
 </script>

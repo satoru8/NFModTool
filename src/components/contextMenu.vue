@@ -17,40 +17,29 @@
   </v-menu>
 </template>
 
-<script>
-export default {
-  name: 'ContextMenu',
-  data() {
-    return {
-      contextMenu: {
-        show: false,
-        x: 0,
-        y: 0
-      }
-    }
-  },
-  methods: {
-    showContextMenu(event) {
-      event.preventDefault()
-      this.contextMenu.show = true
-      this.contextMenu.x = event.clientX
-      this.contextMenu.y = event.clientY
-    },
-    hideContextMenu() {
-      this.contextMenu.show = false
-    },
-    handleMenuItemClick(option) {
-      console.log(`Clicked ${option}`)
-      this.hideContextMenu()
-    }
-  },
-  mounted() {
-    document.addEventListener('contextmenu', this.showContextMenu)
-    document.addEventListener('click', this.hideContextMenu)
-  },
-  beforeUnmount() {
-    document.removeEventListener('contextmenu', this.showContextMenu)
-    document.removeEventListener('click', this.hideContextMenu)
-  }
+<script setup>
+import { ref, onMounted, onBeforeUnmount } from 'vue'
+
+const props = defineProps(['showContextMenu'])
+const emits = defineEmits(['option-clicked'])
+
+const contextMenu = ref({
+  show: false,
+  x: 0,
+  y: 0
+})
+
+const handleMenuItemClick = (option) => {
+  console.log(`Clicked ${option}`)
+  contextMenu.value.show = false
+  emits('option-clicked', option)
 }
+
+onMounted(() => {
+  document.addEventListener('contextmenu', props.showContextMenu)
+})
+
+onBeforeUnmount(() => {
+  document.removeEventListener('contextmenu', props.showContextMenu)
+})
 </script>

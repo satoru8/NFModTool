@@ -26,7 +26,6 @@
         <v-chip v-if="index < 2" :color="color" label size="small" class="me-2">
           {{ fileName }}
         </v-chip>
-
         <span v-else-if="index === 2" class="text-overline text-grey-darken-3 mx-2">
           +{{ files.length - 2 }} File(s)
         </span>
@@ -35,94 +34,81 @@
   </v-file-input>
 </template>
 
-<script>
+<script setup>
+import { ref } from 'vue'
 import CustomAlert from './customAlert.vue'
 
-export default {
-  name: 'FileInput',
-  emits: ['fileChanged'],
-  components: {
-    CustomAlert
-  },
-  props: {
-    multiple: {
-      type: Boolean,
-      default: false
-    },
-    color: {
-      type: String,
-      default: 'deep-purple-accent-4'
-    },
-    counter: {
-      type: Boolean,
-      default: true
-    },
-    icon: {
-      type: String,
-      default: null
-    },
-    label: {
-      type: String,
-      default: 'File'
-    },
-    variant: {
-      type: String,
-      default: 'outlined',
-      validator: (value) => {
-        return ['outlined', 'underlined', 'filled', 'plain'].includes(value)
-      }
-    }
-  },
-  data() {
-    return {
-      files: [],
-      showAlert: false
-    }
-  },
-  methods: {
-    closeAlert() {
-      this.showAlert = false
-    },
-    onFileChange() {
-      if (this.files.length > 0) {
-        const file = this.files[0]
-        if (!this.isValidFile(file)) {
-          this.showAlert = true
-          return
-        }
-        this.readFile(file)
-        // this.$emit('fileChanged', file)
-      }
-    },
-    onDragOver(event) {
-      event.preventDefault()
-    },
-    onDrop(event) {
-      event.preventDefault()
-      event.stopPropagation()
+const { multiple, color, counter, icon, label, variant } = defineProps({
+  multiple: Boolean,
+  color: String,
+  counter: Boolean,
+  icon: String,
+  label: String,
+  variant: {
+    type: String,
+    default: 'outlined',
+    validator: (value) => ['outlined', 'underlined', 'filled', 'plain'].includes(value)
+  }
+})
 
-      const files = event.dataTransfer.files
-      if (files.length > 0) {
-        const file = files[0]
-        if (this.isValidFile(file)) {
-          this.readFile(file)
-        } else {
-          this.showAlert = true
-        }
-      }
-    },
-    isValidFile(file) {
-      const fileExtension = file.name.split('.').pop().toLowerCase()
-      return fileExtension === 'octdat' || fileExtension === 'octdat.bak'
-    },
-    readFile(file) {
-      const reader = new FileReader()
-      reader.onload = (event) => {
-        const fileContent = event.target.result
-        this.$emit('fileChanged', fileContent)
-      }
-      reader.readAsText(file)
+const emit = defineEmits(['fileChanged'])
+
+const files = ref([])
+const showAlert = ref(false)
+
+const closeAlert = () => {
+  showAlert.value = false
+}
+
+const onFileChange = () => {
+  if (files.value.length > 0) {
+    const file = files.value[0]
+    if (!isValidFile(file)) {
+      showAlert.value = true
+      return
+    }
+    readFile(file)
+  }
+}
+
+const onDragOver = (event) => {
+  event.preventDefault()
+}
+
+const onDrop = (event) => {
+  event.preventDefault()
+  event.stopPropagation()
+
+  const filesDropped = event.dataTransfer.files
+  if (filesDropped.length > 0) {
+    const file = filesDropped[0]
+    if (isValidFile(file)) {
+      readFile(file)
+    } else {
+      showAlert.value = true
     }
   }
+}
+
+const isValidFile = (file) => {
+  const fileExtension = file.name.split('.').pop().toLowerCase()
+  console.log('File extension:', fileExtension)
+  return fileExtension === 'octdat' || fileExtension === 'octdat.bak'
+}
+
+const readFile = (file) => {
+  const reader = new FileReader()
+  reader.onload = (event) => {
+    const fileContent = event.target.result
+
+    if (fileContent === null || fileContent === undefined || fileContent === '') {
+      console.error('File content is null.')
+      return
+    }
+
+    emit('fileChanged', fileContent)
+  }
+
+  reader.readAsText(file)
 }
 </script>

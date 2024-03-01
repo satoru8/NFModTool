@@ -1,5 +1,10 @@
 module.exports = {
   packagerConfig: {
+    name: 'NFModTool',
+    icon: './logo.png',
+    executableName: 'NFModTool',
+    appCopyright: 'Copyright 2022, Chikara',
+    appVersion: '0.0.1',
     ignore: [
       /^\/src/,
       /(.eslintrc.json)|(.gitignore)|(electron.vite.config.ts)|(forge.config.js)|(tsconfig.*)/,

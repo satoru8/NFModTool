@@ -2,11 +2,9 @@
   <div id="midPanel">
     <div class="midPanelInner">
       <EditorTabs
-        show-arrows
-        stacked
         :tabs="tabs"
         :activeTab="activeTab"
-        @switchTab="switchTab"
+        @switchTab="handleSwitchTab"
         @addTab="addTab"
       />
       <div class="editorContainer" ref="editorContainer"></div>
@@ -14,89 +12,83 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import EditorTabs from '../components/editorTabs.vue'
 import { createEditor } from '../js/monacoSetup.js'
 import { editorManager } from '../js/editorManager'
 
-export default {
-  name: 'OctdatEditor',
-  components: {
-    EditorTabs
-  },
-  data() {
-    return {
-      tabs: [{ id: 'tab1', name: 'Tab 1', active: true }],
-      activeTab: 'tab1',
-      editorsInitialized: false
-    }
-  },
-  methods: {
-    switchTab(tabId) {
-      this.activeTab = tabId
-      this.updateEditorVisibility()
-    },
-    async addTab() {
-      const newTabId = 'tab' + (this.tabs.length + 1)
-      this.tabs.push({
-        id: newTabId,
-        name: 'Tab ' + (this.tabs.length + 1),
-        active: false
-      })
-      await this.initializeEditor(newTabId)
-      this.switchTab(newTabId)
-    },
-    updateEditorVisibility() {
-      const activeTabId = this.activeTab
-      editorManager.getEditorIds().forEach((id) => {
-        const editor = editorManager.getEditor(id)
+const tabs = ref([{ id: 'tab1', name: 'Tab 1', active: true }])
+const activeTab = ref('tab1')
+const editorsInitialized = ref(false)
+const editorContainer = ref(null)
 
-        if (editor) {
-          const containerId = `editorContainer-${id}`
-          const container = document.getElementById(containerId)
+onMounted(async () => {
+  await initializeEditor(activeTab.value)
+})
 
-          if (container) {
-            const displayStyle = id === activeTabId ? 'block' : 'none'
-            container.style.display = displayStyle
-          } else {
-            console.error(`Container element not found for tab ${id}`)
-          }
-        } else {
-          console.error(`Editor instance is undefined for tab ${id}`)
-        }
-      })
-    },
-    async initializeEditor(tabId) {
-      let editor = editorManager.getEditor(tabId)
+const switchTab = (tabId) => {
+  activeTab.value = tabId
+  updateEditorVisibility()
+}
 
-      if (!editor) {
-        const containerId = `editorContainer-${tabId}`
-        let container = document.getElementById(containerId)
+const handleSwitchTab = (tabId) => {
+  switchTab(tabId)
+}
 
-        if (!container) {
-          container = document.createElement('div')
-          container.id = containerId
-          container.className = 'editorContainer'
-          this.$refs.editorContainer.appendChild(container)
-        }
+const addTab = async () => {
+  const newTabId = 'tab' + (tabs.value.length + 1)
+  tabs.value.push({
+    id: newTabId,
+    name: 'Tab ' + (tabs.value.length + 1),
+    active: false
+  })
+  await initializeEditor(newTabId)
+  switchTab(newTabId)
+}
 
-        editor = await createEditor(container, {}, tabId)
-        editorManager.addEditor(tabId, editor)
+const updateEditorVisibility = () => {
+  const activeTabId = activeTab.value
+  editorManager.getEditorIds().forEach((id) => {
+    const editor = editorManager.getEditor(id)
+    if (editor) {
+      const containerId = `editorContainer-${id}`
+      const container = document.getElementById(containerId)
+      if (container) {
+        const displayStyle = id === activeTabId ? 'block' : 'none'
+        container.style.display = displayStyle
+      } else {
+        console.error(`Container element not found for tab ${id}`)
       }
-
-      if (!this.editorsInitialized) {
-        this.editorsInitialized = true
-        this.updateEditorVisibility()
-      }
+    } else {
+      console.error(`Editor instance is undefined for tab ${id}`)
     }
-  },
-  async mounted() {
-    await this.initializeEditor(this.activeTab)
-  },
-  beforeUnmount() {
-    editorManager.getEditorIds().forEach((editorId) => {
-      editorManager.removeEditor(editorId)
-    })
+  })
+}
+
+const initializeEditor = async (tabId) => {
+  let editor = editorManager.getEditor(tabId)
+  if (!editor) {
+    const containerId = `editorContainer-${tabId}`
+    let container = document.getElementById(containerId)
+    if (!container) {
+      container = document.createElement('div')
+      container.id = containerId
+      container.className = 'editorContainer'
+      editorContainer.value.appendChild(container)
+    }
+    editor = await createEditor(container, {}, tabId)
+    editorManager.addEditor(tabId, editor)
+  }
+  if (!editorsInitialized.value) {
+    editorsInitialized.value = true
+    updateEditorVisibility()
   }
 }
+
+onBeforeUnmount(() => {
+  editorManager.getEditorIds().forEach((editorId) => {
+    editorManager.removeEditor(editorId)
+  })
+})
 </script>

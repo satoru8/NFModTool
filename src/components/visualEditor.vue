@@ -15,17 +15,6 @@ export default {
     return {
       showVisual: false
     }
-  },
-  methods: {
-    // openVisual() {
-    //   this.showVisual = true
-    // },
-    // closeVisual() {
-    //   this.showVisual = false
-    // }
   }
-  // mounted() {
-  //   this.openVisual()
-  //}
 }
 </script>

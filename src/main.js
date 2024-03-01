@@ -1,4 +1,4 @@
-const { app, shell, Tray, Menu, nativeImage, BrowserWindow, ipcMain } = require('electron')
+const { app, shell, dialog, Tray, Menu, nativeImage, BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
 const fs = require('fs')
 import { fileURLToPath } from 'url'
@@ -19,7 +19,7 @@ const createWindow = () => {
     minHeight: 800,
     frame: false,
     titleBarStyle: 'hidden',
-    icon: path.join(__dirname, './logo.png'),
+    icon: fileURLToPath(new URL('../renderer/logo.png', import.meta.url)),
     webPreferences: {
       preload: fileURLToPath(new URL('../preload/index.js', import.meta.url))
     }
@@ -66,6 +66,20 @@ app.on('activate', () => {
 // IPC events
 ipcMain.handle('get-app-path', () => app.getAppPath())
 
+ipcMain.handle('select-folder', () => {
+  const result = dialog.showOpenDialogSync({
+    properties: ['openDirectory'],
+    title: 'Select a folder',
+    buttonLabel: 'Select',
+    message: 'Select a folder',
+    defaultPath: app.getPath('desktop')
+  })
+
+  if (result) {
+    return result[0]
+  }
+})
+
 // Title bar icons
 ipcMain.on('close-window', () => {
   BrowserWindow.getFocusedWindow()?.close()
@@ -92,11 +106,14 @@ ipcMain.on('open-help', () => {
 
 // Creates a system tray icon
 let tray
-const iconPath = path.join(__dirname, './logo.png')
-const icon = nativeImage.createFromPath(iconPath)
 
 const createTray = () => {
+  // const iconPath = path.join(app.getAppPath(), './public/logo.png')
+  const iconPath = fileURLToPath(new URL('../renderer/logo.png', import.meta.url))
+  const icon = nativeImage.createFromPath(iconPath)
   tray = new Tray(icon)
+
+  console.log('Tray icon path:', iconPath)
 
   const contextMenu = Menu.buildFromTemplate([
     { label: 'Open', click: () => mainWindow && mainWindow.show() },
@@ -154,15 +171,15 @@ ipcMain.handle('read-directory', async (event, itemPath) => {
         const fullPath = path.join(itemPath, name)
 
         if (isDirectory) {
-          const children = await readDirectoryRecursively(fullPath)
-          return { name, isDirectory, children }
+          const nodes = await readDirectoryRecursively(fullPath)
+          return { name, isDirectory, nodes }
         } else {
           return { name, isDirectory: false }
         }
       })
     )
 
-    return transformedFiles || []
+    return transformedFiles.flat() || []
   } catch (error) {
     console.error('Failed to read directory:', error)
     throw error
@@ -175,18 +192,24 @@ async function readDirectoryRecursively(directoryPath) {
     files.map(async (file) => {
       const isDirectory = file.isDirectory()
       const name = file.name
+      const icon = isDirectory ? '📁' : '📄'
       const fullPath = path.join(directoryPath, name)
 
       if (isDirectory) {
-        const children = await readDirectoryRecursively(fullPath)
-        return { name, isDirectory, children }
+        const nodes = await readDirectoryRecursively(fullPath)
+        return { name, isDirectory, nodes, icon }
       } else {
         return { name, isDirectory: false }
       }
     })
   )
 
-  return transformedFiles || []
+  transformedFiles
+    .filter((result) => result.status === 'fulfilled')
+    .map((result) => result.value)
+    .flat() || []
+
+  return transformedFiles
 }
 
 app.whenReady().then(async () => {
@@ -213,3 +236,5 @@ app.whenReady().then(async () => {
   //   }
   // })
 })
+
+app.setName('NF Mod Tool')

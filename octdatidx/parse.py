@@ -1,6 +1,7 @@
 import json
 import re
 from pathlib import Path
+import time
 
 def parse_value(value):
     if value.startswith('[') and value.endswith(']'):
@@ -132,11 +133,16 @@ def find_and_parse_octdats(directory):
     return all_data
 
 def main():
-    directory = "X:\\Repo\\NFModTool\\octdatidx\\OctDats"
+    start_time = time.time()
+
+    directory = "./OctDats"
     data = find_and_parse_octdats(directory)
     
-    with open('octdatData.json', 'w') as jsonfile:
+    with open('octdatParse.json', 'w') as jsonfile:
         json.dump(data, jsonfile, indent=4)
+
+    end_time = time.time() - start_time
+    print(f"Processed {len(data)} octdats in {end_time:.4f} seconds")
 
 if __name__ == '__main__':
     main()
