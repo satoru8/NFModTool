@@ -172,9 +172,9 @@ ipcMain.handle('read-directory', async (event, itemPath) => {
 
         if (isDirectory) {
           const nodes = await readDirectoryRecursively(fullPath)
-          return { name, isDirectory, nodes }
+          return { name, isDirectory, fullPath, nodes }
         } else {
-          return { name, isDirectory: false }
+          return { name, isDirectory: false, fullPath }
         }
       })
     )
@@ -199,7 +199,7 @@ async function readDirectoryRecursively(directoryPath) {
         const nodes = await readDirectoryRecursively(fullPath)
         return { name, isDirectory, nodes, icon }
       } else {
-        return { name, isDirectory: false }
+        return { name, isDirectory: false, fullPath, icon }
       }
     })
   )
@@ -211,6 +211,17 @@ async function readDirectoryRecursively(directoryPath) {
 
   return transformedFiles
 }
+
+ipcMain.handle('read-file-content', async (event, filePath) => {
+  try {
+    const fileContent = await fs.promises.readFile(filePath, 'utf-8');
+    return fileContent;
+  } catch (error) {
+    console.error('Failed to read file content:', error);
+    throw error;
+  }
+});
+
 
 app.whenReady().then(async () => {
   createTray()

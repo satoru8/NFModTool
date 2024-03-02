@@ -7,19 +7,23 @@
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import FileInput from './fileInput.vue'
 import { editorManager } from '../js/editorManager'
 
-const props = defineProps(['currentTab'])
+const activeTab = ref('tab1')
 
 const onFileChanged = (fileContent) => {
-  const editor = editorManager.getEditor(props.currentTab)
+  console.log('Active Tab:', activeTab.value)
+  console.log('All Editor IDs:', editorManager.getAllEditorIds())
+
+  const editor = editorManager.getEditorById(activeTab.value)
 
   if (editor) {
+    console.log('Editor Found:', editor)
     editor.setValue(fileContent)
   } else {
-    console.error('Editor:', editor)
-    console.error('Editor IDs:', editorManager.getEditorIds())
+    console.error('Editor Not Found for ID:', activeTab.value)
   }
 }
 </script>

@@ -2,13 +2,27 @@
   <div id="settingsPanel">
     <div class="settingsPanelInner">
       <v-container class="settingsContainer pa-0">
-        <v-card class="settingsCard">
+        <v-card class="settingsCard pa-2">
           <v-container>
             <v-row>
-              <v-text-field color="primary" label="NF Mod Folder" v-model="setting1" />
+              <v-text-field
+                append-inner-icon="mdi-folder"
+                label="NF Mod Folder"
+                v-model="modFolderSetting"
+                variant="outlined"
+                color="secondary"
+                @click:appendInner="selectFolder('modFolderSetting')"
+              />
             </v-row>
             <v-row>
-              <v-text-field color="primary" label="NF Octdat Folder" v-model="setting2" />
+              <v-text-field
+                append-inner-icon="mdi-folder"
+                label="NF Octdat Folder"
+                v-model="octdatFolderSetting"
+                variant="outlined"
+                color="secondary"
+                @click:appendInner="selectFolder('octdatFolderSetting')"
+              />
             </v-row>
           </v-container>
 
@@ -31,27 +45,36 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 
-const setting1 = ref('')
-const setting2 = ref('')
-const mainColor = ref('')
+const modFolderSetting = ref('')
+const octdatFolderSetting = ref('')
+
+const selectFolder = (path) => {
+  window.electronAPI.selectFolder(path).then((selectedPath) => {
+    if (selectedPath) {
+      if (path === 'modFolderSetting') {
+        modFolderSetting.value = selectedPath
+      }
+      if (path === 'octdatFolderSetting') {
+        octdatFolderSetting.value = selectedPath
+      }
+    }
+  })
+}
 
 const saveSettings = async () => {
   window.electronAPI.saveSettings({
-    setting1: setting1.value,
-    setting2: setting2.value,
-    mainColor: mainColor.value
+    modFolderSetting: modFolderSetting.value,
+    octdatFolderSetting: octdatFolderSetting.value
   })
 }
 
 const loadSettings = async () => {
   const settings = await window.electronAPI.loadSettings()
-  setting1.value = settings.setting1 || ''
-  setting2.value = settings.setting2 || ''
-  mainColor.value = settings.mainColor || ''
+  modFolderSetting.value = settings.modFolderSetting || ''
+  octdatFolderSetting.value = settings.octdatFolderSetting || ''
 }
 
 const resetSettings = () => {
-  window.electronAPI.loadSettings()
   loadSettings()
   console.log('Settings reset.')
 }

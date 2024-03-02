@@ -16,8 +16,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
   loadingDone: (callback) => ipcRenderer.on('loading-done', callback),
   rendererReady: () => ipcRenderer.send('renderer-ready'),
   saveSettings: (settings) => ipcRenderer.send('save-settings', settings),
-  loadSettings: () => ipcRenderer.invoke('load-settings'),
+  loadSettings: (settings) => ipcRenderer.invoke('load-settings', settings),
   getAppPath: () => ipcRenderer.invoke('get-app-path'),
   fetchFiles: (path) => ipcRenderer.invoke('read-directory', path),
-  selectFolder: () => ipcRenderer.invoke('select-folder')
+  selectFolder: () => ipcRenderer.invoke('select-folder'),
+  readFileContent: (filePath) => ipcRenderer.invoke('read-file-content', filePath),
 })

@@ -42,7 +42,7 @@
               single-line
               :placeholder="field.props.placeholder"
               append-inner-icon="mdi-delete"
-              @click:append-inner="removeField(index)"
+              @click:appendInner="removeField(index)"
             ></v-text-field>
           </div>
         </v-card>

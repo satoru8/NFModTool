@@ -16,6 +16,8 @@
         :value="tab.id"
         :class="tab.id"
         @click="selectTab(tab.id)"
+        append-icon="mdi-close"
+        @click:="removeTab(tab.id)"
       >
         {{ tab.name }}
       </v-tab>
@@ -51,6 +53,10 @@ watch(
 
 const selectTab = (tabId) => {
   emit('switchTab', tabId)
+}
+
+const removeTab = (tabId) => {
+  emit('removeTab', tabId)
 }
 
 const addTab = () => {

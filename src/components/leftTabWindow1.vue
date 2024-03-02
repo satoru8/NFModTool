@@ -38,7 +38,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import Tree from 'vue3-tree'
 import 'vue3-tree/dist/style.css'
 import { editorManager } from '../js/editorManager'
@@ -48,13 +48,36 @@ const searchText = ref('')
 
 defineProps(['indentSize', 'gap'])
 
+onMounted(() => {
+  loadFolderPathFromSettings()
+})
+
 const selectDir = async () => {
-  await fetchFilesAndTransform()
+  try {
+    const selectedFolderPath = await window.electronAPI.selectFolder()
+
+    if (selectedFolderPath) {
+      await fetchFilesAndTransform(selectedFolderPath)
+    }
+  } catch (error) {
+    console.error('Failed to select folder:', error)
+  }
 }
 
-const fetchFilesAndTransform = async () => {
+const loadFolderPathFromSettings = async () => {
   try {
-    const filePath = await window.electronAPI.selectFolder()
+    const settings = await window.electronAPI.loadSettings()
+    const initialFolderPath = settings.modFolderSetting || ''
+    if (initialFolderPath) {
+      await fetchFilesAndTransform(initialFolderPath)
+    }
+  } catch (error) {
+    console.error('Failed to load folder path from settings:', error)
+  }
+}
+
+const fetchFilesAndTransform = async (filePath) => {
+  try {
     const files = await window.electronAPI.fetchFiles(filePath)
     const rootFolder = {
       name: filePath.split('\\').pop(),
@@ -85,27 +108,20 @@ const onNodeClick = (node) => {
     return
   }
 
-  const activeEditorId = editorManager.getActiveEditorId()
+  const editor = editorManager.getEditorById("tab1")
 
-  if (activeEditorId !== null) {
-    const editor = editorManager.getEditorById(activeEditorId)
-
-    if (editor) {
-      const fileContent = window.electronAPI.readFileContent(node.path)
-
-      if (fileContent) {
-        console.log('File content:', fileContent)
-      }
-    } else {
-      console.error(`Editor with ID ${activeEditorId} not found.`)
+  if (editor) {
+    const fileContent = window.electronAPI.readFileContent(node.path)
+    console.log('Full Path:', node.path);
+    if (fileContent) {
+      editor.setValue(fileContent)
     }
   } else {
-    console.log('Editor IDs:', editorManager.getActiveEditorId())
     console.error('No active editor found.')
   }
 }
 
-function transformFileStructureToTree(files, parentPath = '') {
+const transformFileStructureToTree = (files, parentPath = '') => {
   if (!files || files.length === 0) {
     return []
   }
@@ -114,7 +130,7 @@ function transformFileStructureToTree(files, parentPath = '') {
     const path = `${parentPath}${file.name}`
     const node = {
       label: file.name,
-      path: path,
+      path: file.fullPath,
       isDirectory: file.isDirectory,
       expandable: file.isDirectory,
       nodes: file.isDirectory ? [] : null
