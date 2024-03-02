@@ -31,7 +31,11 @@
               </v-list-item>
             </v-list>
           </v-menu>
-          <div class="visualEditorField" v-for="(field, index) in textFields" :key="`field-${index}`">
+          <div
+            class="visualEditorField"
+            v-for="(field, index) in textFields"
+            :key="`field-${index}`"
+          >
             <v-text-field
               v-model="field.value"
               :label="field.props.label"
@@ -50,7 +54,6 @@
     </div>
   </div>
 </template>
-
 
 <script setup>
 import { ref } from 'vue'
@@ -72,7 +75,11 @@ const textFieldOptions = [
 ]
 
 const templateOptions = [
-  { type: 'template', label: 'Template', props: { label: 'Template', placeholder: 'MyMod.Templates.MyTemplate' } }
+  {
+    type: 'template',
+    label: 'Template',
+    props: { label: 'Template', placeholder: 'MyMod.Templates.MyTemplate' }
+  }
 ]
 
 const addTextField = (option) => {
@@ -82,6 +89,4 @@ const addTextField = (option) => {
 const addTemplate = (option) => {
   textFields.value.push({ value: '', props: option.props })
 }
-
-
 </script>

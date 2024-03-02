@@ -1,6 +1,6 @@
 /**
  * Vuetify global loading & settings
- * 
+ *
  * @see https://github.com/vuetifyjs/vuetify
  * @see https://vuetifyjs.com/en/features/theme
  */

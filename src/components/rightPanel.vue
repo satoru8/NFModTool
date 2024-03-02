@@ -6,7 +6,7 @@
         <v-tabs fixed-tabs hide-slider v-model="tab" direction="horizontal" color="primary">
           <v-tab v-for="item in tabs" :key="item.value" :value="item.value">{{ item.label }}</v-tab>
         </v-tabs>
-        
+
         <!-- Bottom Panel with Windows -->
         <v-window v-model="tab">
           <v-window-item v-for="item in tabs" :key="item.value" :value="item.value">

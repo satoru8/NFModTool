@@ -108,11 +108,11 @@ const onNodeClick = (node) => {
     return
   }
 
-  const editor = editorManager.getEditorById("tab1")
+  const editor = editorManager.getEditorById('tab1')
 
   if (editor) {
     const fileContent = window.electronAPI.readFileContent(node.path)
-    console.log('Full Path:', node.path);
+    console.log('Full Path:', node.path)
     if (fileContent) {
       editor.setValue(fileContent)
     }

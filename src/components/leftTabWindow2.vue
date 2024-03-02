@@ -1,7 +1,7 @@
 <template>
   <v-card flat class="leftPanelCard">
     <v-card-text>
-      <v-btn block flat @click="callAll" text="Editor Manager Output"/>
+      <v-btn block flat @click="callAll" text="Editor Manager Output" />
     </v-card-text>
   </v-card>
 </template>
@@ -18,5 +18,4 @@ const callAll = () => {
   console.log('--------------')
   console.log('Editor Count:', editorManager.getEditorCount())
 }
-
 </script>

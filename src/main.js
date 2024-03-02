@@ -214,14 +214,13 @@ async function readDirectoryRecursively(directoryPath) {
 
 ipcMain.handle('read-file-content', async (event, filePath) => {
   try {
-    const fileContent = await fs.promises.readFile(filePath, 'utf-8');
-    return fileContent;
+    const fileContent = await fs.promises.readFile(filePath, 'utf-8')
+    return fileContent
   } catch (error) {
-    console.error('Failed to read file content:', error);
-    throw error;
+    console.error('Failed to read file content:', error)
+    throw error
   }
-});
-
+})
 
 app.whenReady().then(async () => {
   createTray()

@@ -1,3 +1,5 @@
+import { createEditor } from './monacoSetup'
+
 class EditorManager {
   constructor() {
     this.editors = new Map()
@@ -42,6 +44,44 @@ class EditorManager {
 
   getEditorCount() {
     return this.editors.size
+  }
+
+  updateEditorVisibility(activeTabId) {
+    this.getAllEditorIds().forEach((id) => {
+      const editor = this.getEditorById(id)
+      if (editor) {
+        const containerId = `editorContainer-${id}`
+        const container = document.getElementById(containerId)
+        if (container) {
+          const displayStyle = id === activeTabId ? 'block' : 'none'
+          container.style.display = displayStyle
+
+          if (id === activeTabId) {
+            editor.focus()
+          }
+        } else {
+          console.error(`Container element not found for tab ${id}`)
+        }
+      } else {
+        console.error(`Editor instance is undefined for tab ${id}`)
+      }
+    })
+  }
+
+  async initializeEditor(tabId, editorContainer) {
+    let editor = this.getEditorById(tabId)
+    if (!editor) {
+      const containerId = `editorContainer-${tabId}`
+      let container = document.getElementById(containerId)
+      if (!container) {
+        container = document.createElement('div')
+        container.id = containerId
+        container.className = 'editorContainer'
+        editorContainer.appendChild(container)
+      }
+      editor = await createEditor(container, {}, tabId)
+      // this.addEditor(tabId, editor)
+    }
   }
 }
 
