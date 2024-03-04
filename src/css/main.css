@@ -212,6 +212,11 @@ html {
 }
 
 .editorContainer {
+  background-color: #1b1b1b
+}
+
+.editorContainer,
+.editorContainerInner {
   width: 100%;
   height: 100%;
 }

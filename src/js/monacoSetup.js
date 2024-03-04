@@ -1,5 +1,4 @@
 import * as monaco from 'monaco-editor'
-import { editorManager } from './editorManager'
 import formatOctDat from './formatting'
 
 monaco.languages.register({ id: 'octdat' })
@@ -236,7 +235,7 @@ function generateHoverContents(context) {
 }
 
 // Load Monaco editor
-export function createEditor(container, options = {}, editorId) {
+export function createEditor(container, options = {}) {
   const editorOptions = {
     ...options,
     value: '',
@@ -247,6 +246,5 @@ export function createEditor(container, options = {}, editorId) {
   }
 
   const editor = monaco.editor.create(container, editorOptions)
-  editorManager.addEditor(editorId, editor)
   return editor
 }

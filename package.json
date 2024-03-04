@@ -1,6 +1,7 @@
 {
   "name": "nfmodtool",
-  "productName": "NFModTool",
+  "productName": "NF Mod Tool",
+  "icon": "./logo.png",
   "version": "0.0.1",
   "description": "Modding Tool for Noble Fates",
   "main": "./dist/main/index.js",

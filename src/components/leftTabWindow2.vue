@@ -10,11 +10,18 @@
 import { editorManager } from '../js/editorManager'
 
 const callAll = () => {
+
+  if (editorManager.getEditorCount() === 0) {
+    console.log('No editors found.')
+    return
+  }
+
   editorManager.getAllEditorIds().forEach((id) => {
     console.log('Editor ID:', id)
   })
+
   console.log('--------------')
-  console.log(editorManager.getAllEditorsAsArray())
+  console.log(editorManager.getAllEditorsAsArray()) 
   console.log('--------------')
   console.log('Editor Count:', editorManager.getEditorCount())
 }

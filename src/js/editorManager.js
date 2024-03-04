@@ -1,23 +1,30 @@
-import { createEditor } from './monacoSetup'
+import { createEditor } from './monacoSetup';
 
 class EditorManager {
   constructor() {
-    this.editors = new Map()
+    this.editors = new Map();
   }
 
   addEditor(id, editorInstance) {
     if (this.editors.has(id)) {
-      console.warn(`Editor with id ${id} already exists.`)
-    } else {
-      this.editors.set(id, editorInstance)
+      console.warn(`Editor with id ${id} already exists. Skipping.`);
+      return;
     }
+    this.editors.set(id, editorInstance);
   }
 
   removeEditor(id) {
-    const editor = this.editors.get(id)
-    if (editor) {
-      editor.dispose()
-      this.editors.delete(id)
+    const editor = this.editors.get(id);
+    if (!editor) {
+      console.warn(`Editor with id ${id} does not exist.`);
+      return;
+    }
+    const containerId = `editorContainer-${id}`;
+    const container = document.getElementById(containerId);
+    if (container) {
+      editor.dispose();
+      container.remove();
+      this.editors.delete(id);
     }
   }
 
@@ -26,20 +33,35 @@ class EditorManager {
     this.editors.clear()
   }
 
+  getEditorById(id) {
+    return this.editors.get(id);
+  }
+
   getAllEditors() {
+    if (this.editors.size === 0) {
+      console.log('No editors found.')
+      return
+    }
     return this.editors
   }
 
-  getAllEditorsAsArray() {
-    return Array.from(this.editors.values())
-  }
-
-  getEditorById(id) {
-    return this.editors.get(id)
-  }
-
   getAllEditorIds() {
-    return Array.from(this.editors.keys())
+    if (this.editors.size === 0) {
+      console.log('No editors found.')
+      return
+    }
+    const editorIds = Array.from(this.editors.keys())
+    console.log(`Editor IDs: ${editorIds}`)
+    return editorIds
+  }
+
+  getAllEditorsAsArray() {
+    if (this.editors.size === 0) {
+      console.log('No editors found.')
+      return
+    }
+    const editorsArray = Array.from(this.editors.values())
+    return editorsArray
   }
 
   getEditorCount() {
@@ -47,42 +69,34 @@ class EditorManager {
   }
 
   updateEditorVisibility(activeTabId) {
-    this.getAllEditorIds().forEach((id) => {
-      const editor = this.getEditorById(id)
-      if (editor) {
-        const containerId = `editorContainer-${id}`
-        const container = document.getElementById(containerId)
-        if (container) {
-          const displayStyle = id === activeTabId ? 'block' : 'none'
-          container.style.display = displayStyle
-
-          if (id === activeTabId) {
-            editor.focus()
-          }
-        } else {
-          console.error(`Container element not found for tab ${id}`)
+    this.editors.forEach((editor, id) => {
+      const containerId = `editorContainer-${id}`;
+      const container = document.getElementById(containerId);
+      if (container) {
+        container.style.display = id === activeTabId ? 'block' : 'none';
+        if (id === activeTabId) {
+          editor.focus();
         }
-      } else {
-        console.error(`Editor instance is undefined for tab ${id}`)
       }
-    })
+    });
   }
 
   async initializeEditor(tabId, editorContainer) {
-    let editor = this.getEditorById(tabId)
-    if (!editor) {
-      const containerId = `editorContainer-${tabId}`
-      let container = document.getElementById(containerId)
-      if (!container) {
-        container = document.createElement('div')
-        container.id = containerId
-        container.className = 'editorContainer'
-        editorContainer.appendChild(container)
-      }
-      editor = await createEditor(container, {}, tabId)
-      // this.addEditor(tabId, editor)
+    if (this.editors.has(tabId)) {
+      console.warn(`Editor for ${tabId} already initialized.`);
+      return;
     }
+    const containerId = `editorContainer-${tabId}`;
+    let container = document.getElementById(containerId);
+    if (!container) {
+      container = document.createElement('div');
+      container.id = containerId;
+      container.className = 'editorContainerInner';
+      editorContainer.appendChild(container);
+    }
+    const editor = await createEditor(container, {}, tabId);
+    this.addEditor(tabId, editor);
   }
 }
 
-export const editorManager = new EditorManager()
+export const editorManager = new EditorManager();

@@ -16,10 +16,9 @@
         :value="tab.id"
         :class="tab.id"
         @click="selectTab(tab.id)"
-        append-icon="mdi-close"
-        @click:="removeTab(tab.id)"
       >
         {{ tab.name }}
+        <v-icon class="removeTabButton" @click="removeTab(tab.id)" icon="mdi-close" />
       </v-tab>
       <v-btn
         flat
@@ -40,7 +39,7 @@ const props = defineProps({
   activeTab: String
 })
 
-const emit = defineEmits(['switchTab', 'addTab'])
+const emit = defineEmits(['switchTab', 'addTab', 'removeTab'])
 
 const selectedTab = ref(props.activeTab)
 

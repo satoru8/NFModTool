@@ -1,9 +1,9 @@
 module.exports = {
   packagerConfig: {
-    name: 'NFModTool',
-    icon: './logo.png',
-    executableName: 'NFModTool',
-    appCopyright: 'Copyright 2022, Chikara',
+    name: 'NF Mod Tool',
+    icon: './renderer/logo.png',
+    executableName: 'NF Mod Tool',
+    appCopyright: 'Copyright 2024, Chikara',
     appVersion: '0.0.1',
     ignore: [
       /^\/src/,

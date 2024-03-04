@@ -48,6 +48,8 @@ const searchText = ref('')
 
 defineProps(['indentSize', 'gap'])
 
+const emit = defineEmits([ 'openFileInEditor'])
+
 onMounted(() => {
   loadFolderPathFromSettings()
 })
@@ -103,23 +105,25 @@ const onUpdate = (nodes) => {
   console.log('onUpdate:', nodes)
 }
 
-const onNodeClick = (node) => {
+
+
+
+
+const onNodeClick = async (node) => {
   if (node.isDirectory) {
-    return
+    return;
   }
 
-  const editor = editorManager.getEditorById('tab1')
-
-  if (editor) {
-    const fileContent = window.electronAPI.readFileContent(node.path)
-    console.log('Full Path:', node.path)
-    if (fileContent) {
-      editor.setValue(fileContent)
-    }
-  } else {
-    console.error('No active editor found.')
+  try {
+    const fileContent = await window.electronAPI.readFileContent(node.path);
+    // Emit an event with the filename and content
+    emit('openFileInEditor', { id: `editor_${node.label}`, label: node.label, content: fileContent });
+  } catch (error) {
+    console.error('Error reading file content:', error);
   }
-}
+};
+
+
 
 const transformFileStructureToTree = (files, parentPath = '') => {
   if (!files || files.length === 0) {

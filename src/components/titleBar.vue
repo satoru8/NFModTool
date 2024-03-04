@@ -32,7 +32,7 @@ defineProps({
   },
   logoSrc: {
     type: String,
-    default: '/path/to/default/logo.png'
+    default: './logo.png'
   },
   buttons: {
     type: Array,
