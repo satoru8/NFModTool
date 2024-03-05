@@ -11,7 +11,8 @@
         class="selectFolderBtn"
       />
       <v-text-field
-        color="primary"
+        prepend-inner-icon="mdi-magnify"
+        color="secondary"
         density="compact"
         label="Search"
         variant="outlined"
@@ -28,9 +29,8 @@
         :indent-size="indentSize"
         :gap="gap"
         row-hover-background="#a8a8a831"
-        @node-expanded="onNodeExpanded"
         @update:nodes="onUpdate"
-        @node-click="onNodeClick"
+        @nodeClick="onNodeClick"
         show-child-count
       />
     </v-card-text>
@@ -41,14 +41,13 @@
 import { ref, onMounted } from 'vue'
 import Tree from 'vue3-tree'
 import 'vue3-tree/dist/style.css'
-import { editorManager } from '../js/editorManager'
 
 const fileTree = ref([])
 const searchText = ref('')
+const indentSize = ref(5)
+const gap = ref(0)
 
-defineProps(['indentSize', 'gap'])
-
-const emit = defineEmits([ 'openFileInEditor'])
+defineEmits(['nodeExpanded', 'update:nodes', 'nodeClick'])
 
 onMounted(() => {
   loadFolderPathFromSettings()
@@ -96,34 +95,39 @@ const fetchFilesAndTransform = async (filePath) => {
   }
 }
 
-const onNodeExpanded = (node, state) => {
-  console.log('onExpanded State: ', state)
-  console.log('onExpanded Node: ', node)
-}
+// const onNodeExpanded = (node, state) => {
+//   console.log('onExpanded State: ', state)
+//   console.log('onExpanded Node: ', node)
+// }
 
 const onUpdate = (nodes) => {
   console.log('onUpdate:', nodes)
 }
 
-
-
-
-
 const onNodeClick = async (node) => {
-  if (node.isDirectory) {
-    return;
+  if (node.isDirectory || !isValidFile(node)) {
+    return
   }
 
   try {
-    const fileContent = await window.electronAPI.readFileContent(node.path);
-    // Emit an event with the filename and content
-    emit('openFileInEditor', { id: `editor_${node.label}`, label: node.label, content: fileContent });
+    const fileContent = await window.electronAPI.readFileContent(node.path)
+
+    window.electronAPI.sendOpenFileInEditor({
+      id: node.label,
+      label: node.label,
+      content: fileContent
+    })
+
+    console.log('File to be opened:', node.label)
   } catch (error) {
-    console.error('Error reading file content:', error);
+    console.error('Error reading file content:', error)
   }
-};
+}
 
-
+const isValidFile = (node) => {
+  const fileExtension = node.label.toLowerCase()
+  return /\.(octdat|octdat\.bak|info)$/.test(fileExtension)
+}
 
 const transformFileStructureToTree = (files, parentPath = '') => {
   if (!files || files.length === 0) {
@@ -137,6 +141,7 @@ const transformFileStructureToTree = (files, parentPath = '') => {
       path: file.fullPath,
       isDirectory: file.isDirectory,
       expandable: file.isDirectory,
+      icon: file.isDirectory ? 'mdi-folder' : 'mdi-file',
       nodes: file.isDirectory ? [] : null
     }
 

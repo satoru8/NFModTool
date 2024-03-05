@@ -69,6 +69,14 @@ app.on('activate', () => {
 // IPC events
 ipcMain.handle('get-app-path', () => app.getAppPath())
 
+ipcMain.on('open-file-in-editor', (event, data) => {
+  if (data && data.id && data.label && data.content) {
+    mainWindow.webContents.send('open-file-in-editor', data)
+  } else {
+    console.error('Invalid data received:', data)
+  }
+})
+
 ipcMain.handle('select-folder', () => {
   const result = dialog.showOpenDialogSync({
     properties: ['openDirectory'],
@@ -111,7 +119,6 @@ ipcMain.on('open-help', () => {
 let tray
 
 const createTray = () => {
-
   tray = new Tray(nfIcon)
 
   const contextMenu = Menu.buildFromTemplate([

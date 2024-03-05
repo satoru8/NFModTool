@@ -235,16 +235,15 @@ function generateHoverContents(context) {
 }
 
 // Load Monaco editor
-export function createEditor(container, options = {}) {
+export function createEditor(container, options = {}, content = '') {
   const editorOptions = {
     ...options,
-    value: '',
+    value: content,
     language: options.language || 'octdat',
     theme: options.theme || 'octdatTheme',
-    automaticLayout: true,
-    defaultEOL: monaco.editor.DefaultEndOfLine.CRLF
+    automaticLayout: true
   }
 
-  const editor = monaco.editor.create(container, editorOptions)
+  const editor = monaco.editor.create(container, editorOptions, content)
   return editor
 }

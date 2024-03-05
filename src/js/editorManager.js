@@ -1,30 +1,30 @@
-import { createEditor } from './monacoSetup';
+import { createEditor } from './monacoSetup'
 
 class EditorManager {
   constructor() {
-    this.editors = new Map();
+    this.editors = new Map()
   }
 
   addEditor(id, editorInstance) {
     if (this.editors.has(id)) {
-      console.warn(`Editor with id ${id} already exists. Skipping.`);
-      return;
+      console.warn(`Editor with id ${id} already exists. Skipping.`)
+      return
     }
-    this.editors.set(id, editorInstance);
+    this.editors.set(id, editorInstance)
   }
 
   removeEditor(id) {
-    const editor = this.editors.get(id);
+    const editor = this.editors.get(id)
     if (!editor) {
-      console.warn(`Editor with id ${id} does not exist.`);
-      return;
+      console.warn(`Editor with id ${id} does not exist.`)
+      return
     }
-    const containerId = `editorContainer-${id}`;
-    const container = document.getElementById(containerId);
+    const containerId = `editorContainer-${id}`
+    const container = document.getElementById(containerId)
     if (container) {
-      editor.dispose();
-      container.remove();
-      this.editors.delete(id);
+      editor.dispose()
+      container.remove()
+      this.editors.delete(id)
     }
   }
 
@@ -34,7 +34,7 @@ class EditorManager {
   }
 
   getEditorById(id) {
-    return this.editors.get(id);
+    return this.editors.get(id)
   }
 
   getAllEditors() {
@@ -70,33 +70,53 @@ class EditorManager {
 
   updateEditorVisibility(activeTabId) {
     this.editors.forEach((editor, id) => {
-      const containerId = `editorContainer-${id}`;
-      const container = document.getElementById(containerId);
+      const containerId = `editorContainer-${id}`
+      const container = document.getElementById(containerId)
       if (container) {
-        container.style.display = id === activeTabId ? 'block' : 'none';
+        container.style.display = id === activeTabId ? 'block' : 'none'
         if (id === activeTabId) {
-          editor.focus();
+          editor.focus()
         }
       }
-    });
+    })
   }
 
-  async initializeEditor(tabId, editorContainer) {
+  // async initializeEditor(tabId, editorContainer) {
+  //   if (this.editors.has(tabId)) {
+  //     console.warn(`Editor for ${tabId} already initialized.`);
+  //     return;
+  //   }
+  //   const containerId = `editorContainer-${tabId}`;
+  //   let container = document.getElementById(containerId);
+  //   if (!container) {
+  //     container = document.createElement('div');
+  //     container.id = containerId;
+  //     container.className = 'editorContainerInner';
+  //     editorContainer.appendChild(container);
+  //   }
+  //   const editor = await createEditor(container, {}, tabId);
+  //   this.addEditor(tabId, editor);
+  // }
+
+  async initializeEditor(tabId, editorContainer, content = '') {
     if (this.editors.has(tabId)) {
-      console.warn(`Editor for ${tabId} already initialized.`);
-      return;
+      console.warn(`Editor for ${tabId} already initialized.`)
+      return
     }
-    const containerId = `editorContainer-${tabId}`;
-    let container = document.getElementById(containerId);
+
+    const containerId = `editorContainer-${tabId}`
+    let container = document.getElementById(containerId)
+
     if (!container) {
-      container = document.createElement('div');
-      container.id = containerId;
-      container.className = 'editorContainerInner';
-      editorContainer.appendChild(container);
+      container = document.createElement('div')
+      container.id = containerId
+      container.className = 'editorContainerInner'
+      editorContainer.appendChild(container)
     }
-    const editor = await createEditor(container, {}, tabId);
-    this.addEditor(tabId, editor);
+
+    const editor = createEditor(container, {}, content)
+
+    this.addEditor(tabId, editor)
   }
 }
-
-export const editorManager = new EditorManager();
+export const editorManager = new EditorManager()

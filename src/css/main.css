@@ -65,6 +65,16 @@ html {
   display: none;
 }
 
+#NF .toolsBtn .v-list-item__prepend {
+  flex-direction: column;
+}
+
+[aria-owns='v-menu-3'] {
+  min-width: 10px;
+  width: 20px;
+  padding: 0 0 0 12px;
+}
+
 /*
 **  Main
 */
@@ -212,7 +222,7 @@ html {
 }
 
 .editorContainer {
-  background-color: #1b1b1b
+  background-color: #1b1b1b;
 }
 
 .editorContainer,

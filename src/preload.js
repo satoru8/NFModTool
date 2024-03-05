@@ -20,5 +20,10 @@ contextBridge.exposeInMainWorld('electronAPI', {
   getAppPath: () => ipcRenderer.invoke('get-app-path'),
   fetchFiles: (path) => ipcRenderer.invoke('read-directory', path),
   selectFolder: () => ipcRenderer.invoke('select-folder'),
-  readFileContent: (filePath) => ipcRenderer.invoke('read-file-content', filePath)
+  readFileContent: (filePath) => ipcRenderer.invoke('read-file-content', filePath),
+  sendOpenFileInEditor: (data) => ipcRenderer.send('open-file-in-editor', data),
+  onOpenFileInEditor: (callback) =>
+    ipcRenderer.on('open-file-in-editor', (event, data) => {
+      callback(data)
+    })
 })
