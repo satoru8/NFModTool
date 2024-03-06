@@ -81,23 +81,6 @@ class EditorManager {
     })
   }
 
-  // async initializeEditor(tabId, editorContainer) {
-  //   if (this.editors.has(tabId)) {
-  //     console.warn(`Editor for ${tabId} already initialized.`);
-  //     return;
-  //   }
-  //   const containerId = `editorContainer-${tabId}`;
-  //   let container = document.getElementById(containerId);
-  //   if (!container) {
-  //     container = document.createElement('div');
-  //     container.id = containerId;
-  //     container.className = 'editorContainerInner';
-  //     editorContainer.appendChild(container);
-  //   }
-  //   const editor = await createEditor(container, {}, tabId);
-  //   this.addEditor(tabId, editor);
-  // }
-
   async initializeEditor(tabId, editorContainer, content = '') {
     if (this.editors.has(tabId)) {
       console.warn(`Editor for ${tabId} already initialized.`)
@@ -115,7 +98,6 @@ class EditorManager {
     }
 
     const editor = createEditor(container, {}, content)
-
     this.addEditor(tabId, editor)
   }
 }

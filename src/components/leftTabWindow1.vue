@@ -77,6 +77,32 @@ const loadFolderPathFromSettings = async () => {
   }
 }
 
+const transformFileStructureToTree = (files, parentPath = '') => {
+  if (!files || files.length === 0) {
+    return []
+  }
+
+  const tree = files.map((file) => {
+    const path = `${parentPath}${file.name}`
+    const node = {
+      label: file.name,
+      path: file.fullPath,
+      isDirectory: file.isDirectory,
+      expandable: file.isDirectory,
+      icon: file.isDirectory ? 'mdi-folder' : 'mdi-file',
+      nodes: file.isDirectory ? [] : null
+    }
+
+    if (file.isDirectory && file.nodes) {
+      node.nodes = transformFileStructureToTree(file.nodes, `${path}/`)
+    }
+
+    return node
+  })
+
+  return tree
+}
+
 const fetchFilesAndTransform = async (filePath) => {
   try {
     const files = await window.electronAPI.fetchFiles(filePath)
@@ -127,31 +153,5 @@ const onNodeClick = async (node) => {
 const isValidFile = (node) => {
   const fileExtension = node.label.toLowerCase()
   return /\.(octdat|octdat\.bak|info)$/.test(fileExtension)
-}
-
-const transformFileStructureToTree = (files, parentPath = '') => {
-  if (!files || files.length === 0) {
-    return []
-  }
-
-  const tree = files.map((file) => {
-    const path = `${parentPath}${file.name}`
-    const node = {
-      label: file.name,
-      path: file.fullPath,
-      isDirectory: file.isDirectory,
-      expandable: file.isDirectory,
-      icon: file.isDirectory ? 'mdi-folder' : 'mdi-file',
-      nodes: file.isDirectory ? [] : null
-    }
-
-    if (file.isDirectory && file.nodes) {
-      node.nodes = transformFileStructureToTree(file.nodes, `${path}/`)
-    }
-
-    return node
-  })
-
-  return tree
 }
 </script>
