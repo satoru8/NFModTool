@@ -10,6 +10,7 @@
     >
       <v-tab
         class="editorTab"
+        variant="tonal"
         v-for="tab in tabs"
         :key="tab.id"
         :value="tab.id"
@@ -17,6 +18,7 @@
         @click="selectTab(tab.id)"
       >
         {{ tab.name }}
+        <v-icon class="removeTabButton" @click="removeTab(tab.id)" icon="mdi-close" />
       </v-tab>
       <v-btn
         flat
@@ -37,7 +39,7 @@ const props = defineProps({
   activeTab: String
 })
 
-const emit = defineEmits(['switchTab', 'addTab'])
+const emit = defineEmits(['switchTab', 'addTab', 'removeTab'])
 
 const selectedTab = ref(props.activeTab)
 
@@ -50,6 +52,10 @@ watch(
 
 const selectTab = (tabId) => {
   emit('switchTab', tabId)
+}
+
+const removeTab = (tabId) => {
+  emit('removeTab', tabId)
 }
 
 const addTab = () => {

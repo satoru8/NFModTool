@@ -11,7 +11,8 @@
         class="selectFolderBtn"
       />
       <v-text-field
-        color="primary"
+        prepend-inner-icon="mdi-magnify"
+        color="secondary"
         density="compact"
         label="Search"
         variant="outlined"
@@ -28,9 +29,8 @@
         :indent-size="indentSize"
         :gap="gap"
         row-hover-background="#a8a8a831"
-        @node-expanded="onNodeExpanded"
         @update:nodes="onUpdate"
-        @node-click="onNodeClick"
+        @nodeClick="onNodeClick"
         show-child-count
       />
     </v-card-text>
@@ -38,23 +38,73 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import Tree from 'vue3-tree'
 import 'vue3-tree/dist/style.css'
-import { editorManager } from '../js/editorManager'
 
 const fileTree = ref([])
 const searchText = ref('')
+const indentSize = ref(5)
+const gap = ref(0)
 
-defineProps(['indentSize', 'gap'])
+defineEmits(['nodeExpanded', 'update:nodes', 'nodeClick'])
+
+onMounted(() => {
+  loadFolderPathFromSettings()
+})
 
 const selectDir = async () => {
-  await fetchFilesAndTransform()
+  try {
+    const selectedFolderPath = await window.electronAPI.selectFolder()
+
+    if (selectedFolderPath) {
+      await fetchFilesAndTransform(selectedFolderPath)
+    }
+  } catch (error) {
+    console.error('Failed to select folder:', error)
+  }
 }
 
-const fetchFilesAndTransform = async () => {
+const loadFolderPathFromSettings = async () => {
   try {
-    const filePath = await window.electronAPI.selectFolder()
+    const settings = await window.electronAPI.loadSettings()
+    const initialFolderPath = settings.modFolderSetting || ''
+    if (initialFolderPath) {
+      await fetchFilesAndTransform(initialFolderPath)
+    }
+  } catch (error) {
+    console.error('Failed to load folder path from settings:', error)
+  }
+}
+
+const transformFileStructureToTree = (files, parentPath = '') => {
+  if (!files || files.length === 0) {
+    return []
+  }
+
+  const tree = files.map((file) => {
+    const path = `${parentPath}${file.name}`
+    const node = {
+      label: file.name,
+      path: file.fullPath,
+      isDirectory: file.isDirectory,
+      expandable: file.isDirectory,
+      icon: file.isDirectory ? 'mdi-folder' : 'mdi-file',
+      nodes: file.isDirectory ? [] : null
+    }
+
+    if (file.isDirectory && file.nodes) {
+      node.nodes = transformFileStructureToTree(file.nodes, `${path}/`)
+    }
+
+    return node
+  })
+
+  return tree
+}
+
+const fetchFilesAndTransform = async (filePath) => {
+  try {
     const files = await window.electronAPI.fetchFiles(filePath)
     const rootFolder = {
       name: filePath.split('\\').pop(),
@@ -71,62 +121,37 @@ const fetchFilesAndTransform = async () => {
   }
 }
 
-const onNodeExpanded = (node, state) => {
-  console.log('onExpanded State: ', state)
-  console.log('onExpanded Node: ', node)
-}
+// const onNodeExpanded = (node, state) => {
+//   console.log('onExpanded State: ', state)
+//   console.log('onExpanded Node: ', node)
+// }
 
 const onUpdate = (nodes) => {
   console.log('onUpdate:', nodes)
 }
 
-const onNodeClick = (node) => {
-  if (node.isDirectory) {
+const onNodeClick = async (node) => {
+  if (node.isDirectory || !isValidFile(node)) {
     return
   }
 
-  const activeEditorId = editorManager.getActiveEditorId()
+  try {
+    const fileContent = await window.electronAPI.readFileContent(node.path)
 
-  if (activeEditorId !== null) {
-    const editor = editorManager.getEditor(activeEditorId)
+    window.electronAPI.sendOpenFileInEditor({
+      id: node.label,
+      label: node.label,
+      content: fileContent
+    })
 
-    if (editor) {
-      const fileContent = window.electronAPI.readFileContent(node.path)
-
-      if (fileContent) {
-        console.log('File content:', fileContent)
-      }
-    } else {
-      console.error(`Editor with ID ${activeEditorId} not found.`)
-    }
-  } else {
-    console.log('Editor IDs:', editorManager.getActiveEditorId())
-    console.error('No active editor found.')
+    console.log('File to be opened:', node.label)
+  } catch (error) {
+    console.error('Error reading file content:', error)
   }
 }
 
-function transformFileStructureToTree(files, parentPath = '') {
-  if (!files || files.length === 0) {
-    return []
-  }
-
-  const tree = files.map((file) => {
-    const path = `${parentPath}${file.name}`
-    const node = {
-      label: file.name,
-      path: path,
-      isDirectory: file.isDirectory,
-      expandable: file.isDirectory,
-      nodes: file.isDirectory ? [] : null
-    }
-
-    if (file.isDirectory && file.nodes) {
-      node.nodes = transformFileStructureToTree(file.nodes, `${path}/`)
-    }
-
-    return node
-  })
-
-  return tree
+const isValidFile = (node) => {
+  const fileExtension = node.label.toLowerCase()
+  return /\.(octdat|octdat\.bak|info)$/.test(fileExtension)
 }
 </script>

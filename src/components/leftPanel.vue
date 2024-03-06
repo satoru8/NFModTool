@@ -1,7 +1,6 @@
 <template>
   <div id="leftPanel">
     <div class="leftPanelInner">
-      <!-- Left Panel with Tabs -->
       <v-card class="leftPanelTabs" min-width="60" max-width="60">
         <v-tabs hide-slider v-model="tab" direction="vertical" color="primary">
           <v-tab v-for="item in tabs" :key="item.value" :value="item.value" class="leftPanelTab">
@@ -9,8 +8,6 @@
           </v-tab>
         </v-tabs>
       </v-card>
-
-      <!-- Right Panel with Windows -->
       <v-window v-model="tab" class="h-100 w-100">
         <v-window-item
           v-for="item in tabs"

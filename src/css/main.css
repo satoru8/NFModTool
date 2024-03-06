@@ -65,6 +65,16 @@ html {
   display: none;
 }
 
+#NF .toolsBtn .v-list-item__prepend {
+  flex-direction: column;
+}
+
+[aria-owns='v-menu-3'] {
+  min-width: 10px;
+  width: 20px;
+  padding: 0 0 0 12px;
+}
+
 /*
 **  Main
 */
@@ -159,6 +169,10 @@ html {
   grid-column: 1 / 4;
 }
 
+.visualEditorCard {
+  max-width: 100%;
+  height: 100%;
+}
 /*
 **  Settings
 */
@@ -169,7 +183,7 @@ html {
 
 .settingsCard,
 .settingsContainer {
-  max-width: none;
+  max-width: 100%;
   height: 100%;
 }
 
@@ -195,6 +209,10 @@ html {
   height: 30px;
 }
 
+.editorTab {
+  border-right: #202020 1px solid;
+}
+
 .monaco-editor,
 .monaco-diff-editor,
 .monaco-component,
@@ -203,6 +221,11 @@ html {
 }
 
 .editorContainer {
+  background-color: #1b1b1b;
+}
+
+.editorContainer,
+.editorContainerInner {
   width: 100%;
   height: 100%;
 }
@@ -224,4 +247,8 @@ html {
 */
 .v-overlay__scrim {
   background: #000;
+}
+
+.mdi-delete:hover {
+  color: red
 }

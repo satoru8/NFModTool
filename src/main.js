@@ -4,6 +4,9 @@ const fs = require('fs')
 import { fileURLToPath } from 'url'
 // const edge = require('electron-edge-js')
 
+const iconPath = fileURLToPath(new URL('../renderer/logo.png', import.meta.url))
+const nfIcon = nativeImage.createFromPath(iconPath)
+
 // Quit the app when Squirrel is performing the installation/update process.
 if (require('electron-squirrel-startup')) {
   app.quit()
@@ -66,6 +69,14 @@ app.on('activate', () => {
 // IPC events
 ipcMain.handle('get-app-path', () => app.getAppPath())
 
+ipcMain.on('open-file-in-editor', (event, data) => {
+  if (data && data.id && data.label && data.content) {
+    mainWindow.webContents.send('open-file-in-editor', data)
+  } else {
+    console.error('Invalid data received:', data)
+  }
+})
+
 ipcMain.handle('select-folder', () => {
   const result = dialog.showOpenDialogSync({
     properties: ['openDirectory'],
@@ -108,12 +119,7 @@ ipcMain.on('open-help', () => {
 let tray
 
 const createTray = () => {
-  // const iconPath = path.join(app.getAppPath(), './public/logo.png')
-  const iconPath = fileURLToPath(new URL('../renderer/logo.png', import.meta.url))
-  const icon = nativeImage.createFromPath(iconPath)
-  tray = new Tray(icon)
-
-  console.log('Tray icon path:', iconPath)
+  tray = new Tray(nfIcon)
 
   const contextMenu = Menu.buildFromTemplate([
     { label: 'Open', click: () => mainWindow && mainWindow.show() },
@@ -142,12 +148,16 @@ const createTray = () => {
 // Settings
 const SETTINGS_FILE = path.join(app.getPath('userData'), 'settings.json')
 
-function saveSettings(settings) {
+const saveSettings = (settings) => {
   fs.writeFileSync(SETTINGS_FILE, JSON.stringify(settings, null, 2), 'utf8')
 }
 
-ipcMain.on('save-settings', (event, settings) => {
-  saveSettings(settings)
+ipcMain.on('save-settings', async (event, settings) => {
+  try {
+    await saveSettings(settings)
+  } catch (error) {
+    console.error('Error saving settings:', error)
+  }
 })
 
 ipcMain.handle('load-settings', async () => {
@@ -172,9 +182,9 @@ ipcMain.handle('read-directory', async (event, itemPath) => {
 
         if (isDirectory) {
           const nodes = await readDirectoryRecursively(fullPath)
-          return { name, isDirectory, nodes }
+          return { name, isDirectory, fullPath, nodes }
         } else {
-          return { name, isDirectory: false }
+          return { name, isDirectory: false, fullPath }
         }
       })
     )
@@ -199,7 +209,7 @@ async function readDirectoryRecursively(directoryPath) {
         const nodes = await readDirectoryRecursively(fullPath)
         return { name, isDirectory, nodes, icon }
       } else {
-        return { name, isDirectory: false }
+        return { name, isDirectory: false, fullPath, icon }
       }
     })
   )
@@ -211,6 +221,16 @@ async function readDirectoryRecursively(directoryPath) {
 
   return transformedFiles
 }
+
+ipcMain.handle('read-file-content', async (event, filePath) => {
+  try {
+    const fileContent = await fs.promises.readFile(filePath, 'utf-8')
+    return fileContent
+  } catch (error) {
+    console.error('Failed to read file content:', error)
+    throw error
+  }
+})
 
 app.whenReady().then(async () => {
   createTray()
