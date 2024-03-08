@@ -9,7 +9,9 @@
         @removeTab="removeTab"
         @openFileInEditor="addTabWithContent"
       />
-      <div class="editorContainer" ref="editorContainer"></div>
+      <div class="editorContainer" ref="editorContainer" >
+        <v-card-text v-if="tabs.length === 0" class="text-center text-caption text-blue-lighten-2">No tab selected</v-card-text>
+      </div>
     </div>
   </div>
 </template>
