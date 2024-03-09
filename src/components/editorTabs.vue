@@ -47,7 +47,7 @@ watch(
   () => props.activeTab,
   (newVal) => {
     selectedTab.value = newVal
-    console.log('Active Tab:', newVal);
+    console.log('Active Tab:', newVal)
   }
 )
 

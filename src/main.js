@@ -79,12 +79,16 @@ ipcMain.on('open-file-in-editor', (event, data) => {
 
 ipcMain.handle('select-folder', () => {
   const result = dialog.showOpenDialogSync({
-    properties: ['openDirectory'],
-    title: 'Select a folder',
+    properties: ['openDirectory', 'createDirectory', 'promptToCreate'],
+    title: 'Mod Folder',
     buttonLabel: 'Select',
-    message: 'Select a folder',
-    defaultPath: app.getPath('desktop')
+    message: 'Select Folder',
+    defaultPath: './'
   })
+
+  if (!result) {
+    return
+  }
 
   if (result) {
     return result[0]
@@ -230,6 +234,20 @@ ipcMain.handle('read-file-content', async (event, filePath) => {
     console.error('Failed to read file content:', error)
     throw error
   }
+})
+
+ipcMain.on('save-octdat-visual', (event, data, filePath, name) => {
+  const settings = JSON.parse(fs.readFileSync(SETTINGS_FILE, 'utf8'))
+  const modFolder = path.join(settings.modFolderSetting, name)
+
+  try {
+    fs.writeFileSync(path.join(modFolder, filePath), data, 'utf8')
+  } catch (error) {
+    console.error('Error saving file:', error)
+  }
+
+  console.log(`Saved ${filePath} to ${modFolder}`)
+  console.log('Octdat file saved successfully')
 })
 
 app.whenReady().then(async () => {

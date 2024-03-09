@@ -1,6 +1,7 @@
 <template>
   <div id="appMain">
     <LoadingScreen id="loadingScreen" v-if="appIsLoading" :is-loading="appIsLoading" />
+    <UserSetup v-if="!appIsLoading" />
     <TopPanel @tab-changed="handleTabChange" />
 
     <keep-alive>
@@ -15,6 +16,7 @@
 import { ref, onMounted, computed } from 'vue'
 import TopPanel from '../components/topPanel.vue'
 import LoadingScreen from '../components/loadingScreen.vue'
+import UserSetup from '../components/userSetup.vue'
 import OctdatView from './octdatView.vue'
 import VisualEditor from '../components/visualEditor.vue'
 import SettingsPanel from '../components/settingsPanel.vue'
@@ -38,8 +40,8 @@ const selectedTabComponent = computed(() => {
 })
 
 onMounted(() => {
-  window.electronAPI.rendererReady('renderer-ready')
-  window.electronAPI.loadingDone(() => {
+  window.nfAPI.rendererReady('renderer-ready')
+  window.nfAPI.loadingDone(() => {
     appIsLoading.value = false
   })
 })

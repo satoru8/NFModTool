@@ -31,8 +31,12 @@
           </v-list>
         </v-menu>
       </v-card>
-      <v-card class="visualEditorCard pa-3">
-        <div v-for="(template, index) in templates" :key="`template-${index}`">
+      <v-card class="visualEditorCard pa-3" flat>
+        <div
+          class="visualEditorTemplate"
+          v-for="(template, index) in templates"
+          :key="`template-${index}`"
+        >
           <div
             class="visualEditorField"
             v-for="(field, fieldIndex) in template.fields"
@@ -48,7 +52,16 @@
               :placeholder="field.props.placeholder"
               append-inner-icon="mdi-delete"
               @click:appendInner="removeField(index, fieldIndex)"
-            ></v-text-field>
+            >
+              <template v-slot:append v-if="field.props.type === 'color'">
+                <v-menu :close-on-content-click="false">
+                  <template v-slot:activator="{ props }">
+                    <v-btn v-bind="props" icon="mdi-palette"></v-btn>
+                  </template>
+                  <v-color-picker v-model="field.value"></v-color-picker>
+                </v-menu>
+              </template>
+            </v-text-field>
           </div>
         </div>
         <div class="visualEditorField" v-for="(field, index) in textFields" :key="`field-${index}`">
@@ -68,11 +81,14 @@
                 <template v-slot:activator="{ props }">
                   <v-btn v-bind="props" icon="mdi-palette"></v-btn>
                 </template>
-                <v-color-picker v-model="field.value" mode="hexa" show-swatches></v-color-picker>
+                <v-color-picker v-model="field.value"></v-color-picker>
               </v-menu>
             </template>
           </v-text-field>
         </div>
+        <v-card-actions>
+          <v-btn color="primary" @click="save" text="Save" />
+        </v-card-actions>
       </v-card>
     </div>
   </div>
@@ -95,6 +111,11 @@ const removeField = (templateIndex, fieldIndex) => {
   }
 }
 
+const save = () => {
+  console.log('Saving...')
+  console.log('Templates:', templates.value)
+  console.log('Text Fields:', textFields.value)
+}
 const textFieldOptions = [
   { type: 'id', label: 'ID', props: { label: 'ID', placeholder: 'MyMod.Items.MyItem.Name' } },
   { type: 'type', label: 'Type', props: { label: 'Type', placeholder: 'StackedItemType' } },
@@ -108,7 +129,8 @@ const templateOptions = [
     fields: [
       { label: 'ID', placeholder: 'MyMod.Items.MyItem.Name' },
       { label: 'Type', placeholder: 'StackedItemType' },
-      { label: 'Inherit', placeholder: '' }
+      { label: 'Inherit', placeholder: '' },
+      { label: 'Color', placeholder: '', type: 'color' }
     ]
   },
   {

@@ -153,7 +153,7 @@ html {
 }
 
 .fileManager::-webkit-scrollbar-track {
-  background-color: transparent
+  background-color: transparent;
 }
 
 /*

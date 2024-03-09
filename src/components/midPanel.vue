@@ -12,14 +12,12 @@
       <div class="editorContainer" ref="editorContainer">
         <div v-if="tabs.length === 0" class="h-100 d-flex text-center align-center justify-center">
           <v-card flat class="editorCard border pa-10">
-            <v-icon
-              size="100"
-              color="primary"
-              icon="mdi-file-document-edit-outline"
-            />
+            <v-icon size="100" color="primary" icon="mdi-file-document-edit-outline" />
             <v-card-title class="text-h4 text-blue-lighten-2">Octdat Editor</v-card-title>
             <v-card-text class="text-h5 text-blue-lighten-2">No active editors</v-card-text>
-            <v-card-text class="text-h6 text-blue-lighten-2">Open an editor to get started</v-card-text>
+            <v-card-text class="text-h6 text-blue-lighten-2"
+              >Open an editor to get started</v-card-text
+            >
             <v-btn class="mt-5" color="primary" @click="addTab">Add Octdat</v-btn>
           </v-card>
         </div>
@@ -98,7 +96,7 @@ const addTab = async () => {
 }
 
 onMounted(() => {
-  window.electronAPI.onOpenFileInEditor((data) => {
+  window.nfAPI.onOpenFileInEditor((data) => {
     if (data && typeof data === 'object') {
       if (data.id && data.label && data.content) {
         addTabWithContent(data.id, data.label, data.content)

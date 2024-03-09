@@ -55,7 +55,7 @@ onMounted(() => {
 
 const selectDir = async () => {
   try {
-    const selectedFolderPath = await window.electronAPI.selectFolder()
+    const selectedFolderPath = await window.nfAPI.selectFolder()
 
     if (selectedFolderPath) {
       await fetchFilesAndTransform(selectedFolderPath)
@@ -67,7 +67,7 @@ const selectDir = async () => {
 
 const loadFolderPathFromSettings = async () => {
   try {
-    const settings = await window.electronAPI.loadSettings()
+    const settings = await window.nfAPI.loadSettings()
     const initialFolderPath = settings.modFolderSetting || ''
     if (initialFolderPath) {
       await fetchFilesAndTransform(initialFolderPath)
@@ -113,10 +113,9 @@ const transformFileStructureToTree = (files, parentPath = '') => {
   return tree
 }
 
-
 const fetchFilesAndTransform = async (filePath) => {
   try {
-    const files = await window.electronAPI.fetchFiles(filePath)
+    const files = await window.nfAPI.fetchFiles(filePath)
     const rootFolder = {
       name: filePath.split('\\').pop(),
       path: filePath,
@@ -147,9 +146,9 @@ const onNodeClick = async (node) => {
   }
 
   try {
-    const fileContent = await window.electronAPI.readFileContent(node.path)
+    const fileContent = await window.nfAPI.readFileContent(node.path)
 
-    window.electronAPI.sendOpenFileInEditor({
+    window.nfAPI.sendOpenFileInEditor({
       id: node.label,
       label: node.label,
       content: fileContent
