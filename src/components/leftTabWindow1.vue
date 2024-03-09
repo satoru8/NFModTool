@@ -1,5 +1,5 @@
 <template>
-  <v-card flat class="leftPanelCard fileManager rounded-0">
+  <v-card flat class="leftPanelCard fileManager rounded-0 overflow-auto">
     <v-card-text class="fileManagerInner">
       <v-btn
         block
@@ -82,6 +82,16 @@ const transformFileStructureToTree = (files, parentPath = '') => {
     return []
   }
 
+  files.sort((a, b) => {
+    if (a.isDirectory === b.isDirectory) {
+      return a.name.localeCompare(b.name)
+    }
+    if (a.isDirectory && !b.isDirectory) {
+      return -1
+    }
+    return 1
+  })
+
   const tree = files.map((file) => {
     const path = `${parentPath}${file.name}`
     const node = {
@@ -102,6 +112,7 @@ const transformFileStructureToTree = (files, parentPath = '') => {
 
   return tree
 }
+
 
 const fetchFilesAndTransform = async (filePath) => {
   try {

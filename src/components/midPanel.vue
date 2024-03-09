@@ -9,8 +9,20 @@
         @removeTab="removeTab"
         @openFileInEditor="addTabWithContent"
       />
-      <div class="editorContainer" ref="editorContainer" >
-        <v-card-text v-if="tabs.length === 0" class="text-center text-caption text-blue-lighten-2">No tab selected</v-card-text>
+      <div class="editorContainer" ref="editorContainer">
+        <div v-if="tabs.length === 0" class="h-100 d-flex text-center align-center justify-center">
+          <v-card flat class="editorCard border pa-10">
+            <v-icon
+              size="100"
+              color="primary"
+              icon="mdi-file-document-edit-outline"
+            />
+            <v-card-title class="text-h4 text-blue-lighten-2">Octdat Editor</v-card-title>
+            <v-card-text class="text-h5 text-blue-lighten-2">No active editors</v-card-text>
+            <v-card-text class="text-h6 text-blue-lighten-2">Open an editor to get started</v-card-text>
+            <v-btn class="mt-5" color="primary" @click="addTab">Add Octdat</v-btn>
+          </v-card>
+        </div>
       </div>
     </div>
   </div>
@@ -53,7 +65,6 @@ const handleSwitchTab = (tabId) => {
     activeTab.value = tabId
     tabs.value.forEach((tab) => (tab.active = tab.id === tabId))
     editorManager.updateEditorVisibility(tabId)
-    console.log('Switching Tab:', tabId)
   }
 }
 
@@ -78,7 +89,7 @@ const addTab = async () => {
   const newTabId = `tab${tabs.value.length + 1}`
   tabs.value.push({
     id: newTabId,
-    name: `Tab ${tabs.value.length + 1}`,
+    name: `NewOctdat`,
     active: false
   })
 

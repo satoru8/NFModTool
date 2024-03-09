@@ -1,4 +1,4 @@
-#NF {
+:root {
   --textWhite: #ddd;
   --backgroundColor: #151515;
 }
@@ -141,6 +141,19 @@ html {
 
 #NF .leftPanelTab {
   min-width: 60px;
+}
+
+.fileManager::-webkit-scrollbar {
+  width: 10px;
+}
+
+.fileManager::-webkit-scrollbar-thumb {
+  background-color: rgba(var(--v-theme-secondary), var(--v-border-opacity));
+  border-radius: 5px;
+}
+
+.fileManager::-webkit-scrollbar-track {
+  background-color: transparent
 }
 
 /*
