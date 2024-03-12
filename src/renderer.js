@@ -16,11 +16,5 @@ import './css/main.css'
 
 const pinia = createPinia()
 const appMain = createApp(MainView)
-appMain.use(pinia)
 appMain.use(vuetify)
 appMain.mount('#mainBody')
-
-console.log('%cNF Mod Tool', 'color: #ae00ff; font-size: 20px; font-weight: bold')
-window.addEventListener('DOMContentLoaded', () => {
-  console.log('DOM fully loaded and parsed')
-})
