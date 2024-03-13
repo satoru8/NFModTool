@@ -43,13 +43,13 @@ const emit = defineEmits(['switchTab', 'addTab', 'removeTab'])
 
 const selectedTab = ref(props.activeTab)
 
-watch(
-  () => props.activeTab,
-  (newVal) => {
-    selectedTab.value = newVal
-    console.log('Active Tab:', newVal)
-  }
-)
+// watch(
+//   () => props.activeTab,
+//   (newVal) => {
+//     selectedTab.value = newVal
+//     console.log('Active Tab:', newVal)
+//   }
+// )
 
 const selectTab = (tabId) => {
   emit('switchTab', tabId)

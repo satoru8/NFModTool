@@ -1,8 +1,7 @@
 <template>
-  <v-container v-if="showSetup" class="pa-6">
+  <v-container v-if="showSetup" id="userSetup" fluid class="pa-6">
     <v-row class="h-100 ma-0" align="center">
       <v-col class="text-center">
-
         <h1 class="pa-3"><span class="text-primary">First Time Setup</span></h1>
 
         <v-spacer class="mt-7 pa-3" />
@@ -36,12 +35,11 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 
-const showSetup = ref('')
-
-const emits = defineEmits(['setup-completed'])
-
+const showSetup = ref()
 const modFolderSetting = ref('')
 const octdatFolderSetting = ref('')
+
+const emit = defineEmits(['setup-completed'])
 
 const selectFolder = (path) => {
   window.nfAPI.selectFolder(path).then((selectedPath) => {
@@ -58,18 +56,18 @@ const selectFolder = (path) => {
 
 const completeSetup = () => {
   showSetup.value = false
-  emits('setup-completed')
   window.nfAPI.saveSettings({
     modFolderSetting: modFolderSetting.value,
     octdatFolderSetting: octdatFolderSetting.value,
     setupCompleted: true
-  })  
+  })
+  emit('setup-completed')
 }
 
-onMounted(() => {
-  if (window.nfAPI.loadSettings('setupCompleted') === true) {
-    showSetup.value = false
-    console.log('Setup already completed.', showSetup.value);
+onMounted(async () => {
+  const settings = await window.nfAPI.loadSettings()
+  if (settings.setupCompleted) {
+    console.log('Setup Already Completed')
   } else {
     showSetup.value = true
   }
