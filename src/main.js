@@ -126,7 +126,7 @@ const createTray = () => {
   tray = new Tray(nfIcon)
 
   const contextMenu = Menu.buildFromTemplate([
-    { label: 'Open', click: () => mainWindow && mainWindow.show() },
+    { label: 'Open', click: () => mainWindow.show() },
     { label: 'Quit', click: () => app.quit() }
   ])
 

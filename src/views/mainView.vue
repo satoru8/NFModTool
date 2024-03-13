@@ -1,14 +1,16 @@
 <template>
   <div id="appMain">
+
     <LoadingScreen id="loadingScreen" v-if="appIsLoading" :is-loading="appIsLoading" />
-    <UserSetup v-if="!appIsLoading" />
-    <TopPanel @tab-changed="handleTabChange" />
+
+    <UserSetup id="userSetup" v-if="!appIsLoading "/>
+
+    <TopPanel v-if="!appIsLoading" @tab-changed="handleTabChange" />
 
     <keep-alive>
-      <component :is="selectedTabComponent" :key="selectedTab" />
+      <component v-if="!appIsLoading" :is="selectedTabComponent" :key="selectedTab" />
     </keep-alive>
 
-    <SettingsPanel v-if="showSettings" :key="selectedTab" />
   </div>
 </template>
 
@@ -23,7 +25,6 @@ import SettingsPanel from '../components/settingsPanel.vue'
 
 const appIsLoading = ref(true)
 const selectedTab = ref('octdat')
-const showSettings = ref(false)
 
 const handleTabChange = (tab) => {
   selectedTab.value = tab

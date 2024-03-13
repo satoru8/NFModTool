@@ -246,6 +246,7 @@ html {
 /*
 **  Loading Screen
 */
+#userSetup,
 #loadingScreen {
   grid-column: 1 / 4;
   grid-row: 1 / 5;

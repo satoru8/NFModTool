@@ -17,11 +17,12 @@ const vuetify = createVuetify({
         colors: {
           primary: '#D500F9',
           secondary: '#00BCD4',
-          accent: '#8c9eff',
+          accent: '#687ffc',
           error: '#b71c1c',
           info: '#2196f3',
           success: '#4caf50',
-          warning: '#ff9800'
+          warning: '#ff9800',
+          text: '#ececec'
         }
       }
     }
