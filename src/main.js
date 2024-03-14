@@ -80,7 +80,7 @@ ipcMain.on('open-file-in-editor', (event, data) => {
 ipcMain.handle('select-folder', () => {
   const result = dialog.showOpenDialogSync({
     properties: ['openDirectory', 'createDirectory', 'promptToCreate'],
-    title: 'Mod Folder',
+    title: 'Select Folder',
     buttonLabel: 'Select',
     message: 'Select Folder',
     defaultPath: './'
