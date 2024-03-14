@@ -79,12 +79,16 @@ ipcMain.on('open-file-in-editor', (event, data) => {
 
 ipcMain.handle('select-folder', () => {
   const result = dialog.showOpenDialogSync({
-    properties: ['openDirectory'],
-    title: 'Select a folder',
+    properties: ['openDirectory', 'createDirectory', 'promptToCreate'],
+    title: 'Select Folder',
     buttonLabel: 'Select',
-    message: 'Select a folder',
-    defaultPath: app.getPath('desktop')
+    message: 'Select Folder',
+    defaultPath: './'
   })
+
+  if (!result) {
+    return
+  }
 
   if (result) {
     return result[0]
@@ -122,7 +126,7 @@ const createTray = () => {
   tray = new Tray(nfIcon)
 
   const contextMenu = Menu.buildFromTemplate([
-    { label: 'Open', click: () => mainWindow && mainWindow.show() },
+    { label: 'Open', click: () => mainWindow.show() },
     { label: 'Quit', click: () => app.quit() }
   ])
 
@@ -146,23 +150,28 @@ const createTray = () => {
 }
 
 // Settings
-const SETTINGS_FILE = path.join(app.getPath('userData'), 'settings.json')
+const nfmtSettings = path.join(app.getPath('userData'), 'settings.json')
 
-const saveSettings = (settings) => {
-  fs.writeFileSync(SETTINGS_FILE, JSON.stringify(settings, null, 2), 'utf8')
+const saveSettings = async (newSettings) => {
+  let currentSettings = {}
+  if (fs.existsSync(nfmtSettings)) {
+    currentSettings = JSON.parse(fs.readFileSync(nfmtSettings, 'utf8'))
+  }
+  const mergedSettings = { ...currentSettings, ...newSettings }
+  fs.writeFileSync(nfmtSettings, JSON.stringify(mergedSettings, null, 2), 'utf8')
 }
 
-ipcMain.on('save-settings', async (event, settings) => {
+ipcMain.on('save-settings', async (event, newSettings) => {
   try {
-    await saveSettings(settings)
+    await saveSettings(newSettings)
   } catch (error) {
     console.error('Error saving settings:', error)
   }
 })
 
 ipcMain.handle('load-settings', async () => {
-  if (fs.existsSync(SETTINGS_FILE)) {
-    return JSON.parse(fs.readFileSync(SETTINGS_FILE, 'utf8'))
+  if (fs.existsSync(nfmtSettings)) {
+    return JSON.parse(fs.readFileSync(nfmtSettings, 'utf8'))
   }
   return {}
 })
@@ -232,13 +241,28 @@ ipcMain.handle('read-file-content', async (event, filePath) => {
   }
 })
 
+ipcMain.on('save-octdat-visual', (event, data, filePath, name) => {
+  const settings = JSON.parse(fs.readFileSync(nfmtSettings, 'utf8'))
+  const modFolder = path.join(settings.modFolderSetting, name)
+
+  try {
+    fs.writeFileSync(path.join(modFolder, filePath), data, 'utf8')
+  } catch (error) {
+    console.error('Error saving file:', error)
+  }
+
+  console.log(`Saved ${filePath} to ${modFolder}`)
+  console.log('Octdat file saved successfully')
+})
+
 app.whenReady().then(async () => {
   createTray()
-
   mainWindow.webContents.openDevTools()
 
   ipcMain.on('renderer-ready', () => {
-    mainWindow.webContents.send('loading-done')
+    setTimeout(() => {
+      mainWindow.webContents.send('loading-done')
+    }, 250)
   })
 
   // analyzeAssembly(assemblyPath, true, (error, result) => {

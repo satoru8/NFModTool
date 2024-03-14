@@ -1,0 +1,903 @@
+{
+	id Oct.Abilities.Ignored
+	type AbilityType
+	
+	name = Ignored
+    description = User untargetable by enemies for 30m<br>4h Cooldown After Use
+    
+	icon = tex(/Art/Icons/Abilities/Ignored.png)
+	
+	attributes = 
+	[
+		Melee
+		Ranged
+	]
+	
+	activation = 
+	{
+		type ActiveAbilityActivationType
+		lengthMinutes = 1
+		cooldownMinutes = 240
+	}
+	
+	targetType = 
+	{
+		type SelfAbilityTargetType
+	}
+	
+	actions = 
+	[
+		{
+			type StatusEffectAbilityActionType		
+			statusEffectName = Ignored
+			statusEffectMinutes = 30
+		}
+	]
+}
+{
+	id Oct.Abilities.Vulnerable
+	type AbilityType
+	
+	name = Vulnerable
+    description = Target has -10 Armor for 1h <br>5 tile range<br>4h Cooldown After Use
+    
+	icon = tex(/Art/Icons/Abilities/Vulnerable.png)
+	
+	attributes = 
+	[
+		Melee
+		Ranged
+	]
+	
+	activation = 
+	{
+		type ActiveAbilityActivationType
+		lengthMinutes = 1
+		cooldownMinutes = 240
+	}
+	
+	targetType = 
+	{
+		type SelectedCharacterAbilityTargetType
+        range = 5
+        autoEnemies = true
+	}
+	
+	actions = 
+	[
+		{
+			type StatusEffectAbilityActionType		
+			statusEffectName = Vulnerable
+			statusEffectMinutes = 60
+		}
+	]
+}
+{
+	id Oct.Abilities.GreenThumb
+	type AbilityType
+	
+	name = Green Thumb
+    description = Target foliage experiences full growth cycle in 15m<br>5 tile range<br>5d Cooldown After Use
+    
+	icon = tex(/Art/Icons/Abilities/GreenThumb.png)
+	
+	attributes = 
+	[
+		Foraging
+		Farming
+		Logging
+	]
+	
+	activation = 
+	{
+		type ActiveAbilityActivationType
+		lengthMinutes = 15
+		cooldownMinutes = 4320
+	}
+	
+	targetType = 
+	{
+		type SelectedFoliageAbilityTargetType
+        range = 5
+	}
+	
+	actions = 
+	[
+		{
+			type GrowFoliageAbilityActionType
+			minutesToMaturity = 15
+		}
+	]
+}
+{
+	id Oct.Abilities.StoneSkin
+	type AbilityType
+	
+	name = Stone Skin
+    description = User Has +10 Armor for 1h<br>2h Cooldown After Use
+    
+	limit = 1
+	icon = tex(/Art/Icons/Abilities/StoneSkin.png)
+	
+	attributes = 
+	[
+		Melee
+	]
+	
+	activation = 
+	{
+		type ActiveAbilityActivationType
+		lengthMinutes = 60
+		cooldownMinutes = 120
+	}
+	
+	targetType = 
+	{
+		type SelfAbilityTargetType
+	}
+	
+	actions = 
+	[
+		{
+			type StatusEffectAbilityActionType		
+			statusEffectName = Stone Skinned
+		}
+	]
+}
+{
+	id Oct.Abilities.Taunt
+	type AbilityType
+	
+	name = Taunt
+    description = Force enemies within 5t to target character for 1h<br>2h Cooldown After Use
+    
+	limit = 1
+	icon = tex(/Art/Icons/Abilities/Taunt.png)
+	
+	attributes = 
+	[
+		Melee
+	]
+	
+	activation = 
+	{
+		type ActiveAbilityActivationType
+		lengthMinutes = 1
+		cooldownMinutes = 120
+	}
+	
+	targetType = 
+	{
+		type EnemiesWithinRangeAbilityTargetType
+		range = 5
+	}
+	
+	actions = 
+	[
+		{
+			type StatusEffectAbilityActionType		
+			statusEffectName = Taunted
+			statusEffectMinutes = 60
+		}
+		{
+			type EffectAbilityActionType			
+			effect = <Oct.Effects.Taunt>
+            self = true
+		}
+	]
+}
+{
+	id Oct.Abilities.AttributePassive
+	type AbilityType
+	
+	modifierIcon = tex(/Art/Icons/Attributes/Plus.png)
+	
+	activation = 
+	{
+		type PassiveAbilityActivationType
+	}
+	
+	targetType = 
+	{
+		type SelfAbilityTargetType
+	}
+}
+{
+	id Oct.Abilities.AttributeActive
+	type AbilityType
+	
+	modifierIcon = tex(/Art/Icons/Attributes/Plus.png)
+	
+	activation = 
+	{
+		type ActiveAbilityActivationType
+		lengthMinutes = 120
+		cooldownMinutes = 60
+	}
+	
+	targetType = 
+	{
+		type SelfAbilityTargetType
+	}	
+	
+	actions = 
+	[
+		{
+			type EffectAbilityActionType			
+			effect = <Oct.Effects.Frenzied>
+		}
+	]
+}
+{
+	id Oct.Abilities.AttributePassive.Melee1
+	type AbilityType
+	inherit Oct.Abilities.AttributePassive
+	
+	name = Melee Passive
+    description = Permanent +2 to Melee Skill
+    
+	icon = tex(/Art/Icons/Attributes/Melee.png)
+	
+	attributes = 
+	[
+		Melee
+	]
+	
+	actions = 
+	[
+		{
+			type StatModifierAbilityActionType		
+			stat = Melee
+			delta = 2
+		}
+	]
+}
+{
+	id Oct.Abilities.AttributePassive.Ranged1
+	type AbilityType
+	inherit Oct.Abilities.AttributePassive
+	
+	name = Ranged Passive
+    description = Permanent +2 to Ranged Skill
+    
+	icon = tex(/Art/Icons/Attributes/Ranged.png)
+	
+	attributes = 
+	[
+		Ranged
+	]
+	
+	actions = 
+	[
+		{
+			type StatModifierAbilityActionType			
+			stat = Ranged
+			delta = 2
+		}
+	]
+}
+{
+	id Oct.Abilities.AttributePassive.Cooking1
+	type AbilityType
+	inherit Oct.Abilities.AttributePassive
+	
+	name = Cooking Passive
+    description = Permanent +2 to Cooking Skill
+    
+	icon = tex(/Art/Icons/Attributes/Cooking.png)
+	
+	attributes = 
+	[
+		Cooking
+	]
+	
+	actions = 
+	[
+		{
+			type StatModifierAbilityActionType			
+			stat = Cooking
+			delta = 2
+		}
+	]
+}
+{
+	id Oct.Abilities.AttributePassive.Nursing1
+	type AbilityType
+	inherit Oct.Abilities.AttributePassive
+	
+	name = Nursing Passive
+    description = Permanent +2 to Nursing Skill
+    
+	icon = tex(/Art/Icons/Attributes/Nursing.png)
+	
+	attributes = 
+	[
+		Nursing
+	]
+	
+	actions = 
+	[
+		{
+			type StatModifierAbilityActionType			
+			stat = Nursing
+			delta = 2
+		}
+	]
+}
+{
+	id Oct.Abilities.AttributePassive.Mining1
+	type AbilityType
+	inherit Oct.Abilities.AttributePassive
+	
+	name = Mining Passive
+    description = Permanent +2 to Mining Skill
+    
+	icon = tex(/Art/Icons/Attributes/Mining.png)
+	
+	attributes = 
+	[
+		Mining
+	]
+	
+	actions = 
+	[
+		{
+			type StatModifierAbilityActionType			
+			stat = Mining
+			delta = 2
+		}
+	]
+}
+{
+	id Oct.Abilities.AttributePassive.Building1
+	type AbilityType
+	inherit Oct.Abilities.AttributePassive
+	
+	name = Building Passive
+    description = Permanent +2 to Building Skill
+    
+	icon = tex(/Art/Icons/Attributes/Building.png)
+	
+	attributes = 
+	[
+		Building
+	]
+	
+	actions = 
+	[
+		{
+			type StatModifierAbilityActionType			
+			stat = Building
+			delta = 2
+		}
+	]
+}
+{
+	id Oct.Abilities.AttributePassive.Cleaning1
+	type AbilityType
+	inherit Oct.Abilities.AttributePassive
+	
+	name = Cleaning Passive
+    description = Permanent +2 to Cleaning Skill
+    
+	icon = tex(/Art/Icons/Attributes/Cleaning.png)
+	
+	attributes = 
+	[
+		Cleaning
+	]
+	
+	actions = 
+	[
+		{
+			type StatModifierAbilityActionType			
+			stat = Cleaning
+			delta = 2
+		}
+	]
+}
+{
+	id Oct.Abilities.AttributePassive.Logging1
+	type AbilityType
+	inherit Oct.Abilities.AttributePassive
+	
+	name = Logging Passive
+    description = Permanent +2 to Logging Skill
+    
+	icon = tex(/Art/Icons/Attributes/Logging.png)
+	
+	attributes = 
+	[
+		Logging
+	]
+	
+	actions = 
+	[
+		{
+			type StatModifierAbilityActionType			
+			stat = Logging
+			delta = 2
+		}
+	]
+}
+{
+	id Oct.Abilities.AttributePassive.Foraging1
+	type AbilityType
+	inherit Oct.Abilities.AttributePassive
+	
+	name = Foraging Passive
+    description = Permanent +2 to Foraging Skill
+    
+	icon = tex(/Art/Icons/Attributes/Foraging.png)
+	
+	attributes = 
+	[
+		Foraging
+	]
+	
+	actions = 
+	[
+		{
+			type StatModifierAbilityActionType			
+			stat = Foraging
+			delta = 2
+		}
+	]
+}
+{
+	id Oct.Abilities.AttributePassive.Crafting1
+	type AbilityType
+	inherit Oct.Abilities.AttributePassive
+	
+	name = Crafting Passive
+    description = Permanent +2 to Crafting Skill
+    
+	icon = tex(/Art/Icons/Attributes/Crafting.png)
+	
+	attributes = 
+	[
+		Crafting
+	]
+	
+	actions = 
+	[
+		{
+			type StatModifierAbilityActionType			
+			stat = Crafting
+			delta = 2
+		}
+	]
+}
+{
+	id Oct.Abilities.AttributePassive.Farming1
+	type AbilityType
+	inherit Oct.Abilities.AttributePassive
+	
+	name = Farming Passive
+    description = Permanent +2 to Farming Skill
+    
+	icon = tex(/Art/Icons/Attributes/Farming.png)
+	
+	attributes = 
+	[
+		Farming
+	]
+	
+	actions = 
+	[
+		{
+			type StatModifierAbilityActionType			
+			stat = Farming
+			delta = 2
+		}
+	]
+}
+
+{
+	id Oct.Abilities.AttributePassive.Preaching1
+	type AbilityType
+	inherit Oct.Abilities.AttributePassive
+	
+	name = Preaching Passive
+    description = Permanent +2 to Preaching Skill
+    
+	icon = tex(/Art/Icons/Attributes/Preaching.png)
+	
+	attributes = 
+	[
+		Preaching
+	]
+	
+	actions = 
+	[
+		{
+			type StatModifierAbilityActionType			
+			stat = Preaching
+			delta = 2
+		}
+	]
+}
+{
+	id Oct.Abilities.AttributePassive.Ranching1
+	type AbilityType
+	inherit Oct.Abilities.AttributePassive
+	
+	name = Ranching Passive
+    description = Permanent +2 to Ranching Skill
+    
+	icon = tex(/Art/Icons/Attributes/Ranching.png)
+	
+	attributes = 
+	[
+		Ranching
+	]
+	
+	actions = 
+	[
+		{
+			type StatModifierAbilityActionType			
+			stat = Ranching
+			delta = 2
+		}
+	]
+}
+{
+	id Oct.Abilities.AttributePassive.Hauling1
+	type AbilityType
+	inherit Oct.Abilities.AttributePassive
+	
+	name = Hauling Passive
+    description = Permanent +2 to Hauling Skill
+    
+	icon = tex(/Art/Icons/Attributes/Hauling.png)
+	
+	attributes = 
+	[
+		Hauling
+	]
+	
+	actions = 
+	[
+		{
+			type StatModifierAbilityActionType			
+			stat = Hauling
+			delta = 2
+		}
+	]
+}
+{
+	id Oct.Abilities.AttributeActive.Melee1
+	type AbilityType
+	inherit Oct.Abilities.AttributeActive
+	
+	name = Melee Active
+    description = +3 to Melee Skill for 2h<br>1h Cooldown After Use
+    
+	icon = tex(/Art/Icons/Attributes/Melee.png)
+	
+	attributes = 
+	[
+		Melee
+	]
+	
+	actions = 
+	[
+		{
+			type StatModifierAbilityActionType			
+			stat = Melee
+			delta = 3
+		}
+	]
+}
+{
+	id Oct.Abilities.AttributeActive.Ranged1
+	type AbilityType
+	inherit Oct.Abilities.AttributeActive
+	
+	name = Ranged Active
+    description = +3 to Ranged Skill for 2h<br>1h Cooldown After Use
+    
+	icon = tex(/Art/Icons/Attributes/Ranged.png)
+	
+	attributes = 
+	[
+		Ranged
+	]
+	
+	actions = 
+	[
+		{
+			type StatModifierAbilityActionType			
+			stat = Ranged
+			delta = 3
+		}
+	]
+}
+{
+	id Oct.Abilities.AttributeActive.Cooking1
+	type AbilityType
+	inherit Oct.Abilities.AttributeActive
+	
+	name = Cooking Active
+    description = +3 to Cooking Skill for 2h<br>1h Cooldown After Use
+    
+	icon = tex(/Art/Icons/Attributes/Cooking.png)
+	
+	attributes = 
+	[
+		Cooking
+	]
+	
+	actions = 
+	[
+		{
+			type StatModifierAbilityActionType			
+			stat = Cooking
+			delta = 3
+		}
+	]
+}
+{
+	id Oct.Abilities.AttributeActive.Nursing1
+	type AbilityType
+	inherit Oct.Abilities.AttributeActive
+	
+	name = Nursing Active
+    description = +3 to Nursing Skill for 2h<br>1h Cooldown After Use
+    
+	icon = tex(/Art/Icons/Attributes/Nursing.png)
+	
+	attributes = 
+	[
+		Nursing
+	]
+	
+	actions = 
+	[
+		{
+			type StatModifierAbilityActionType			
+			stat = Nursing
+			delta = 3
+		}
+	]
+}
+{
+	id Oct.Abilities.AttributeActive.Mining1
+	type AbilityType
+	inherit Oct.Abilities.AttributeActive
+	
+	name = Mining Active
+    description = +3 to Mining Skill for 2h<br>1h Cooldown After Use
+    
+	icon = tex(/Art/Icons/Attributes/Mining.png)
+	
+	attributes = 
+	[
+		Mining
+	]
+	
+	actions = 
+	[
+		{
+			type StatModifierAbilityActionType			
+			stat = Mining
+			delta = 3
+		}
+	]
+}
+{
+	id Oct.Abilities.AttributeActive.Building1
+	type AbilityType
+	inherit Oct.Abilities.AttributeActive
+	
+	name = Building Active
+    description = +3 to Building Skill for 2h<br>1h Cooldown After Use
+    
+	icon = tex(/Art/Icons/Attributes/Building.png)
+	
+	attributes = 
+	[
+		Building
+	]
+	
+	actions = 
+	[
+		{
+			type StatModifierAbilityActionType			
+			stat = Building
+			delta = 3
+		}
+	]
+}
+{
+	id Oct.Abilities.AttributeActive.Cleaning1
+	type AbilityType
+	inherit Oct.Abilities.AttributeActive
+	
+	name = Cleaning Active
+    description = +3 to Cleaning Skill for 2h<br>1h Cooldown After Use
+    
+	icon = tex(/Art/Icons/Attributes/Cleaning.png)
+	
+	attributes = 
+	[
+		Cleaning
+	]
+	
+	actions = 
+	[
+		{
+			type StatModifierAbilityActionType			
+			stat = Cleaning
+			delta = 3
+		}
+	]
+}
+{
+	id Oct.Abilities.AttributeActive.Logging1
+	type AbilityType
+	inherit Oct.Abilities.AttributeActive
+	
+	name = Logging Active
+    description = +3 to Logging Skill for 2h<br>1h Cooldown After Use
+    
+	icon = tex(/Art/Icons/Attributes/Logging.png)
+	
+	attributes = 
+	[
+		Logging
+	]
+	
+	actions = 
+	[
+		{
+			type StatModifierAbilityActionType			
+			stat = Logging
+			delta = 3
+		}
+	]
+}
+{
+	id Oct.Abilities.AttributeActive.Foraging1
+	type AbilityType
+	inherit Oct.Abilities.AttributeActive
+	
+	name = Foraging Active
+    description = +3 to Foraging Skill for 2h<br>1h Cooldown After Use
+    
+	icon = tex(/Art/Icons/Attributes/Foraging.png)
+	
+	attributes = 
+	[
+		Foraging
+	]
+	
+	actions = 
+	[
+		{
+			type StatModifierAbilityActionType			
+			stat = Foraging
+			delta = 3
+		}
+	]
+}
+{
+	id Oct.Abilities.AttributeActive.Crafting1
+	type AbilityType
+	inherit Oct.Abilities.AttributeActive
+	
+	name = Crafting Active
+    description = +3 to Crafting Skill for 2h<br>1h Cooldown After Use
+    
+	icon = tex(/Art/Icons/Attributes/Crafting.png)
+	
+	attributes = 
+	[
+		Crafting
+	]
+	
+	actions = 
+	[
+		{
+			type StatModifierAbilityActionType			
+			stat = Crafting
+			delta = 3
+		}
+	]
+}
+{
+	id Oct.Abilities.AttributeActive.Farming1
+	type AbilityType
+	inherit Oct.Abilities.AttributeActive
+	
+	name = Farming Active
+    description = +3 to Farming Skill for 2h<br>1h Cooldown After Use
+    
+	icon = tex(/Art/Icons/Attributes/Farming.png)
+	
+	attributes = 
+	[
+		Farming
+	]
+	
+	actions = 
+	[
+		{
+			type StatModifierAbilityActionType			
+			stat = Farming
+			delta = 3
+		}
+	]
+}
+{
+	id Oct.Abilities.AttributeActive.Preaching1
+	type AbilityType
+	inherit Oct.Abilities.AttributeActive
+	
+	name = Preaching Active
+    description = +3 to Preaching Skill for 2h<br>1h Cooldown After Use
+    
+	icon = tex(/Art/Icons/Attributes/Preaching.png)
+	
+	attributes = 
+	[
+		Preaching
+	]
+	
+	actions = 
+	[
+		{
+			type StatModifierAbilityActionType			
+			stat = Preaching
+			delta = 3
+		}
+	]
+}
+{
+	id Oct.Abilities.AttributeActive.Ranching1
+	type AbilityType
+	inherit Oct.Abilities.AttributeActive
+	
+	name = Ranching Active
+    description = +3 to Ranching Skill for 2h<br>1h Cooldown After Use
+    
+	icon = tex(/Art/Icons/Attributes/Ranching.png)
+	
+	attributes = 
+	[
+		Ranching
+	]
+	
+	actions = 
+	[
+		{
+			type StatModifierAbilityActionType			
+			stat = Ranching
+			delta = 3
+		}
+	]
+}
+{
+	id Oct.Abilities.AttributeActive.Hauling1
+	type AbilityType
+	inherit Oct.Abilities.AttributeActive
+	
+	name = Hauling Active
+    description = +3 to Hauling Skill for 2h<br>1h Cooldown After Use
+    
+	icon = tex(/Art/Icons/Attributes/Hauling.png)
+	
+	attributes = 
+	[
+		Hauling
+	]
+	
+	actions = 
+	[
+		{
+			type StatModifierAbilityActionType			
+			stat = Hauling
+			delta = 3
+		}
+	]
+}

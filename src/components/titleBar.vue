@@ -87,9 +87,9 @@ const handleMenuSelect = (itemId) => {
   }
 
   if (itemId === 9) {
-    window.electronAPI.openHelp()
+    window.nfAPI.openHelp()
   } else if (itemId === 10) {
-    window.electronAPI.openDevTools()
+    window.nfAPI.openDevTools()
   }
 
   console.log(actions[itemId])
@@ -102,7 +102,7 @@ const emitEvent = (action) => {
     maximize: 'maximizeWindow'
   }
 
-  const apiFunction = window.electronAPI[actions[action]]
+  const apiFunction = window.nfAPI[actions[action]]
 
   if (apiFunction) {
     apiFunction()

@@ -1,4 +1,4 @@
-#NF {
+:root {
   --textWhite: #ddd;
   --backgroundColor: #151515;
 }
@@ -143,6 +143,19 @@ html {
   min-width: 60px;
 }
 
+.fileManager::-webkit-scrollbar {
+  width: 10px;
+}
+
+.fileManager::-webkit-scrollbar-thumb {
+  background-color: rgba(var(--v-theme-secondary), var(--v-border-opacity));
+  border-radius: 5px;
+}
+
+.fileManager::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
 /*
 **  Mid
 */
@@ -233,6 +246,7 @@ html {
 /*
 **  Loading Screen
 */
+#userSetup,
 #loadingScreen {
   grid-column: 1 / 4;
   grid-row: 1 / 5;
@@ -250,5 +264,5 @@ html {
 }
 
 .mdi-delete:hover {
-  color: red
+  color: red;
 }

@@ -49,7 +49,7 @@ const modFolderSetting = ref('')
 const octdatFolderSetting = ref('')
 
 const selectFolder = (path) => {
-  window.electronAPI.selectFolder(path).then((selectedPath) => {
+  window.nfAPI.selectFolder(path).then((selectedPath) => {
     if (selectedPath) {
       if (path === 'modFolderSetting') {
         modFolderSetting.value = selectedPath
@@ -62,14 +62,14 @@ const selectFolder = (path) => {
 }
 
 const saveSettings = async () => {
-  window.electronAPI.saveSettings({
+  window.nfAPI.saveSettings({
     modFolderSetting: modFolderSetting.value,
     octdatFolderSetting: octdatFolderSetting.value
   })
 }
 
 const loadSettings = async () => {
-  const settings = await window.electronAPI.loadSettings()
+  const settings = await window.nfAPI.loadSettings()
   modFolderSetting.value = settings.modFolderSetting || ''
   octdatFolderSetting.value = settings.octdatFolderSetting || ''
 }

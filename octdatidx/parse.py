@@ -35,7 +35,6 @@ def parse_octdat(content):
     lines = content.split('\n')
     for line in lines:
         line = line.strip()
-        # line = re.sub(r'//.*', '', line) # Remove comments
         if not line:
             continue
 

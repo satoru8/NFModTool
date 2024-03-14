@@ -7,7 +7,8 @@ const { contextBridge, ipcRenderer } = require('electron')
  * @see https://www.electronjs.org/docs/latest/api/context-bridge
  * @see https://www.electronjs.org/docs/latest/api/ipc-renderer
  */
-contextBridge.exposeInMainWorld('electronAPI', {
+contextBridge.exposeInMainWorld('nfAPI', {
+  saveOctdatVisual: (data) => ipcRenderer.send('save-octdat-visual', data),
   closeWindow: () => ipcRenderer.send('close-window'),
   minimizeWindow: () => ipcRenderer.send('minimize-window'),
   maximizeWindow: () => ipcRenderer.send('maximize-window'),
