@@ -112,9 +112,16 @@ const removeField = (templateIndex, fieldIndex) => {
 }
 
 const save = () => {
-  console.log('Saving...')
-  console.log('Templates:', templates.value)
-  console.log('Text Fields:', textFields.value)
+
+  console.log(textFields.value)
+  try {
+    window.nfAPI.saveOctdatVisual({
+      textFields: textFields.value,
+      templates: templates.value
+    })
+  } catch (e) {
+    console.error(e)
+  }
 }
 const textFieldOptions = [
   { type: 'id', label: 'ID', props: { label: 'ID', placeholder: 'MyMod.Items.MyItem.Name' } },

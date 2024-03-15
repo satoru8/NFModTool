@@ -8,6 +8,7 @@ const { contextBridge, ipcRenderer } = require('electron')
  * @see https://www.electronjs.org/docs/latest/api/ipc-renderer
  */
 contextBridge.exposeInMainWorld('nfAPI', {
+  receiveLogMessage: (callback) => ipcRenderer.on('console-log', callback),
   saveOctdatVisual: (data) => ipcRenderer.send('save-octdat-visual', data),
   closeWindow: () => ipcRenderer.send('close-window'),
   minimizeWindow: () => ipcRenderer.send('minimize-window'),
