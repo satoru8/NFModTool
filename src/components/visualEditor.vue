@@ -37,35 +37,15 @@
           v-for="(template, index) in templates"
           :key="`template-${index}`"
         >
-          <div
+          <!-- <div
             class="visualEditorField"
             v-for="(field, fieldIndex) in template.fields"
             :key="`field-${fieldIndex}`"
-          >
-            <v-text-field
-              v-model="field.value"
-              :label="field.props.label"
-              color="primary"
-              density="compact"
-              variant="outlined"
-              clearable
-              :placeholder="field.props.placeholder"
-              append-inner-icon="mdi-delete"
-              @click:appendInner="removeField(index, fieldIndex)"
-            >
-              <template v-slot:append v-if="field.props.type === 'color'">
-                <v-menu :close-on-content-click="false">
-                  <template v-slot:activator="{ props }">
-                    <v-btn v-bind="props" icon="mdi-palette"></v-btn>
-                  </template>
-                  <v-color-picker v-model="field.value"></v-color-picker>
-                </v-menu>
-              </template>
-            </v-text-field>
-          </div>
-        </div>
-        <div class="visualEditorField" v-for="(field, index) in textFields" :key="`field-${index}`">
+          > -->
           <v-text-field
+            class="visualEditorField"
+            v-for="(field, fieldIndex) in template.fields"
+            :key="`field-${fieldIndex}`"
             v-model="field.value"
             :label="field.props.label"
             color="primary"
@@ -74,7 +54,7 @@
             clearable
             :placeholder="field.props.placeholder"
             append-inner-icon="mdi-delete"
-            @click:appendInner="removeTextField(index)"
+            @click:appendInner="removeField(index, fieldIndex)"
           >
             <template v-slot:append v-if="field.props.type === 'color'">
               <v-menu :close-on-content-click="false">
@@ -85,7 +65,33 @@
               </v-menu>
             </template>
           </v-text-field>
-        </div>
+          </div>
+        <!-- </div> -->
+        <!-- <div class="visualEditorField" v-for="(field, index) in textFields" :key="`field-${index}`"> -->
+        <v-text-field
+          class="visualEditorField"
+          v-for="(field, index) in textFields"
+          :key="`field-${index}`"
+          v-model="field.value"
+          :label="field.props.label"
+          color="primary"
+          density="compact"
+          variant="outlined"
+          clearable
+          :placeholder="field.props.placeholder"
+          append-inner-icon="mdi-delete"
+          @click:appendInner="removeTextField(index)"
+        >
+          <template v-slot:append v-if="field.props.type === 'color'">
+            <v-menu :close-on-content-click="false">
+              <template v-slot:activator="{ props }">
+                <v-btn v-bind="props" icon="mdi-palette"></v-btn>
+              </template>
+              <v-color-picker v-model="field.value"></v-color-picker>
+            </v-menu>
+          </template>
+        </v-text-field>
+        <!-- </div> -->
         <v-card-actions>
           <v-btn color="primary" @click="save" text="Save" />
         </v-card-actions>
@@ -112,7 +118,6 @@ const removeField = (templateIndex, fieldIndex) => {
 }
 
 const save = () => {
-
   console.log(textFields.value)
   try {
     window.nfAPI.saveOctdatVisual({
@@ -124,20 +129,20 @@ const save = () => {
   }
 }
 const textFieldOptions = [
-  { type: 'id', label: 'ID', props: { label: 'ID', placeholder: 'MyMod.Items.MyItem.Name' } },
-  { type: 'type', label: 'Type', props: { label: 'Type', placeholder: 'StackedItemType' } },
-  { type: 'inherit', label: 'Inherit', props: { label: 'Inherit', placeholder: '' } },
-  { type: 'color', label: 'Color', props: { label: 'Color', placeholder: '', type: 'color' } }
+  { type: 'id', label: 'ID', props: { label: 'id', placeholder: 'MyMod.Items.MyItem.Name' } },
+  { type: 'type', label: 'Type', props: { label: 'type', placeholder: 'StackedItemType' } },
+  { type: 'inherit', label: 'Inherit', props: { label: 'inherit', placeholder: '' } },
+  { type: 'color', label: 'Color', props: { label: 'color', placeholder: '', type: 'color' } }
 ]
 
 const templateOptions = [
   {
     label: 'Template 1',
     fields: [
-      { label: 'ID', placeholder: 'MyMod.Items.MyItem.Name' },
-      { label: 'Type', placeholder: 'StackedItemType' },
-      { label: 'Inherit', placeholder: '' },
-      { label: 'Color', placeholder: '', type: 'color' }
+      { label: 'id', placeholder: 'MyMod.Items.MyItem.Name' },
+      { label: 'type', placeholder: 'StackedItemType' },
+      { label: 'inherit', placeholder: '' },
+      { label: 'color', placeholder: '', type: 'color' }
     ]
   },
   {
