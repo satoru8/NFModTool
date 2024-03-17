@@ -1,12 +1,17 @@
 <template>
-      <div id="appMain">
-       <button @click="increment">Count up: {{ counterUp }}</button>
-       <button @click="decrement">Count down: {{ counterDown }}</button> 
-      </div>
+  <div id="appMain">
+    <button @click="increment">Count up: {{ counterUp }}</button>
+    <button @click="decrement">Count down: {{ counterDown }}</button> 
+    <div id="homeInfo">
+    <homeInfo/>
+    </div>  
+  </div>
 </template>
     
 <script setup>
 import { ref, onMounted } from 'vue';
+import homeInfo from '../components/homeInfo.vue'
+
 
 const counterUp = ref('');
 const counterDown = ref('');
@@ -28,6 +33,16 @@ function increment() {
 
 
 <style>
+
+#appMain {
+  height: 100vh;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  
+  
+}
+
 button {
     background-color: purple !important;
     border-style: none;
@@ -36,4 +51,8 @@ button {
     height: 35px;
     border-radius: 12px;
 }
+
+#homeInfo {
+    display:block;
+    }
 </style>
