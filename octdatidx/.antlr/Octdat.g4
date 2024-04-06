@@ -1,3 +1,10 @@
+// Extension: ANTRL4 grammar syntax support. For Dev testing.
+// Extension Settings: ANTRL4 Generation
+//        "language": "JavaScript",
+//        "mode": "internal",
+//        "listeners": true,
+//        "visitors": true
+
 grammar Octdat;
 
 octdatObject: '{' properties '}' EOF;

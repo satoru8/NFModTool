@@ -1,8 +1,8 @@
-const { app, shell, dialog, Tray, Menu, nativeImage, BrowserWindow, ipcMain } = require('electron')
-const path = require('path')
-const fs = require('fs')
+import { app, shell, dialog, Tray, Menu, nativeImage, BrowserWindow, ipcMain } from 'electron'
+import path from 'path'
+import fs from 'fs'
 import { fileURLToPath } from 'url'
-// const edge = require('electron-edge-js')
+// import edge from 'electron-edge-js'
 
 const iconPath = fileURLToPath(new URL('../renderer/logo.png', import.meta.url))
 const nfIcon = nativeImage.createFromPath(iconPath)
