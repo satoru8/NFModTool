@@ -1,10 +1,10 @@
 <template>
-  <div id="visualEditor">
+  <div id="visualEditor" class="d-flex flex-column align-center justify-center h-100 w-100">
     <div class="visualEditorInner">
-      <v-card class="visualEditorBtns d-flex justify-center">
+      <v-card class="visualEditorBtns pa-2 d-flex justify-center ">
         <v-menu class="singleFieldMenu">
           <template v-slot:activator="{ props }">
-            <v-btn class="mb-2" variant="tonal" v-bind="props" text="Add Field" />
+            <v-btn class="ma-1" variant="tonal" v-bind="props" text="Add Field" />
           </template>
           <v-list>
             <v-list-item
@@ -18,7 +18,7 @@
         </v-menu>
         <v-menu class="templateFieldMenu">
           <template v-slot:activator="{ props }">
-            <v-btn class="mb-2" variant="tonal" v-bind="props" text="Add Template" />
+            <v-btn class="ma-1" variant="tonal" v-bind="props" text="Add Template" />
           </template>
           <v-list>
             <v-list-item
@@ -31,7 +31,7 @@
           </v-list>
         </v-menu>
       </v-card>
-      <v-card class="visualEditorCard pa-3" flat>
+      <v-card class="visualEditorCard" flat>
         <div
           class="visualEditorTemplate"
           v-for="(template, index) in templates"
@@ -65,7 +65,7 @@
               </v-menu>
             </template>
           </v-text-field>
-          </div>
+        </div>
         <!-- </div> -->
         <!-- <div class="visualEditorField" v-for="(field, index) in textFields" :key="`field-${index}`"> -->
         <v-text-field
@@ -99,6 +99,14 @@
     </div>
   </div>
 </template>
+
+<style scoped>
+.visualEditorCard {
+  overflow-y: auto;
+  height: 100%;
+  padding: 0 20px 60px 20px;
+}
+</style>
 
 <script setup>
 import { ref } from 'vue'

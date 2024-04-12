@@ -3,5 +3,5 @@
 </template>
 
 <script setup>
-import FileManager from './fileManager.vue'
+import FileManager from '../components/fileManager.vue'
 </script>

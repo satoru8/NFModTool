@@ -44,6 +44,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import { fileManager } from '../js/fileManager';
 
 const modFolderSetting = ref('')
 const octdatFolderSetting = ref('')
@@ -66,12 +67,16 @@ const saveSettings = async () => {
     modFolderSetting: modFolderSetting.value,
     octdatFolderSetting: octdatFolderSetting.value
   })
+
+  fileManager.loadFolderPathFromSettings()
+  console.log('Settings saved.')
 }
 
 const loadSettings = async () => {
   const settings = await window.nfAPI.loadSettings()
   modFolderSetting.value = settings.modFolderSetting || ''
   octdatFolderSetting.value = settings.octdatFolderSetting || ''
+  console.log('Settings loaded.')
 }
 
 const resetSettings = () => {

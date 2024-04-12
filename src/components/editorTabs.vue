@@ -11,10 +11,11 @@
       <v-tab
         class="editorTab"
         variant="tonal"
+        color="secondary"
         v-for="tab in tabs"
         :key="tab.id"
         :value="tab.id"
-        :class="tab.id"
+        :class="tab.id === activeTab ? 'activeTab' : ''"
         @click="selectTab(tab.id)"
       >
         {{ tab.name }}
