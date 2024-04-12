@@ -18,12 +18,12 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
-import TopPanel from '../components/topPanel.vue'
+import TopPanel from '../panels/topPanel.vue'
 import LoadingScreen from '../components/loadingScreen.vue'
 import UserSetup from '../components/userSetup.vue'
 import OctdatView from './octdatView.vue'
-import VisualEditor from '../components/visualEditor.vue'
-import SettingsPanel from '../components/settingsPanel.vue'
+import VisualEditor from './visualEditor.vue'
+import SettingsPanel from '../panels/settingsPanel.vue'
 
 const appIsLoading = ref(true)
 const selectedTab = ref('octdat')

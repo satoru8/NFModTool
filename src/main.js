@@ -1,8 +1,8 @@
-const { app, shell, dialog, Tray, Menu, nativeImage, BrowserWindow, ipcMain } = require('electron')
-const path = require('path')
-const fs = require('fs')
+import { app, shell, dialog, Tray, Menu, nativeImage, BrowserWindow, ipcMain } from 'electron'
+import path from 'path'
+import fs from 'fs'
 import { fileURLToPath } from 'url'
-// const edge = require('electron-edge-js')
+// import edge from 'electron-edge-js'
 
 const iconPath = fileURLToPath(new URL('../renderer/logo.png', import.meta.url))
 const nfIcon = nativeImage.createFromPath(iconPath)
@@ -35,14 +35,10 @@ const createWindow = () => {
   }
 }
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
+// This method will be called when Electron has finished initialization
 app.on('ready', createWindow)
 
-// Quit when all windows are closed, except on macOS. There, it's common
-// for applications and their menu bar to stay active until the user quits
-// explicitly with Cmd + Q.
+// Quit when all windows are closed, except on macOS
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit()
@@ -57,23 +53,18 @@ app.on('activate', () => {
   }
 })
 
-// Assembly analysis
-// const assemblyPath = path.join(__dirname, 'Assembly.dll')
-
-// const analyzeAssembly = edge.func({
-//   assemblyFile: path.join(__dirname, 'NFParser.dll'),
-//   typeName: 'AssemblyParser',
-//   methodName: 'AnalyzeAssembly'
-// })
+app.setName('NF Mod Tool')
 
 // IPC events
 ipcMain.handle('get-app-path', () => app.getAppPath())
 
 ipcMain.on('open-file-in-editor', (event, data) => {
+  if (!data) {
+    return
+  }
+
   if (data && data.id && data.label && data.content) {
     mainWindow.webContents.send('open-file-in-editor', data)
-  } else {
-    console.error('Invalid data received:', data)
   }
 })
 
@@ -165,7 +156,7 @@ ipcMain.on('save-settings', async (event, newSettings) => {
   try {
     await saveSettings(newSettings)
   } catch (error) {
-    console.error('Error saving settings:', error)
+    mainWindow.webContents.send('console-log', `Error saving settings: ${error}`)
   }
 })
 
@@ -200,7 +191,7 @@ ipcMain.handle('read-directory', async (event, itemPath) => {
 
     return transformedFiles.flat() || []
   } catch (error) {
-    console.error('Failed to read directory:', error)
+    mainWindow.webContents.send('console-log', `Failed to read directory: ${error}`)
     throw error
   }
 })
@@ -236,7 +227,7 @@ ipcMain.handle('read-file-content', async (event, filePath) => {
     const fileContent = await fs.promises.readFile(filePath, 'utf-8')
     return fileContent
   } catch (error) {
-    console.error('Failed to read file content:', error)
+    mainWindow.webContents.send('console-log', `Failed to read file content: ${error}`)
     throw error
   }
 })
@@ -247,12 +238,11 @@ ipcMain.on('save-octdat-visual', (event, data, filePath, name) => {
 
   try {
     fs.writeFileSync(path.join(modFolder, filePath), data, 'utf8')
+    mainWindow.webContents.send('console-log', 'Saved', filePath, 'to', modFolder)
   } catch (error) {
-    console.error('Error saving file:', error)
+    mainWindow.webContents.send('console-log', 'Error saving file:', error)
   }
-
-  console.log(`Saved ${filePath} to ${modFolder}`)
-  console.log('Octdat file saved successfully')
+  mainWindow.webContents.send('console-log', 'Octdat file saved successfully')
 })
 
 app.whenReady().then(async () => {
@@ -264,6 +254,8 @@ app.whenReady().then(async () => {
       mainWindow.webContents.send('loading-done')
     }, 250)
   })
+
+  mainWindow.webContents.send('console-log', `NFModTool started`)
 
   // analyzeAssembly(assemblyPath, true, (error, result) => {
   //   if (error) {
@@ -281,4 +273,10 @@ app.whenReady().then(async () => {
   // })
 })
 
-app.setName('NF Mod Tool')
+// Assembly analysis
+// const assemblyPath = path.join(__dirname, 'Assembly.dll')
+// const analyzeAssembly = edge.func({
+//   assemblyFile: path.join(__dirname, 'NFParser.dll'),
+//   typeName: 'AssemblyParser',
+//   methodName: 'AnalyzeAssembly'
+// })

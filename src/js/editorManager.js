@@ -82,6 +82,10 @@ class EditorManager {
   }
 
   async initializeEditor(tabId, editorContainer, content = '') {
+    if (!editorContainer) {
+      console.warn('No editor container found.')
+      return
+    }
     if (this.editors.has(tabId)) {
       console.warn(`Editor for ${tabId} already initialized.`)
       return

@@ -24,7 +24,7 @@ if (!fs.existsSync('./Data')) {
 
 // It's more useful to inspect these after parsing
 // fs.writeFileSync('./Data/tokens.txt', tokens.toString())
-// Note: Writing all tokens to file after parsing might not be as useful without resetting tokens
-// fs.writeFileSync('./Data/lexer.txt', allTokens.toString()) // Make sure you've captured allTokens as mentioned
+// Writing all tokens to file after parsing might not be as useful without resetting tokens
+// fs.writeFileSync('./Data/lexer.txt', allTokens.toString()) // Make sure to captured allTokens as mentioned
 
 fs.writeFileSync('./Data/tree.txt', tree.toStringTree(parser.ruleNames))

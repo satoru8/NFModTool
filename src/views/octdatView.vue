@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import LeftPanel from '../components/leftPanel.vue'
-import MidPanel from '../components/midPanel.vue'
-import RightPanel from '../components/rightPanel.vue'
+import LeftPanel from '../panels/leftPanel.vue'
+import MidPanel from '../panels/midPanel.vue'
+import RightPanel from '../panels/rightPanel.vue'
 </script>

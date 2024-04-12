@@ -8,7 +8,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import FileInput from './fileInput.vue'
+import FileInput from '../components/fileInput.vue'
 import { editorManager } from '../js/editorManager'
 
 const activeTab = ref('tab1')
